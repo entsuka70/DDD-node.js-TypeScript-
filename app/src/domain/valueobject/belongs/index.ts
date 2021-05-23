@@ -1,19 +1,23 @@
-export class BelongsValueObject {
-  protected belongs: number;
-  protected readonly BELONGS: number = 0; // 0: 在籍中
-  protected readonly BELONGS_BREAKING: number = 1; // 1: 休会中
-  protected readonly BELONGS_WITHDRAWAL: number = 2; // 2: 退会済み
+export default class BelongsValueObject {
+  private belongs: number;
 
-  constructor(belongs: number) {
-    this.checkRangeBelongs(belongs);
-    this.belongs = Object.freeze(belongs);
+  static BELONGS = 0; // 0: 在籍中
+  static BELONGS_BREAKING = 1; // 1: 休会中
+  static BELONGS_WITHDRAWAL = 2; // 2: 退会済み
+
+  constructor(belongs?: number | null) {
+    const status = this.checkRangeBelongs(belongs);
+    this.belongs = status;
   }
 
-  private checkRangeBelongs(belongs: number): number {
+  public checkRangeBelongs(belongs?: number | null): number {
     if (!belongs) {
-      return this.BELONGS;
+      return BelongsValueObject.BELONGS;
     }
-    if (this.BELONGS >= belongs && belongs >= this.BELONGS_WITHDRAWAL) {
+    if (
+      BelongsValueObject.BELONGS >= belongs &&
+      belongs >= BelongsValueObject.BELONGS_WITHDRAWAL
+    ) {
       throw new Error('belongs is invalid.');
     }
     return belongs;

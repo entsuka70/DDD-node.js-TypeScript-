@@ -67,5 +67,8 @@
     /* Advanced Options */
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
-  }
+  },
+  "exclude": [ // TypeScriptコンパイルを除外するディレクトリ・ファイルの設定
+    "**/index.test.ts",
+  ]
 }
