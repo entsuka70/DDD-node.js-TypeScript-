@@ -1,5 +1,4 @@
-import { BelongsValueObject } from 'domain/valueobject/belongs/index';
-// import { checkRangeBelongs } from 'domain/valueobject/belongs/index';
+import BelongsValueObject from 'domain/valueobject/belongs/index';
 
 describe('Section ValueObject', () => {
   it('confirm checkRangeBelongs function', () => {
