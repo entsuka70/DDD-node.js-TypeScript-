@@ -15,7 +15,7 @@ export default class BelongsValueObject {
       return BelongsValueObject.BELONGS;
     }
     if (
-      BelongsValueObject.BELONGS >= belongs &&
+      BelongsValueObject.BELONGS >= belongs ||
       belongs >= BelongsValueObject.BELONGS_WITHDRAWAL
     ) {
       throw new Error('belongs is invalid.');

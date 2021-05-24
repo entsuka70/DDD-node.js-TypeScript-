@@ -2,10 +2,16 @@ import BelongsValueObject from 'domain/valueobject/belongs/index';
 
 describe('Section ValueObject', () => {
   it('confirm checkRangeBelongs function', () => {
-    console.log('START');
     const status = new BelongsValueObject(1);
-    console.log(status);
-    console.log(typeof status);
     expect(status.checkRangeBelongs(1)).toBe(1);
+  });
+
+  it('Null BelongsValueObject', () => {
+    const status = new BelongsValueObject();
+    expect(status.checkRangeBelongs()).toBe(0);
+  });
+
+  it('Throw Error BelongsValueObject', () => {
+    expect(() => new BelongsValueObject(4)).toThrow('belongs is invalid.');
   });
 });
