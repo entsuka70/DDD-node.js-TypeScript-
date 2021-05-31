@@ -18,32 +18,32 @@ model setupData {
 
 model User {
     id Int @id @default(autoincrement())
-    user_issue_id Int
+    pair_id Int /// 1:無所属, 2~:ペア所属
     user_name String
     email String @unique
-    belongs_id Int @default(0)
+    belong_id Int /// 1:在籍中, 2:休会中, 3:退会済み
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
     userIssue UserIssue[]
-    belong Belong @relation(fields: [belongs_id], references: [id])
-    pair Pair @relation(fields: [id], references: [id])
+    belong Belong @relation(fields: [belong_id], references: [id])
+    pair Pair @relation(fields: [pair_id], references: [id])
 }
 
 model Belong {
-    id Int @id @default(autoincrement())
-    belong Int
+    id Int @id @default(autoincrement()) /// 1:在籍中, 2:休会中, 3:退会済み
+    belong Int /// 1:在籍中, 2:休会中, 3:退会済み
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
-    user User?
+    user User[]
 }
 
 model UserIssue {
     id Int @id @default(autoincrement())
     user_id Int
-    issue_id Int
-    progress Int
+    issue_id Int /// 1~80:課題種類
+    progress Int /// 1:未着手, 2:レビュー待ち, 3:完了
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -52,10 +52,9 @@ model UserIssue {
 }
 
 model Issue {
-    id Int @id @default(autoincrement())
-    user_issue_id Int
+    id Int @id @default(autoincrement()) /// 1~80:課題種類
     issue_name String
-    issue_group_id Int
+    issue_group_id Int /// 1:WEBの基礎, 2:テスト, 3:DB, 4:設計
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -65,17 +64,17 @@ model Issue {
 
 model IssueGroup {
     id Int @id @default(autoincrement())
-    issue_group Int
+    issue_group Int /// 1:WEBの基礎, 2:テスト, 3:DB, 4:設計
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     
-    issue Issue? 
+    issue Issue[]
 }
 
 model Pair {
     id Int @id @default(autoincrement())
     pair_name String
-    teams_id Int
+    teams_id Int  /// 1:無所属, 2~:チーム所属
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
