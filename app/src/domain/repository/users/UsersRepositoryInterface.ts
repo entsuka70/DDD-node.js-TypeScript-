@@ -4,7 +4,7 @@ import User from 'domain/entity/users/user';
 import { NodeWorker } from 'inspector';
 
 export default interface UsersRepositoryInterface {
-    find(id: number): Promise<object>;
+    findAggregationByUserId(id: number): Promise<object>;
     findAll(): Promise<User[]>|Promise<Pair[]>|Promise<Team[]>;
     findById(id: number): Promise<User>|Promise<Pair>|Promise<Team>;
     create(data: {pair_id: number|null, user_name: string, email: string, belong_id: number|null} ): Promise<void>;
