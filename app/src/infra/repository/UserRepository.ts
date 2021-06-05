@@ -1,16 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import User from 'domain/entity/users/user/index';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
-import UsersRepositoryInterface from "domain/repository/users/UsersRepositoryInterface";
+import UserRepositoryInterface from "domain/repository/users/UserRepositoryInterface";
 import UserFactory from 'infra/factory/users/user/UserFactory';
 
-export default class UserRepository implements UsersRepositoryInterface {
+export default class UserRepository implements UserRepositoryInterface {
     private prisma: PrismaClient
-    private factory: UserFactory
     
-    constructor(prisma: PrismaClient, factory: UserFactory) {
+    constructor(prisma: PrismaClient) {
         this.prisma = prisma;
-        this.factory = factory;
     }
 
     public async findAggregationByUserId(user_id: number): Promise<object> {
@@ -39,6 +37,7 @@ export default class UserRepository implements UsersRepositoryInterface {
         return user_entity;
     }
 
+    // 要修正
     public async findAll(): Promise<User[]> {
         const all_users = await this.prisma.user.findMany({
             include: {
@@ -48,11 +47,20 @@ export default class UserRepository implements UsersRepositoryInterface {
         const entities: User[] = all_users.map(
             (model): User => {
                 return new User(
-                    model.id, model.user_name, model.email, new BelongsValueObject(model.belong.belong)
+                    model.id, model.user_name, model.email, new BelongsValueObject(model.belong.belong).getBelongs()
                 )
             }
         )
         return entities;
+    }
+
+    public async findUserAll(): Promise<object[]> {
+        const all_users = await this.prisma.user.findMany({
+            include: {
+                belong: true
+            },
+        });
+        return all_users;
     }
 
     public async findById(user_id: number): Promise<User> {
@@ -67,7 +75,7 @@ export default class UserRepository implements UsersRepositoryInterface {
         if (user == null) {
             throw new Error(`Not Found User(user_id : ${user_id}).`)
         }
-        const entity = new User(user.id, user.user_name, user.email, new BelongsValueObject(user.belong.belong));
+        const entity = new User(user.id, user.user_name, user.email, new BelongsValueObject(user.belong.belong).getBelongs());
         return entity;
     }
 
@@ -109,8 +117,3 @@ export default class UserRepository implements UsersRepositoryInterface {
     }
     
 }
-
-const prisma = new PrismaClient();
-const factory = new UserFactory();
-const repository = new UserRepository(prisma, factory);
-console.log(repository.findUserEntityByUserId(11));

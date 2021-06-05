@@ -10,6 +10,10 @@ export default class BelongsValueObject {
     this.belongs = status;
   }
 
+  public getBelongs(): number {
+    return this.belongs;
+  }
+
   public checkRangeBelongs(belongs?: number | null): number {
     if (!belongs) {
       return BelongsValueObject.BELONGS;
