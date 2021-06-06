@@ -18,10 +18,10 @@ model setupData {
 
 model User {
     id Int @id @default(autoincrement())
-    pair_id Int /// 1:無所属, 2~:ペア所属
+    pair_id Int @default(1) /// 1:無所属, 2~:ペア所属
     user_name String
     email String @unique
-    belong_id Int /// 1:在籍中, 2:休会中, 3:退会済み
+    belong_id Int @default(1) /// 1:在籍中, 2:休会中, 3:退会済み
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -43,7 +43,7 @@ model UserIssue {
     id Int @id @default(autoincrement())
     user_id Int
     issue_id Int /// 1~80:課題種類
-    progress Int /// 1:未着手, 2:レビュー待ち, 3:完了
+    progress Int @default(1) /// 1:未着手, 2:レビュー待ち, 3:完了
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -54,7 +54,7 @@ model UserIssue {
 model Issue {
     id Int @id @default(autoincrement()) /// 1~80:課題種類
     issue_name String
-    issue_group_id Int /// 1:WEBの基礎, 2:テスト, 3:DB, 4:設計
+    issue_group_id Int @default(1) /// 1:未分類 2:WEBの基礎, 3:テスト, 4:DB, 5:設計
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -64,7 +64,7 @@ model Issue {
 
 model IssueGroup {
     id Int @id @default(autoincrement())
-    issue_group Int /// 1:WEBの基礎, 2:テスト, 3:DB, 4:設計
+    issue_group Int @default(1) /// 1:未分類 2:WEBの基礎, 3:テスト, 4:DB, 5:設計
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
     
@@ -74,7 +74,7 @@ model IssueGroup {
 model Pair {
     id Int @id @default(autoincrement())
     pair_name String
-    teams_id Int  /// 1:無所属, 2~:チーム所属
+    teams_id Int @default(1) /// 1:無所属, 2~:チーム所属
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
@@ -83,7 +83,7 @@ model Pair {
 }
 
 model Team {
-    id Int @id @default(autoincrement())
+    id Int @id @default(autoincrement()) /// 1:無所属 2~:チーム所属
     team_name String
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
