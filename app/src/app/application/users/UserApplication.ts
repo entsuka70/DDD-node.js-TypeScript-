@@ -17,7 +17,16 @@ export default class UserApplication {
             const userAll = await this.userFactory.createUserAll(userEntities);
             return userAll;
         } catch (e) {
-            throw new Error(`Error UserApplication::finUSerAll(): ${e.message}`);
+            throw new Error(`Error UserApplication::findUserAll(): ${e.message}`);
+        }
+    }
+
+    public async create(data: object) {
+        try {
+            const user_data = await this.userFactory.createUser(data);
+            await this.userRepository.create(user_data);
+        } catch (e) {
+            throw new Error(`Error UserApplication::create(): ${e.message}`);
         }
     }
 }

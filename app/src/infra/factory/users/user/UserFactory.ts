@@ -21,4 +21,12 @@ export default class UserFactory implements UserFactoryInterface {
         )
         return users;
     }
+
+    public async createUser(data: {user_name: string, email: string, belongs: number|null}): Promise<object> {
+        // idが自動生成のオートインクリメントのため
+        // Userエンティティを生成してidを代入することができない。
+        // Userエンティティを生成して集約を生成するには、
+        // UserエンティティのidをユニークのUUID文字列ランダム生成にするしかない？
+        return data;
+    }
 }

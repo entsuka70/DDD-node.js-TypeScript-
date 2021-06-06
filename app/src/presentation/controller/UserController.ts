@@ -19,14 +19,20 @@ exports.view = async function(req: express.Request, res: express.Response) {
 
 exports.create = async function(req: express.Request, res: express.Response) {
     try {
+        const prisma = new PrismaClient();
+        const userFactory = new UserFactory();
+        const userRepository = new UserRepository(prisma);
+        const userApplication = new UserApplication(userRepository, userFactory);
+        const data = {
+            'user_name': req.body.user_name,
+            'email': req.body.email
+        }
+        const userCreate = await userApplication.create(data);
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(200).send('Create : ' + req.body.name + ', ' +req.body.email);
-        console.log('Create : ' + req.body.name + ', ' +req.body.email);
+        res.status(200).send('Create : ' + req.body.user_name + ', ' +req.body.email)
     } catch (e) {
-        console.log(req.body);
-        console.error(e.message);
         res.send(e.message);
     }
 }

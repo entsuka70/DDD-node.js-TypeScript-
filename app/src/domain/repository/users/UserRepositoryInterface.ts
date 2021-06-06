@@ -8,7 +8,7 @@ export default interface UserRepositoryInterface {
     findAll(): Promise<User[]>|Promise<Pair[]>|Promise<Team[]>;
     findUserAll(): Promise<object[]>;
     findById(id: number): Promise<User>|Promise<Pair>|Promise<Team>;
-    create(data: {pair_id: number|null, user_name: string, email: string, belong_id: number|null} ): Promise<void>;
-    update(data: {id: number, pair_id: number, user_name: string, email: string, belong_id: number}): Promise<void>;
+    create(data: object): Promise<void>;
+    update(data: object): Promise<void>;
     delete(id: number): Promise<void>;
 }
