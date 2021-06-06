@@ -3,6 +3,7 @@ module.exports = function(app: any) {
     const UserController = require('presentation/controller/UserController');
 
     app.route('/user')
-        .get(UserController.getAll);
+        .get(UserController.view)
+        .post(UserController.create);
 
 }

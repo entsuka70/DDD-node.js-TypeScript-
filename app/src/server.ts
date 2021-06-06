@@ -10,4 +10,3 @@ console.log(`Node.js is listening to PORT: ${server.address().port}`);
 
 const userRoutes = require('routes/user');
 userRoutes(app);
-// app.use('/', user);

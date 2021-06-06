@@ -31,12 +31,6 @@ export default class UserRepository implements UserRepositoryInterface {
         return aggregation;
     }
 
-    public async findUserEntityByUserId(user_id: number): Promise<object> {
-        const aggregation = await this.findAggregationByUserId(user_id);
-        const user_entity = await this.factory.createUserEntity(aggregation);
-        return user_entity;
-    }
-
     // 要修正
     public async findAll(): Promise<User[]> {
         const all_users = await this.prisma.user.findMany({
