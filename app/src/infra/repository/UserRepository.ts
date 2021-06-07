@@ -100,7 +100,6 @@ export default class UserRepository implements UserRepositoryInterface {
                 updated_at: new Date(),
             }
         });
-        console.log(content);
         return;
     }
 

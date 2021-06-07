@@ -7,5 +7,6 @@ module.exports = function(app: any) {
         .post(UserController.create);
 
     app.route('/user/:id')
-        .post(UserController.update);
+        .post(UserController.update)
+        .delete(UserController.delete);
 }

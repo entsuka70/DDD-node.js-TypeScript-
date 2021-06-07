@@ -39,4 +39,12 @@ export default class UserApplication {
             throw new Error(`Error UserApplication::update(): ${e.message}`);
         }
     }
+
+    public async delete(id: number) {
+        try {
+            await this.userRepository.delete(id);
+        } catch (e) {
+            throw new Error(`Error UserApplication::delete(): ${e.message}`);
+        }
+    }
 }

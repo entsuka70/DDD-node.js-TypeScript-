@@ -59,3 +59,19 @@ exports.update = async function(req: express.Request, res: express.Response) {
         res.status(400).send(e.message);
     }
 }
+
+exports.delete = async function(req: express.Request, res:express.Response) {
+    try {
+        const prism = new PrismaClient();
+        const userFactory = new UserFactory();
+        const userRepository = new UserRepository(prism);
+        const userApplication = new UserApplication(userRepository, userFactory);
+        const userDelete = await userApplication.delete(parseInt(req.params.id));
+        res.set({
+            'content-type': 'text/plain',
+        });
+        res.status(201).send('Delete success');
+    } catch (e) {
+        res.status(400).send(e.message);
+    }
+}
