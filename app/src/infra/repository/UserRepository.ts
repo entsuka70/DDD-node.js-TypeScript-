@@ -11,7 +11,7 @@ export default class UserRepository implements UserRepositoryInterface {
         this.prisma = prisma;
     }
 
-    public async findAggregationByUserId(user_id: number): Promise<object> {
+    public async findByUserId(user_id: number): Promise<object> {
         const aggregation = await this.prisma.user.findFirst({
             where: {
                 id: user_id
@@ -41,7 +41,7 @@ export default class UserRepository implements UserRepositoryInterface {
         const entities: User[] = all_users.map(
             (model): User => {
                 return new User( 
-                    { id: model.id, user_name: model.user_name, email: model.email, belongs: model.belong.belong }
+                    { id: model.id, user_name: model.user_name, email: model.email, belong_id: model.belong.belong, pair_id: model.pair_id }
                 )
             }
         )
@@ -70,7 +70,7 @@ export default class UserRepository implements UserRepositoryInterface {
             throw new Error(`Not Found User(user_id : ${user_id}).`)
         }
         const entity = new User(
-            { id: user.id, user_name: user.user_name, email: user.email, belongs: user.belong.belong }
+            { id: user.id, user_name: user.user_name, email: user.email, belong_id: user.belong.belong, pair_id: user.pair_id }
         );
         // const entity = new User(user.id, user.user_name, user.email, new BelongsValueObject(user.belong.belong).getBelongs());
         return entity;
@@ -87,19 +87,20 @@ export default class UserRepository implements UserRepositoryInterface {
         return;
     }
 
-    public async update(data: {id: number, pair_id: number, user_name: string, email: string, belongs: number}): Promise<void> {
-        await this.prisma.user.update({
+    public async update(entity: {pair_id:number, user_name: string, email:string, belongs: number} , data: {id: number, pair_id: number|null, user_name: string|null, email: string|null, belongs: number|null}): Promise<void> {
+        let content = await this.prisma.user.update({
             where: {
                 id: data.id,
             },
             data: {
-                pair_id: data.pair_id,
-                user_name: data.user_name,
-                email: data.email,
-                belong_id: data.belongs,
+                pair_id: data.pair_id ?? entity.pair_id,
+                user_name: data.user_name ?? entity.user_name,
+                email: data.email ?? entity.email,
+                belong_id: data.belongs ?? entity.belongs,
                 updated_at: new Date(),
             }
         });
+        console.log(content);
         return;
     }
 

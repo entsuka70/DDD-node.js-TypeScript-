@@ -5,4 +5,7 @@ module.exports = function(app: any) {
     app.route('/user')
         .get(UserController.view)
         .post(UserController.create);
+
+    app.route('/user/:id')
+        .post(UserController.update);
 }

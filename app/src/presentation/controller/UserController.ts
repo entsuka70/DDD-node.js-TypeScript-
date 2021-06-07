@@ -31,8 +31,31 @@ exports.create = async function(req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(200).send('Create : ' + req.body.user_name + ', ' +req.body.email)
+        res.status(201).send('Create : ' + req.body.user_name + ', ' +req.body.email)
     } catch (e) {
-        res.send(e.message);
+        res.status(400).send(e.message);
+    }
+}
+
+exports.update = async function(req: express.Request, res: express.Response) {
+    try {
+        const prisma = new PrismaClient();
+        const userFactory = new UserFactory();
+        const userRepository = new UserRepository(prisma);
+        const userApplication = new UserApplication(userRepository, userFactory);
+        const data = {
+            'id': parseInt(req.params.id),
+            'user_name': req.body.user_name,
+            'email': req.body.email,
+            'pair_id': req.body.pair_id ?? null,
+            'belong_id': req.body.belongs ?? null,
+        };
+        const userUpdate = await userApplication.update(data);
+        res.set({
+            'content-type': 'text/plain',
+        });
+        res.status(201).send('Update success');
+    } catch (e) {
+        res.status(400).send(e.message);
     }
 }

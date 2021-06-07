@@ -29,4 +29,14 @@ export default class UserApplication {
             throw new Error(`Error UserApplication::create(): ${e.message}`);
         }
     }
+
+    public async update(data: {id:number, user_name: string|null, email: string|null, pair_id: number|null, belong_id: number|null}) {
+        try {
+            const userAggregation = await this.userRepository.findByUserId(data.id);
+            const userEntity = await this.userFactory.createUser(userAggregation);
+            await this.userRepository.update(userEntity, data);
+        } catch (e) {
+            throw new Error(`Error UserApplication::update(): ${e.message}`);
+        }
+    }
 }
