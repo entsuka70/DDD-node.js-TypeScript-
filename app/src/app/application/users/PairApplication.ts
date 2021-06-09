@@ -2,7 +2,7 @@ import UserRepositoryInterface from 'domain/repository/users/UserRepositoryInter
 import UserFactoryInterface from 'domain/factory/users/UserFactoryInterface';
 
 
-export default class UserApplication {
+export default class PairApplication {
     private readonly userRepository: UserRepositoryInterface;
     private readonly userFactory: UserFactoryInterface;
 
@@ -11,32 +11,32 @@ export default class UserApplication {
         this.userFactory = userFactory;
     }
 
-    public async findUserAll() {
+    public async findPairAll() {
         try {
             const userEntities = await this.userRepository.findAll();
-            const userAll = await this.userFactory.createUserAll(userEntities);
+            const userAll = await this.userFactory.createPairAll(userEntities);
             return userAll;
         } catch (e) {
-            throw new Error(`Error UserApplication::findUserAll(): ${e.message}`);
+            throw new Error(`Error PairApplication::findUserAll(): ${e.message}`);
         }
     }
 
     public async create(data: object) {
         try {
-            const user_data = await this.userFactory.createUser(data);
+            const user_data = await this.userFactory.createPair(data);
             await this.userRepository.create(user_data);
         } catch (e) {
-            throw new Error(`Error UserApplication::create(): ${e.message}`);
+            throw new Error(`Error PairApplication::create(): ${e.message}`);
         }
     }
 
     public async update(data: {id:number, user_name: string|null, email: string|null, pair_id: number|null, belong_id: number|null}) {
         try {
             const userAggregation = await this.userRepository.findByUserId(data.id);
-            const userEntity = await this.userFactory.createUser(userAggregation);
+            const userEntity = await this.userFactory.createPair(userAggregation);
             await this.userRepository.update(userEntity, data);
         } catch (e) {
-            throw new Error(`Error UserApplication::update(): ${e.message}`);
+            throw new Error(`Error PairApplication::update(): ${e.message}`);
         }
     }
 
@@ -44,7 +44,7 @@ export default class UserApplication {
         try {
             await this.userRepository.delete(id);
         } catch (e) {
-            throw new Error(`Error UserApplication::delete(): ${e.message}`);
+            throw new Error(`Error PairApplication::delete(): ${e.message}`);
         }
     }
 }

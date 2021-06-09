@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
-import UserApplication from "app/application/users/UserApplication";
+import PairApplication from "app/application/users/PairApplication";
 import UserFactory from "infra/factory/users/user/UserFactory";
 import UserRepository from "infra/repository/UserRepository";
 
@@ -10,8 +10,8 @@ exports.view = async function(req: express.Request, res: express.Response) {
         const prisma = new PrismaClient();
         const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const userApplication = new UserApplication(userRepository, userFactory);
-        const userAll = await userApplication.findUserAll();
+        const pairApplication = new PairApplication(userRepository, userFactory);
+        const userAll = await pairApplication.findPairAll();
         res.set({
             'content-type': 'application/json',
         });
@@ -26,12 +26,12 @@ exports.create = async function(req: express.Request, res: express.Response) {
         const prisma = new PrismaClient();
         const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const userApplication = new UserApplication(userRepository, userFactory);
+        const pairApplication = new PairApplication(userRepository, userFactory);
         const data = {
             'user_name': req.body.user_name,
             'email': req.body.email
         }
-        const userCreate = await userApplication.create(data);
+        const userCreate = await pairApplication.create(data);
         res.set({
             'content-type': 'text/plain',
         });
@@ -46,7 +46,7 @@ exports.update = async function(req: express.Request, res: express.Response) {
         const prisma = new PrismaClient();
         const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const userApplication = new UserApplication(userRepository, userFactory);
+        const pairApplication = new PairApplication(userRepository, userFactory);
         const data = {
             'id': parseInt(req.params.id),
             'user_name': req.body.user_name,
@@ -54,7 +54,7 @@ exports.update = async function(req: express.Request, res: express.Response) {
             'pair_id': req.body.pair_id ?? null,
             'belong_id': req.body.belongs ?? null,
         };
-        const userUpdate = await userApplication.update(data);
+        const userUpdate = await pairApplication.update(data);
         res.set({
             'content-type': 'text/plain',
         });
@@ -69,8 +69,8 @@ exports.delete = async function(req: express.Request, res:express.Response) {
         const prism = new PrismaClient();
         const userFactory = new UserFactory();
         const userRepository = new UserRepository(prism);
-        const userApplication = new UserApplication(userRepository, userFactory);
-        const userDelete = await userApplication.delete(parseInt(req.params.id));
+        const pairApplication = new PairApplication(userRepository, userFactory);
+        const userDelete = await pairApplication.delete(parseInt(req.params.id));
         res.set({
             'content-type': 'text/plain',
         });

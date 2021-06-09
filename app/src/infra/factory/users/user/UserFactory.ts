@@ -1,6 +1,8 @@
 import User from "domain/entity/users/user/index";
+import Pair from "domain/entity/users/user/index";
 import UserFactoryInterface from "domain/factory/users/UserFactoryInterface";
 import UserDto from "app/dto/UserDto";
+import PairDto from "app/dto/PairDto";
 
 export default class UserFactory implements UserFactoryInterface {
     /// リポジトリから受け取った集約を最適化した集約に再構成する
@@ -13,7 +15,7 @@ export default class UserFactory implements UserFactoryInterface {
         return aggregation;
     }
 
-    public async createUserAll(userEntities: User[]): Promise<UserDto[]> {
+    public async createUserAll(userEntities: object[]): Promise<UserDto[]> {
         const users = await userEntities.map(
             (userEntity): UserDto => {
                 return new UserDto(userEntity);
@@ -36,5 +38,22 @@ export default class UserFactory implements UserFactoryInterface {
         console.log('----- in UserFactory.ts -----');
         console.log(user);
         return user;
+    }
+
+    public async createPairAll(userEntities: object[]): Promise<PairDto[]> {
+        const pairs = await userEntities.map((userEntity): PairDto => {
+            return new PairDto(userEntity);
+        });
+        return pairs;
+    }
+
+    public async createPair(User: {Pair: {id: number, teams_id: number, pair_name: string, users: User[]}}): Promise<object> {
+        let pair = {};
+        if (User.id) {
+            pair = new Pair(User.Pair);
+        } else {
+            pair = User.Pair;
+        }
+        return pair;
     }
 }

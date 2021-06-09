@@ -31,49 +31,18 @@ export default class UserRepository implements UserRepositoryInterface {
         return aggregation;
     }
 
-    // 要修正
-    public async findAll(): Promise<User[]> {
+    public async findAll(): Promise<object[]> {
         const all_users = await this.prisma.user.findMany({
             include: {
-                belong: true
-            },
-        });
-        const entities: User[] = all_users.map(
-            (model): User => {
-                return new User( 
-                    { id: model.id, user_name: model.user_name, email: model.email, belong_id: model.belong.belong, pair_id: model.pair_id }
-                )
+                belong: true,
+                pair: {
+                    include: {
+                        team: true
+                    }
+                }
             }
-        )
-        return entities;
-    }
-
-    public async findUserAll(): Promise<object[]> {
-        const all_users = await this.prisma.user.findMany({
-            include: {
-                belong: true
-            },
         });
         return all_users;
-    }
-
-    public async findById(user_id: number): Promise<User> {
-        const user = await this.prisma.user.findFirst({
-            where: {
-                id: user_id
-            },
-            include: {
-                belong: true
-            }
-        });
-        if (user == null) {
-            throw new Error(`Not Found User(user_id : ${user_id}).`)
-        }
-        const entity = new User(
-            { id: user.id, user_name: user.user_name, email: user.email, belong_id: user.belong.belong, pair_id: user.pair_id }
-        );
-        // const entity = new User(user.id, user.user_name, user.email, new BelongsValueObject(user.belong.belong).getBelongs());
-        return entity;
     }
 
     public async create(data: {user_name: string, email: string, belongs: number|null}): Promise<void> {
