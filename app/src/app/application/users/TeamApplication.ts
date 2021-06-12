@@ -2,7 +2,7 @@ import UserRepositoryInterface from 'domain/repository/users/UserRepositoryInter
 import UserFactoryInterface from 'domain/factory/users/UserFactoryInterface';
 
 
-export default class PairApplication {
+export default class TeamApplication {
     private readonly userRepository: UserRepositoryInterface;
     private readonly userFactory: UserFactoryInterface;
 
@@ -11,26 +11,15 @@ export default class PairApplication {
         this.userFactory = userFactory;
     }
 
-    public async findPairAll() {
+    public async findTeamAll() {
         try {
             const userEntities = await this.userRepository.findAll();
-            const pairAll = await this.userFactory.createPairAll(userEntities);
-            return pairAll;
+            const teamAll = await this.userFactory.createTeamAll(userEntities);
+            return teamAll;
         } catch (e) {
             throw new Error(`Error PairApplication::findPairAll(): ${e.message}`);
         }
     }
-
-    // 仕様変更により不要
-    // TODO:利用には修正必要
-    // public async create(data: object) {
-    //     try {
-    //         const user_data = await this.userFactory.createPair(data);
-    //         await this.userRepository.create(user_data);
-    //     } catch (e) {
-    //         throw new Error(`Error PairApplication::create(): ${e.message}`);
-    //     }
-    // }
 
     // NOTE::UserApplication::update()と全く同じになる
     public async update(data: { id: number }) {
@@ -42,14 +31,4 @@ export default class PairApplication {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }
     }
-
-    // 仕様変更により不要
-    // TODO:利用には修正必要
-    // public async delete(id: number) {
-    //     try {
-    //         await this.userRepository.delete(id);
-    //     } catch (e) {
-    //         throw new Error(`Error PairApplication::delete(): ${e.message}`);
-    //     }
-    // }
 }

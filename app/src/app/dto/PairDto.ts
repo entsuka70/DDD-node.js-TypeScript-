@@ -4,7 +4,7 @@ export default class PairDto {
     public readonly id: number;
     public readonly teams_id: number;
     public readonly pair_name: string;
-    
+
     constructor(user: any) {
         this.id = user.id;
         this.teams_id = user.teams_id;

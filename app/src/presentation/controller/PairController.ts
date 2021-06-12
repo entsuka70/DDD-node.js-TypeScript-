@@ -11,11 +11,11 @@ exports.view = async function (req: express.Request, res: express.Response) {
         const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
         const pairApplication = new PairApplication(userRepository, userFactory);
-        const userAll = await pairApplication.findPairAll();
+        const pairAll = await pairApplication.findPairAll();
         res.set({
             'content-type': 'application/json',
         });
-        res.status(200).json(userAll);
+        res.status(200).json(pairAll);
     } catch (e) {
         res.status(400).send(e.message);
     }
@@ -58,7 +58,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
             // 'team_name': req.body.pair.team.team_name ?? null,
         };
 
-        const userUpdate = await pairApplication.update(data);
+        await pairApplication.update(data);
         res.set({
             'content-type': 'text/plain',
         });
