@@ -2,11 +2,11 @@ import { PrismaClient } from '@prisma/client';
 import User from 'domain/entity/users/user/index';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 import UserRepositoryInterface from "domain/repository/users/UserRepositoryInterface";
-import UserFactory from 'infra/factory/users/user/UserFactory';
+import UserFactory from 'domain/factory/users/user/UserFactory';
 
 export default class UserRepository implements UserRepositoryInterface {
     private prisma: PrismaClient
-    
+
     constructor(prisma: PrismaClient) {
         this.prisma = prisma;
     }
@@ -45,7 +45,7 @@ export default class UserRepository implements UserRepositoryInterface {
         return all_users;
     }
 
-    public async create(data: {user_name: string, email: string, belongs: number|null}): Promise<void> {
+    public async create(data: { user_name: string, email: string, belongs: number | null }): Promise<void> {
         await this.prisma.user.create({
             data: {
                 user_name: data.user_name,
@@ -56,19 +56,44 @@ export default class UserRepository implements UserRepositoryInterface {
         return;
     }
 
-    public async update(entity: {pair_id:number, user_name: string, email:string, belongs: number} , data: {id: number, pair_id: number|null, user_name: string|null, email: string|null, belongs: number|null}): Promise<void> {
-        let content = await this.prisma.user.update({
+    public async update(
+        entity: { pair_id: number, user_name: string, email: string, belongs: number, pair: { pair_name: string, teams_id: number, team: { team_name: string } } },
+        data: { id: number, pair_id: number | null, user_name: string | null, email: string | null, belongs: number | null, pair_name: string | null, teams_id: number | null, team_name: string | null }
+    ): Promise<void> {
+        const { id, pair_id, user_name, email, belongs, pair_name, teams_id, team_name } = data;
+
+        await this.prisma.user.update({
             where: {
-                id: data.id,
+                id: id,
             },
             data: {
-                pair_id: data.pair_id ?? entity.pair_id,
-                user_name: data.user_name ?? entity.user_name,
-                email: data.email ?? entity.email,
-                belong_id: data.belongs ?? entity.belongs,
+                pair_id: pair_id ?? entity.pair_id,
+                user_name: user_name ?? entity.user_name,
+                email: email ?? entity.email,
+                belong_id: belongs ?? entity.belongs,
                 updated_at: new Date(),
             }
         });
+
+        await this.prisma.pair.update({
+            where: {
+                id: entity.pair_id,
+            },
+            data: {
+                teams_id: teams_id ?? entity.pair.teams_id,
+                pair_name: pair_name ?? entity.pair.pair_name,
+            }
+        });
+
+        await this.prisma.team.update({
+            where: {
+                id: entity.pair.teams_id,
+            },
+            data: {
+                team_name: team_name ?? entity.pair.team.team_name
+            }
+        });
+
         return;
     }
 
@@ -80,5 +105,7 @@ export default class UserRepository implements UserRepositoryInterface {
         });
         return;
     }
-    
+
+    // public async updatePair(entity: {})
+
 }

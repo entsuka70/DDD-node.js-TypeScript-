@@ -1,13 +1,16 @@
 import User from 'domain/entity/users/user/index';
 
 export default class Pair {
-    private id: number;
+    // idはオートインクリメントによる生成にしているためUserを新規作成する時に
+    // FactoryでUserインスタンスを呼び出す際にid指定ができない。
+    // そのため、null許容指定にしている。
+    private id: number | null;
     private teams_id: number;
     private pair_name: string;
-    private users: User[];
+    private users: User[] | null;
 
-    constructor(props: {id: number, teams_id: number, pair_name: string, users: User[]}) {
-        const {id, teams_id, pair_name, users} = props;
+    constructor(props: { id: number | null, teams_id: number, pair_name: string, users: User[] | null }) {
+        const { id, teams_id, pair_name, users } = props;
         this.id = id;
         this.teams_id = teams_id;
         this.pair_name = pair_name;

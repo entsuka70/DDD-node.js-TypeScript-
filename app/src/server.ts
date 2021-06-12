@@ -16,4 +16,6 @@ console.log(`Node.js is listening to PORT: ${server.address().port}`);
 // ルーティング
 
 const userRoutes = require('routes/user');
+const pairRoutes = require('routes/pair');
 userRoutes(app);
+pairRoutes(app);

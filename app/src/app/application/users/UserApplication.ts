@@ -30,11 +30,11 @@ export default class UserApplication {
         }
     }
 
-    public async update(data: {id:number, user_name: string|null, email: string|null, pair_id: number|null, belong_id: number|null}) {
+    public async update(data: { id: number }) {
         try {
             const userAggregation = await this.userRepository.findByUserId(data.id);
             const userEntity = await this.userFactory.createUser(userAggregation);
-            await this.userRepository.update(userEntity, data);
+            await this.userRepository.update(userAggregation, data);
         } catch (e) {
             throw new Error(`Error UserApplication::update(): ${e.message}`);
         }
