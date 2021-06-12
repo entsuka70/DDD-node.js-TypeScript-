@@ -2,15 +2,14 @@ import Team from "domain/entity/users/team"
 import Pair from "domain/entity/users/pair"
 
 export default class TeamDto {
-    public readonly id: number | null;
+    public readonly id: number;
     public readonly team_name: string;
-    public readonly pairs: Pair[] | null;
+    public readonly pair: Pair[];
 
-    constructor(props: { id: number | null, team_name: string, pairs: Pair[] | null }) {
-        const { id, team_name, pairs } = props;
-        this.id = id;
-        this.team_name = team_name;
-        this.pairs = pairs;
+    constructor(users: any) {
+        this.id = users.id;
+        this.team_name = users.team_name;
+        this.pair = users.pair;
     }
 
     public getTeamAll(team: Team[]) {

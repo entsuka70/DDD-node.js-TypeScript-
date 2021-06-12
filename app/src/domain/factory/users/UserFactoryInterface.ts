@@ -11,5 +11,4 @@ export default interface UserFactoryInterface {
     createPairAll(users: object[]): Promise<object[]>;
     createTeamAll(users: object[]): Promise<object[]>;
     createUser(user: object): Promise<object>;
-    createPair(user: object): Promise<object>;
 }

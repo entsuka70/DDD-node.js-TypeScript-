@@ -57,7 +57,13 @@ export default class UserRepository implements UserRepositoryInterface {
     }
 
     public async update(
-        entity: { pair_id: number, user_name: string, email: string, belongs: number, pair: { pair_name: string, teams_id: number, team: { team_name: string } } },
+        entity: {
+            pair_id: number, user_name: string, email: string, belongs: number,
+            pair: {
+                pair_name: string, teams_id: number,
+                team: { team_name: string }
+            }
+        },
         data: { id: number, pair_id: number | null, user_name: string | null, email: string | null, belongs: number | null, pair_name: string | null, teams_id: number | null, team_name: string | null }
     ): Promise<void> {
         const { id, pair_id, user_name, email, belongs, pair_name, teams_id, team_name } = data;

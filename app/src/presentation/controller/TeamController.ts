@@ -31,7 +31,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
         // NOTE::user, team情報がPOSTされた時の対処必要
         const data = {
             'id': parseInt(req.params.id),
-            'team_name': req.body.pair.team.team_name ?? null,
+            'team_name': req.body.team_name ?? null,
         };
 
         await teamApplication.update(data);

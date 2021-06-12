@@ -25,7 +25,6 @@ export default class TeamApplication {
     public async update(data: { id: number }) {
         try {
             const userAggregation = await this.userRepository.findByUserId(data.id);
-            // const userEntity = await this.userFactory.createPair(userAggregation);
             await this.userRepository.update(userAggregation, data);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
