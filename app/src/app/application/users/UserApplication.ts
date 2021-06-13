@@ -13,8 +13,8 @@ export default class UserApplication {
 
     public async findUserAll() {
         try {
-            const userEntities = await this.userRepository.findAll();
-            const userAll = await this.userFactory.createUserAll(userEntities);
+            const userAggregations = await this.userRepository.findAll();
+            const userAll = await this.userFactory.createUserAll(userAggregations);
             return userAll;
         } catch (e) {
             throw new Error(`Error UserApplication::findUserAll(): ${e.message}`);
@@ -23,8 +23,8 @@ export default class UserApplication {
 
     public async create(data: object) {
         try {
-            const user_data = await this.userFactory.createUser(data);
-            await this.userRepository.create(user_data);
+            const userAggregation = await this.userFactory.createUser(data);
+            await this.userRepository.create(userAggregation);
         } catch (e) {
             throw new Error(`Error UserApplication::create(): ${e.message}`);
         }
@@ -33,8 +33,8 @@ export default class UserApplication {
     public async update(data: { id: number }) {
         try {
             const userAggregation = await this.userRepository.findByUserId(data.id);
-            const userEntity = await this.userFactory.createUser(userAggregation);
-            await this.userRepository.update(userAggregation, data);
+            const userData = await this.userFactory.createUser(data);
+            await this.userRepository.update(userAggregation, userData);
         } catch (e) {
             throw new Error(`Error UserApplication::update(): ${e.message}`);
         }

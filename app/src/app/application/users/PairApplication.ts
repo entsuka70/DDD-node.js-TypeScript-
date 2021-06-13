@@ -13,8 +13,8 @@ export default class PairApplication {
 
     public async findPairAll() {
         try {
-            const userEntities = await this.userRepository.findAll();
-            const pairAll = await this.userFactory.createPairAll(userEntities);
+            const userAggregations = await this.userRepository.findAll();
+            const pairAll = await this.userFactory.createPairAll(userAggregations);
             return pairAll;
         } catch (e) {
             throw new Error(`Error PairApplication::findPairAll(): ${e.message}`);

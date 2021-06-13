@@ -1,20 +1,20 @@
 import Pair from "domain/entity/users/pair"
-import User from "domain/entity/users/user"
+import Team from "domain/entity/users/team"
 
 export default class PairDto {
-    public readonly id: number;
+    public readonly id: number | undefined;
     public readonly teams_id: number;
     public readonly pair_name: string;
-    public readonly user: User[];
+    public readonly team: Team;
 
     constructor(user: any) {
         this.id = user.id;
         this.teams_id = user.teams_id;
         this.pair_name = user.pair_name;
-        this.user = user.user;
+        this.team = user.team;
     }
 
-    public getUserAll(user: Pair[]) {
-        return [user];
+    public getPairAll(pair: Pair[]) {
+        return [pair];
     }
 }
