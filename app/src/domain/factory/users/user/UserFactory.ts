@@ -47,89 +47,42 @@ export default class UserFactory implements UserFactoryInterface {
     }
 
     // Userが参加しているペアをすべて返す
-    // TODO:Userの紐付けを行うべき
-    // public async createPairAll(userEntities: { id: number, pair_id: number, belong_id: number, user_name: string, email: string, pair: { id: number, teams_id: number, pair_name: string } }[]): Promise<object[]> {
     public async createPairAll(userAggregations: User[]): Promise<PairDto[]> {
-        const pairs = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair);
-        // const users = await userAggregations.map(userAggregation => {
-        //     const propsUser = {
-        //         id: userAggregation.getAllProperties().id,
-        //         pair_id: userAggregation.getAllProperties().pair_id,
-        //         belong_id: userAggregation.getAllProperties().belong_id,
-        //         user_name: userAggregation.getAllProperties().user_name,
-        //         email: userAggregation.getAllProperties().email,
-        //         belong: userAggregation.getAllProperties().belong,
-        //         pair: userAggregation.getAllProperties().pair
-        //     };
-        //     return new UserDto(propsUser);
-        // });
+        const pairs: Pair[] = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair);
 
-        const pairsDtos = await pairs.map((pair) => {
-            const propsPair = {
-                id: pair.getAllProperties().id,
-                teams_id: pair.getAllProperties().teams_id,
-                pair_name: pair.getAllProperties().pair_name,
-                team: pair.getAllProperties().team
-            }
-            return new PairDto(propsPair);
+        const pairsDtos: PairDto[] = await pairs.map((pair) => {
+            return new PairDto(pair);
         });
+
         // NOTE:重複ペアの削除
-        // filterDuplicatedObject()を利用するとPairDto[]を返り値にしたままだとESLintに怒られるのでobjectに変更
         const pairsDtoAll = filterDuplicatedObject(pairsDtos);
         return pairsDtoAll;
     }
 
-    public async createTeamAll(userEntities:
-        {
-            id: number, pair_id: number, belong_id: number, user_name: string, email: string,
-            pair: {
-                id: number, teams_id: number, pair_name: string,
-                team: {
-                    id: number, team_name: string
-                }
-            }
-        }[]): Promise<object[]> {
-        const teams = await userEntities.map(userEntity => userEntity.pair.team);
-        const pairs = await userEntities.map(userEntity => userEntity.pair);
-        const users = await userEntities.map(userEntity => {
-            const propsUser = {
-                id: userEntity.id,
-                pair_id: userEntity.pair_id,
-                belong_id: userEntity.belong_id,
-                user_name: userEntity.user_name,
-                email: userEntity.email
-            };
-            return new UserDto(propsUser);
+    public async createTeamAll(userAggregations: User[]): Promise<TeamDto[]> {
+        const teams = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair.getAllProperties().team);
+
+        const teamDtos: TeamDto[] = await teams.map(team => {
+            return new TeamDto(team);
         })
-        const pairDtos = await pairs.map(pair => {
-            const propsPair = {
-                id: pair.id,
-                teams_id: pair.teams_id,
-                pair_name: pair.pair_name,
-                user: users.filter(user => user.pair_id === pair.id)
-            }
-            return new PairDto(propsPair);
-        })
-        const teamDtos = await teams.map(team => {
-            const propsTeam = {
-                id: team.id,
-                team_name: team.team_name,
-                pair: pairs.filter(pair => pair.teams_id === team.id)
-            };
-            return new TeamDto(propsTeam);
-        })
+
+        // NOTE:重複チームの削除
         const teamsDtoAll = filterDuplicatedObject(teamDtos);
         return teamsDtoAll;
     }
 }
 
 // 重複するオブジェクトを除外する
-function filterDuplicatedObject(objects: { id: number }[]) {
-    // function filterDuplicatedObject(objects: { id: number }[]) {
-    const objectIds = objects.map((object) => {
-        return object.id;
+function filterDuplicatedObject<T extends dtoProperty>(dtos: T[]): T[] {
+    const dtoIds = dtos.map((dto) => {
+        return dto.id;
     });
-    return objects.filter(function (object, index) {
-        return objectIds.indexOf(object.id) === index;
+    const filterd: T[] = dtos.filter((dto: T, index: number) => {
+        return dtoIds.indexOf(dto.id) === index;
     });
+    return filterd;
+}
+
+interface dtoProperty {
+    id: number | undefined;
 }

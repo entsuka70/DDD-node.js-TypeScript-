@@ -7,14 +7,14 @@ export default class PairDto {
     public readonly pair_name: string;
     public readonly team: Team;
 
-    constructor(user: any) {
-        this.id = user.id;
-        this.teams_id = user.teams_id;
-        this.pair_name = user.pair_name;
-        this.team = user.team;
-    }
+    public DEFAULT_PAIR_ID = 1;
+    public DEFAULT_TEAM_ID = 1;
+    public PAIR_NAME_NO_BELONG = 'n';
 
-    public getPairAll(pair: Pair[]) {
-        return [pair];
+    constructor(pair: Pair) {
+        this.id = pair.getAllProperties().id ?? pair.DEFAULT_PAIR_ID;
+        this.teams_id = pair.getAllProperties().teams_id ?? pair.DEFAULT_TEAM_ID;
+        this.pair_name = pair.getAllProperties().pair_name ?? pair.PAIR_NAME_NO_BELONG;
+        this.team = pair.getAllProperties().team;
     }
 }

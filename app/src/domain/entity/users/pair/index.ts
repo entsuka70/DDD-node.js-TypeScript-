@@ -7,7 +7,7 @@ export default class Pair {
     private id: number | undefined;
     private teams_id: number;
     private pair_name: string;
-    private team: Team | null;
+    private team: Team;
 
     public DEFAULT_PAIR_ID = 1;
     public DEFAULT_TEAM_ID = 1;
