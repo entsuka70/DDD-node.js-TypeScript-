@@ -4,7 +4,7 @@ import TeamApplication from "app/application/users/TeamApplication";
 import UserFactory from "domain/factory/users/user/UserFactory";
 import UserRepository from "infra/repository/UserRepository";
 
-// ユーザー一覧取得
+// チーム一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
@@ -21,6 +21,7 @@ exports.view = async function (req: express.Request, res: express.Response) {
     }
 }
 
+// チーム更新
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
@@ -31,7 +32,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
         // NOTE::user, team情報がPOSTされた時の対処必要
         const data = {
             'id': parseInt(req.params.id),
-            'team_name': req.body.team_name ?? null,
+            'team_name': req.body.team_name,
         };
 
         await teamApplication.update(data);

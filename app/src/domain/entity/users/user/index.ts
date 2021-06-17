@@ -13,43 +13,24 @@ export default class User {
     private email: string;
     private belong: BelongsValueObject;
     private pair: Pair;
-    // private team: Team;
 
-    public DEFAULT_PAIR_ID = 1;
-    public DEFAULT_BELONG_ID = 1;
+    static DEFAULT_PAIR_ID = 1;
+    static DEFAULT_BELONG_ID = 1;
 
     constructor(props: {
-        id: number | undefined, pair_id: number | null, belong_id: number | null, user_name: string, email: string,
+        id: number | undefined, pair_id: number, belong_id: number, user_name: string, email: string,
         belong: BelongsValueObject,
-        // belong: { id: number, belong: number },
-        // pair: { id: number, teams_id: number, pair_name: string, team: Team }
-        // pair: {
-        //     id: number, teams_id: number, pair_name: string,
-        //     team: Team & {
-        //         id: number, team_name: string
-        //     }
-        // }
         pair: Pair
     }) {
         const { id, pair_id, belong_id, user_name, email, belong, pair } = props;
-        // const { team } = props.pair;
-        // const { id, pair_id, user_name, email, belong_id, pair, team } = props;
-
-        const belongInstance = new BelongsValueObject(belong_id);
-        // const pairInstance = new Pair(pair);
-        // const teamInstance = new Team(team);
 
         this.id = id;
-        this.pair_id = pair_id ?? this.DEFAULT_PAIR_ID;
-        this.belong_id = belong_id ? new BelongsValueObject(belong_id).getBelongs() : new BelongsValueObject().getBelongs();
+        this.pair_id = pair_id;
+        this.belong_id = belong_id;
         this.user_name = user_name;
         this.email = email;
         this.belong = belong;
-        // this.belong = belongInstance;
         this.pair = pair;
-        // this.pair = pairInstance;
-        // this.pair.team = teamInstance;
-        // this.team = teamInstance;
     }
 
     public getAllProperties() {

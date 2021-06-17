@@ -1,13 +1,13 @@
 export default class BelongsValueObject {
     private belong: number;
 
+    static DEFAULT_BLONGS_ID = 1;
     static BELONGS = 0; // 0: 在籍中
     static BELONGS_BREAKING = 1; // 1: 休会中
     static BELONGS_WITHDRAWAL = 2; // 2: 退会済み
 
-    constructor(belongs?: number | null) {
-        const status = this.checkRangeBelongs(belongs);
-        this.belong = status;
+    constructor(belongs: number) {
+        this.belong = belongs;
     }
 
     public getBelongs(): number {

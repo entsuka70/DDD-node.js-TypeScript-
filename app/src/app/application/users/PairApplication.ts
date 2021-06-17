@@ -24,8 +24,10 @@ export default class PairApplication {
     // NOTE::UserApplication::update()と全く同じになる
     public async update(data: { id: number }) {
         try {
-            const userAggregation = await this.userRepository.findByUserId(data.id);
-            await this.userRepository.update(userAggregation, data);
+            // TODO:userIdで検索しているのでpairIdで検索するようにする
+            const userAggregation = await this.userRepository.findByPairId(data.id);
+            const userData = await this.userFactory.updateUser(data);
+            await this.userRepository.update(userAggregation, userData);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }

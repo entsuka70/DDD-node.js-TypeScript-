@@ -21,6 +21,7 @@ exports.view = async function (req: express.Request, res: express.Response) {
     }
 }
 
+// ユーザー新規作成
 exports.create = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
@@ -29,7 +30,9 @@ exports.create = async function (req: express.Request, res: express.Response) {
         const userApplication = new UserApplication(userRepository, userFactory);
         const data = {
             'user_name': req.body.user_name,
-            'email': req.body.email
+            'email': req.body.email,
+            'pair_id': req.body.pair_id ? parseInt(req.body.pair_id) : null,
+            'belong_id': req.body.belong_id ? parseInt(req.body.belong_id) : null
         }
         const userCreate = await userApplication.create(data);
         res.set({
@@ -41,6 +44,7 @@ exports.create = async function (req: express.Request, res: express.Response) {
     }
 }
 
+// ユーザー更新
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
@@ -53,8 +57,8 @@ exports.update = async function (req: express.Request, res: express.Response) {
             'id': parseInt(req.params.id),
             'user_name': req.body.user_name ?? null,
             'email': req.body.email ?? null,
-            'pair_id': req.body.pair_id ?? null,
-            'belong_id': req.body.belongs ?? null,
+            'pair_id': req.body.pair_id ? parseInt(req.body.pair_id) : null,
+            'belong_id': req.body.belong_id ? parseInt(req.body.belong_id) : null,
         };
 
         const userUpdate = await userApplication.update(data);
@@ -67,6 +71,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
     }
 }
 
+// ユーザー削除
 exports.delete = async function (req: express.Request, res: express.Response) {
     try {
         const prism = new PrismaClient();

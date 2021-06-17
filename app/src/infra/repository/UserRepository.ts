@@ -56,6 +56,52 @@ export default class UserRepository implements UserRepositoryInterface {
         });
     }
 
+    public async findByPairId(pair_id: number): Promise<User> {
+        const user = await this.prisma.user.findFirst({
+            where: {
+                pair_id: pair_id
+            },
+            include: {
+                belong: true,
+                pair: {
+                    include: {
+                        team: true,
+                    }
+                }
+            },
+        });
+
+
+        if (user == null) {
+            throw new Error(`Not Found User(pair_id : ${pair_id}).`)
+        }
+
+        const teamIns = new Team({
+            id: user.pair.team.id,
+            team_name: user.pair.team.team_name,
+        });
+
+        const pairIns = new Pair({
+            id: user.pair.id,
+            teams_id: user.pair.teams_id,
+            pair_name: user.pair.pair_name,
+            team: teamIns
+        });
+
+        const belongIns = new BelongsValueObject(user.belong.belong);
+
+        return new User({
+            id: user.id,
+            pair_id: user.pair_id,
+            belong_id: user.belong_id,
+            user_name: user.user_name,
+            email: user.email,
+            belong: belongIns,
+            pair: pairIns,
+        });
+
+    }
+
     public async findAll(): Promise<User[]> {
         const all_users = await this.prisma.user.findMany({
             include: {
@@ -130,7 +176,7 @@ export default class UserRepository implements UserRepositoryInterface {
 
         await this.prisma.pair.update({
             where: {
-                id: userData.getAllProperties().pair_id,
+                id: userData.getAllProperties().pair_id ?? pair.getAllProperties().id,
             },
             data: {
                 teams_id: userData.getAllProperties().pair.getAllProperties().teams_id ?? pair.getAllProperties().teams_id,
@@ -140,7 +186,7 @@ export default class UserRepository implements UserRepositoryInterface {
 
         await this.prisma.team.update({
             where: {
-                id: userData.getAllProperties().pair.getAllProperties().team?.getAllProperties().id
+                id: userData.getAllProperties().pair.getAllProperties().team?.getAllProperties().id ?? pair.getAllProperties().team.getAllProperties().id,
             },
             data: {
                 team_name: userData.getAllProperties().pair.getAllProperties().team?.getAllProperties().team_name

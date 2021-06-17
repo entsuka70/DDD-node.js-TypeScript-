@@ -33,7 +33,7 @@ export default class UserApplication {
     public async update(data: { id: number }) {
         try {
             const userAggregation = await this.userRepository.findByUserId(data.id);
-            const userData = await this.userFactory.createUser(data);
+            const userData = await this.userFactory.updateUser(data);
             await this.userRepository.update(userAggregation, userData);
         } catch (e) {
             throw new Error(`Error UserApplication::update(): ${e.message}`);

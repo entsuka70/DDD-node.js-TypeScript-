@@ -4,7 +4,7 @@ import PairApplication from "app/application/users/PairApplication";
 import UserFactory from "domain/factory/users/user/UserFactory";
 import UserRepository from "infra/repository/UserRepository";
 
-// ユーザー一覧取得
+// ペア一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
@@ -21,6 +21,7 @@ exports.view = async function (req: express.Request, res: express.Response) {
     }
 }
 
+// ペア更新
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
@@ -32,8 +33,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
         const data = {
             'id': parseInt(req.params.id),
             'pair_name': req.body.pair_name ?? null,
-            'teams_id': req.body.teams_id ?? null,
-            // 'team_name': req.body.pair.team.team_name ?? null,
+            'teams_id': req.body.teams_id ? parseInt(req.body.teams_id) : null,
         };
 
         await pairApplication.update(data);

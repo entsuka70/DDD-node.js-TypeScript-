@@ -24,6 +24,7 @@ export default class TeamApplication {
     // NOTE::UserApplication::update()と全く同じになる
     public async update(data: { id: number }) {
         try {
+            // TODO:userIdで検索しているのでteamIdで検索するようにする
             const userAggregation = await this.userRepository.findByUserId(data.id);
             await this.userRepository.update(userAggregation, data);
         } catch (e) {

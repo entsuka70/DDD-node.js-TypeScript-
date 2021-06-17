@@ -5,6 +5,7 @@ import { NodeWorker } from 'inspector';
 
 export default interface UserRepositoryInterface {
     findByUserId(id: number): Promise<object>;
+    findByPairId(id: number): Promise<object>;
     findAll(): Promise<object[]>;
     create(data: object): Promise<void>;
     update(entity: object, data: object): Promise<void>;
