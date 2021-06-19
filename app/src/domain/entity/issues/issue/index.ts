@@ -1,13 +1,13 @@
-import Progress from 'domain/valueobject/progress/index';
+import UserIssue from 'domain/entity/userissue/index';
 
 export default class Issue {
     private id: number;
-    private name: string;
-    private progress: Progress;
+    private issue_name: string;
+    private issue_group_id: number;
 
-    constructor(id: number, name: string, progress: Progress) {
+    constructor(id: number, issue_name: string, issue_group_id: number) {
         this.id = id;
-        this.name = name;
-        this.progress = progress;
+        this.issue_name = issue_name;
+        this.issue_group_id = issue_group_id;
     }
 }

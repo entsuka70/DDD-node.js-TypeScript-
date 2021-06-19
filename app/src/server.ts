@@ -18,6 +18,8 @@ const server = app.listen(5000, function () {
 const userRoutes = require('routes/user');
 const pairRoutes = require('routes/pair');
 const teamRoutes = require('routes/team');
+const issueRoutes = require('routes/issue');
 userRoutes(app);
 pairRoutes(app);
 teamRoutes(app);
+issueRoutes(app);
