@@ -1,5 +1,5 @@
-import UserRepositoryInterface from 'domain/repository/users/UserRepositoryInterface';
-import UserFactoryInterface from 'domain/factory/users/UserFactoryInterface';
+import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
+import UserFactoryInterface from 'domain/factory/UserFactoryInterface';
 
 
 export default class UserApplication {
@@ -17,7 +17,7 @@ export default class UserApplication {
             const userAll = await this.userFactory.createUserAll(userAggregations);
             return userAll;
         } catch (e) {
-            throw new Error(`Error UserApplication::findUserAll(): ${e.message}`);
+            throw new Error(e.message);
         }
     }
 
@@ -26,7 +26,7 @@ export default class UserApplication {
             const userAggregation = await this.userFactory.createUser(data);
             await this.userRepository.create(userAggregation);
         } catch (e) {
-            throw new Error(`Error UserApplication::create(): ${e.message}`);
+            throw new Error(e.message);
         }
     }
 
@@ -36,7 +36,7 @@ export default class UserApplication {
             const userData = await this.userFactory.updateUser(data);
             await this.userRepository.update(userAggregation, userData);
         } catch (e) {
-            throw new Error(`Error UserApplication::update(): ${e.message}`);
+            throw new Error(e.message);
         }
     }
 
@@ -44,7 +44,7 @@ export default class UserApplication {
         try {
             await this.userRepository.delete(id);
         } catch (e) {
-            throw new Error(`Error UserApplication::delete(): ${e.message}`);
+            throw new Error(e.message);
         }
     }
 }

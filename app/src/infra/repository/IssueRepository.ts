@@ -1,8 +1,8 @@
 import { PrismaClient } from '@prisma/client';
 import User from 'domain/entity/users/user/index';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
-import IssueRepositoryInterface from "domain/repository/issues/IssueRepositoryInterface";
-import IssueFactory from 'domain/factory/issues/issue/IssueFactory';
+import IssueRepositoryInterface from "domain/repository/IssueRepositoryInterface";
+import IssueFactory from 'infra/factory/IssueFactory';
 import Pair from 'domain/entity/users/pair';
 import Team from 'domain/entity/users/team';
 

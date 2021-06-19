@@ -1,12 +1,13 @@
 import User from "domain/entity/users/user/index";
 import Pair from "domain/entity/users/pair/index";
 import Team from "domain/entity/users/team/index";
-import UserFactoryInterface from "domain/factory/users/UserFactoryInterface";
-import UserPairAggregation from "domain/factory/users/UserFactoryInterface";
+import UserFactoryInterface from "domain/factory/UserFactoryInterface";
+import UserPairAggregation from "domain/factory/UserFactoryInterface";
 import UserDto from "app/dto/UserDto";
 import PairDto from "app/dto/PairDto";
 import TeamDto from "app/dto/TeamDto";
 import BelongsValueObject from "domain/valueobject/belongs";
+import { PrismaClient } from '@prisma/client';
 
 export default class UserFactory implements UserFactoryInterface {
     public async createUserAll(userAggregations: User[]): Promise<UserDto[]> {
@@ -22,6 +23,7 @@ export default class UserFactory implements UserFactoryInterface {
         id: number | undefined, pair_id: number, belong_id: number, user_name: string, email: string, belong: number
         teams_id: number, pair_name: string, team_name: string
     }): Promise<User> {
+
         const teamIns = new Team({
             id: undefined,
             team_name: data.team_name ?? Team.TEAM_NAME_NO_BELONG,
@@ -45,6 +47,12 @@ export default class UserFactory implements UserFactoryInterface {
             belong: belongIns,
             pair: pairIns,
         });
+
+        try {
+            await checkDuplicateEmail(data.email);
+        } catch (e) {
+            throw new Error(e.message);
+        }
 
         return user;
     }
@@ -76,6 +84,12 @@ export default class UserFactory implements UserFactoryInterface {
             belong: belongIns,
             pair: pairIns,
         });
+
+        try {
+            await checkDuplicateEmail(data.email);
+        } catch (e) {
+            throw new Error(e.message);
+        }
 
         return user;
     }
@@ -119,4 +133,19 @@ function filterDuplicatedObject<T extends dtoProperty>(dtos: T[]): T[] {
 
 interface dtoProperty {
     id: number | undefined;
+}
+
+// 重複するメールアドレスは許容しない
+async function checkDuplicateEmail(email: string): Promise<void> {
+    const prisma = new PrismaClient();
+    const users = await prisma.user.findMany({
+        select: {
+            email: true,
+        }
+    });
+    const duplicateEmail = users.filter((user) => user.email === email);
+    if (duplicateEmail) {
+        throw new Error('email is duplicate.');
+    }
+    return;
 }

@@ -1,5 +1,5 @@
-import UserRepositoryInterface from 'domain/repository/users/UserRepositoryInterface';
-import UserFactoryInterface from 'domain/factory/users/UserFactoryInterface';
+import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
+import UserFactoryInterface from 'domain/factory/UserFactoryInterface';
 
 
 export default class PairApplication {

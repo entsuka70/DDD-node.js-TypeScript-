@@ -1,5 +1,5 @@
-import IssueRepositoryInterface from 'domain/repository/issues/IssueRepositoryInterface';
-import IssueFactoryInterface from 'domain/factory/issues/IssueFactoryInterface';
+import IssueRepositoryInterface from 'domain/repository/IssueRepositoryInterface';
+import IssueFactoryInterface from 'domain/factory/IssueFactoryInterface';
 
 
 export default class IssueApplication {
