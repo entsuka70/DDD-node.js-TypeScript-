@@ -43,7 +43,7 @@ export default class UserRepository implements UserRepositoryInterface {
             team: teamIns
         });
 
-        const belongIns = new BelongsValueObject(user.belong.belong);
+        const belongIns = new BelongsValueObject(user.belong);
 
         return new User({
             id: user.id,
@@ -88,7 +88,7 @@ export default class UserRepository implements UserRepositoryInterface {
             team: teamIns
         });
 
-        const belongIns = new BelongsValueObject(user.belong.belong);
+        const belongIns = new BelongsValueObject(user.belong);
 
         return new User({
             id: user.id,
@@ -127,7 +127,7 @@ export default class UserRepository implements UserRepositoryInterface {
                 team: teamIns
             });
 
-            const belongIns = new BelongsValueObject(user.belong.belong);
+            const belongIns = new BelongsValueObject(user.belong);
 
             return new User({
                 id: user.id,
@@ -159,7 +159,7 @@ export default class UserRepository implements UserRepositoryInterface {
         return;
     }
 
-    public async update(user: User, userData: User): Promise<void> {
+    public async update(user: User): Promise<void> {
         const { id, pair_id, belong_id, user_name, email, belong, pair } = user.getAllProperties();
 
         await this.prisma.user.update({
@@ -167,29 +167,33 @@ export default class UserRepository implements UserRepositoryInterface {
                 id: id,
             },
             data: {
-                pair_id: userData.getAllProperties().pair_id ?? pair_id,
-                belong_id: userData.getAllProperties().belong_id ?? belong_id,
-                user_name: userData.getAllProperties().user_name ?? user_name,
-                email: userData.getAllProperties().email ?? email,
+                pair_id: pair_id,
+                belong_id: belong_id,
+                user_name: user_name,
+                email: email,
+                // pair_id: userData.getAllProperties().pair_id ?? pair_id,
+                // belong_id: userData.getAllProperties().belong_id ?? belong_id,
+                // user_name: userData.getAllProperties().user_name ?? user_name,
+                // email: userData.getAllProperties().email ?? email,
             }
         });
 
         await this.prisma.pair.update({
             where: {
-                id: userData.getAllProperties().pair_id ?? pair.getAllProperties().id,
+                id: pair.getAllProperties().id,
             },
             data: {
-                teams_id: userData.getAllProperties().pair.getAllProperties().teams_id ?? pair.getAllProperties().teams_id,
-                pair_name: userData.getAllProperties().pair.getAllProperties().pair_name ?? pair.getAllProperties().pair_name,
+                teams_id: pair.getAllProperties().teams_id,
+                pair_name: pair.getAllProperties().pair_name,
             }
         });
 
         await this.prisma.team.update({
             where: {
-                id: userData.getAllProperties().pair.getAllProperties().team?.getAllProperties().id ?? pair.getAllProperties().team.getAllProperties().id,
+                id: pair.getAllProperties().team.getAllProperties().id,
             },
             data: {
-                team_name: userData.getAllProperties().pair.getAllProperties().team?.getAllProperties().team_name
+                team_name: pair.getAllProperties().team.getAllProperties().team_name
             }
         });
 

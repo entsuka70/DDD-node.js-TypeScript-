@@ -3,7 +3,7 @@ export default class Team {
     private id: number | undefined;
     private team_name: string;
 
-    static DEFAULT_TEAM_ID = 1;
+    static DEFAULT_NO_TEAM_ID = 1;
     static TEAM_NAME_NO_BELONG = '001';
 
     constructor(props: { id: number | undefined, team_name: string }) {

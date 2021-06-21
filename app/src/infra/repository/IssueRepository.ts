@@ -43,7 +43,7 @@ export default class IssueRepository implements IssueRepositoryInterface {
             team: teamIns
         });
 
-        const belongIns = new BelongsValueObject(user.belong.belong);
+        const belongIns = new BelongsValueObject(user.belong);
 
         return new User({
             id: user.id,
@@ -81,7 +81,7 @@ export default class IssueRepository implements IssueRepositoryInterface {
                 team: teamIns
             });
 
-            const belongIns = new BelongsValueObject(user.belong.belong);
+            const belongIns = new BelongsValueObject(user.belong);
 
             return new User({
                 id: user.id,

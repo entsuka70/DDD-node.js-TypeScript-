@@ -20,7 +20,7 @@ export default class UserFactory implements UserFactoryInterface {
     }
 
     public async createUser(data: {
-        id: number | undefined, pair_id: number, belong_id: number, user_name: string, email: string, belong: number
+        id: number | undefined, pair_id: number, user_name: string, email: string,
         teams_id: number, pair_name: string, team_name: string
     }): Promise<User> {
 
@@ -31,17 +31,21 @@ export default class UserFactory implements UserFactoryInterface {
 
         const pairIns = new Pair({
             id: undefined,
-            teams_id: data.teams_id ?? Pair.DEFAULT_TEAM_ID,
+            teams_id: data.teams_id ?? Pair.DEFAULT_NO_TEAM_ID,
             pair_name: data.pair_name ?? Pair.PAIR_NAME_NO_BELONG,
             team: teamIns,
         })
 
-        const belongIns = new BelongsValueObject(data.belong);
+        const belongObject = {
+            id: BelongsValueObject.DEFAULT_BLONGS_ID,
+            belong: BelongsValueObject.BELONGS,
+        };
+        const belongIns = new BelongsValueObject(belongObject);
 
         const user = new User({
             id: undefined,
-            pair_id: data.pair_id ?? Pair.DEFAULT_PAIR_ID,
-            belong_id: data.belong_id ?? BelongsValueObject.DEFAULT_BLONGS_ID,
+            pair_id: data.pair_id ?? Pair.DEFAULT_NO_PAIR_ID,
+            belong_id: BelongsValueObject.DEFAULT_BLONGS_ID,
             user_name: data.user_name,
             email: data.email,
             belong: belongIns,
@@ -49,7 +53,7 @@ export default class UserFactory implements UserFactoryInterface {
         });
 
         try {
-            await checkDuplicateEmail(data.email);
+            await this.checkDuplicateEmail(data);
         } catch (e) {
             throw new Error(e.message);
         }
@@ -60,33 +64,37 @@ export default class UserFactory implements UserFactoryInterface {
     public async updateUser(data: {
         id: number | undefined, pair_id: number, belong_id: number, user_name: string, email: string, belong: number,
         teams_id: number, pair_name: string, team_name: string
-    }): Promise<User> {
+    }, userEntity: User): Promise<User> {
         const teamIns = new Team({
-            id: undefined,
-            team_name: data.team_name,
+            id: data.teams_id ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
+            team_name: data.team_name ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
         });
 
         const pairIns = new Pair({
-            id: undefined,
-            teams_id: data.teams_id,
-            pair_name: data.pair_name,
+            id: data.pair_id ?? userEntity.getAllProperties().pair.getAllProperties().id,
+            teams_id: data.teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
+            pair_name: data.pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
             team: teamIns,
         })
 
-        const belongIns = new BelongsValueObject(data.belong);
+        const belongObject = {
+            id: data.belong_id ?? userEntity.getAllProperties().belong_id,
+            belong: data.belong ?? userEntity.getAllProperties().belong,
+        };
+        const belongIns = new BelongsValueObject(belongObject);
 
-        const user = new User({
-            id: undefined,
-            pair_id: data.pair_id,
-            belong_id: data.belong_id,
-            user_name: data.user_name,
-            email: data.email,
+        let user = new User({
+            id: data.id,
+            pair_id: data.pair_id ?? userEntity.getAllProperties().pair_id,
+            belong_id: data.belong_id ?? userEntity.getAllProperties().belong_id,
+            user_name: data.user_name ?? userEntity.getAllProperties().user_name,
+            email: data.email ?? userEntity.getAllProperties().email,
             belong: belongIns,
             pair: pairIns,
         });
 
         try {
-            await checkDuplicateEmail(data.email);
+            await this.checkDuplicateEmail(data);
         } catch (e) {
             throw new Error(e.message);
         }
@@ -118,6 +126,21 @@ export default class UserFactory implements UserFactoryInterface {
         const teamsDtoAll = filterDuplicatedObject(teamDtos);
         return teamsDtoAll;
     }
+
+    // 重複するメールアドレスは許容しない
+    public async checkDuplicateEmail(data: { email: string }): Promise<void> {
+        const prisma = new PrismaClient();
+        const users = await prisma.user.findMany({
+            select: {
+                email: true,
+            }
+        });
+        const duplicateEmailUser = users.filter((user) => user.email === data.email);
+        if (duplicateEmailUser.length) {
+            throw new Error('email is duplicate.');
+        }
+        return;
+    }
 }
 
 // 重複するオブジェクトを除外する
@@ -133,19 +156,4 @@ function filterDuplicatedObject<T extends dtoProperty>(dtos: T[]): T[] {
 
 interface dtoProperty {
     id: number | undefined;
-}
-
-// 重複するメールアドレスは許容しない
-async function checkDuplicateEmail(email: string): Promise<void> {
-    const prisma = new PrismaClient();
-    const users = await prisma.user.findMany({
-        select: {
-            email: true,
-        }
-    });
-    const duplicateEmail = users.filter((user) => user.email === email);
-    if (duplicateEmail) {
-        throw new Error('email is duplicate.');
-    }
-    return;
 }

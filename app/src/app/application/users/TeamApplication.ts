@@ -24,7 +24,8 @@ export default class TeamApplication {
     public async update(data: { id: number }) {
         try {
             const userAggregation = await this.userRepository.findByUserId(data.id);
-            await this.userRepository.update(userAggregation, data);
+            // TODO:要動作確認
+            await this.userRepository.update(userAggregation);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }

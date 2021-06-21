@@ -9,8 +9,8 @@ export default class Pair {
     private pair_name: string;
     private team: Team;
 
-    static DEFAULT_PAIR_ID = 1;
-    static DEFAULT_TEAM_ID = 1;
+    static DEFAULT_NO_PAIR_ID = 1;
+    static DEFAULT_NO_TEAM_ID = 1;
     static PAIR_NAME_NO_BELONG = 'n';
 
     constructor(props: { id: number | undefined, teams_id: number, pair_name: string, team: Team }) {

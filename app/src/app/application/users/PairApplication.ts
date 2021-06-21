@@ -26,8 +26,8 @@ export default class PairApplication {
         try {
             // TODO:userIdで検索しているのでpairIdで検索するようにする
             const userAggregation = await this.userRepository.findByPairId(data.id);
-            const userData = await this.userFactory.updateUser(data);
-            await this.userRepository.update(userAggregation, userData);
+            const userData = await this.userFactory.updateUser(data, userAggregation);
+            await this.userRepository.update(userData);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }

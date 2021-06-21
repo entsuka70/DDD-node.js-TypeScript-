@@ -30,16 +30,20 @@ export default class IssueFactory implements IssueFactoryInterface {
 
         const pairIns = new Pair({
             id: undefined,
-            teams_id: data.teams_id ?? Pair.DEFAULT_TEAM_ID,
+            teams_id: data.teams_id ?? Pair.DEFAULT_NO_TEAM_ID,
             pair_name: data.pair_name ?? Pair.PAIR_NAME_NO_BELONG,
             team: teamIns,
         })
 
-        const belongIns = new BelongsValueObject(data.belong);
+        const belongObject = {
+            id: BelongsValueObject.DEFAULT_BLONGS_ID,
+            belong: BelongsValueObject.BELONGS,
+        };
+        const belongIns = new BelongsValueObject(belongObject);
 
         const user = new User({
             id: undefined,
-            pair_id: data.pair_id ?? Pair.DEFAULT_PAIR_ID,
+            pair_id: data.pair_id ?? Pair.DEFAULT_NO_PAIR_ID,
             belong_id: data.belong_id ?? BelongsValueObject.DEFAULT_BLONGS_ID,
             user_name: data.user_name,
             email: data.email,
@@ -66,7 +70,11 @@ export default class IssueFactory implements IssueFactoryInterface {
             team: teamIns,
         })
 
-        const belongIns = new BelongsValueObject(data.belong);
+        const belongObject = {
+            id: BelongsValueObject.DEFAULT_BLONGS_ID,
+            belong: BelongsValueObject.BELONGS,
+        };
+        const belongIns = new BelongsValueObject(belongObject);
 
         const user = new User({
             id: undefined,
