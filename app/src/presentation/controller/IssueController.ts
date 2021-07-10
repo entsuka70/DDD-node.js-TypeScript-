@@ -1,7 +1,7 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import IssueApplication from "app/application/issues/IssueApplication";
-import IssueFactory from "infra/factory/IssueFactory";
+import IssueFactory from "domain/factory/IssueFactory";
 import IssueRepository from "infra/repository/IssueRepository";
 
 /**

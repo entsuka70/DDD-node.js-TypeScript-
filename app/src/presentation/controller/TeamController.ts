@@ -1,16 +1,14 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import TeamApplication from "app/application/users/TeamApplication";
-import UserFactory from "infra/factory/UserFactory";
 import UserRepository from "infra/repository/UserRepository";
 
 // チーム一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const teamApplication = new TeamApplication(userRepository, userFactory);
+        const teamApplication = new TeamApplication(userRepository);
         const teamAll = await teamApplication.findTeamAll();
         res.set({
             'content-type': 'application/json',
@@ -25,9 +23,8 @@ exports.view = async function (req: express.Request, res: express.Response) {
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const teamApplication = new TeamApplication(userRepository, userFactory);
+        const teamApplication = new TeamApplication(userRepository);
 
         // NOTE::user, team情報がPOSTされた時の対処必要
         const data = {

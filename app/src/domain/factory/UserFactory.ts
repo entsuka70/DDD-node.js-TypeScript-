@@ -8,8 +8,16 @@ import PairDto from "app/dto/PairDto";
 import TeamDto from "app/dto/TeamDto";
 import BelongsValueObject from "domain/valueobject/belongs";
 import { PrismaClient } from '@prisma/client';
+import UserDomainService from "domain/domainservice/UserDomainService";
 
 export default class UserFactory implements UserFactoryInterface {
+
+    private readonly userDomainService: UserDomainService;
+
+    constructor(userDomainService: UserDomainService) {
+        this.userDomainService = userDomainService;
+    }
+
     public async createUserAll(userAggregations: User[]): Promise<UserDto[]> {
         const users = await userAggregations.map(
             (userAggregation): UserDto => {
@@ -20,19 +28,18 @@ export default class UserFactory implements UserFactoryInterface {
     }
 
     public async createUser(data: {
-        id: number | undefined, pair_id: number, user_name: string, email: string,
-        teams_id: number, pair_name: string, team_name: string
+        pair_id: number, belong_id: number, user_name: string, email: string,
     }): Promise<User> {
 
         const teamIns = new Team({
             id: undefined,
-            team_name: data.team_name ?? Team.TEAM_NAME_NO_BELONG,
+            team_name: Team.TEAM_NAME_NO_BELONG,
         });
 
         const pairIns = new Pair({
-            id: undefined,
-            teams_id: data.teams_id ?? Pair.DEFAULT_NO_TEAM_ID,
-            pair_name: data.pair_name ?? Pair.PAIR_NAME_NO_BELONG,
+            id: data.pair_id,
+            teams_id: Pair.DEFAULT_NO_TEAM_ID,
+            pair_name: Pair.PAIR_NAME_NO_BELONG,
             team: teamIns,
         })
 
@@ -52,55 +59,70 @@ export default class UserFactory implements UserFactoryInterface {
             pair: pairIns,
         });
 
-        try {
-            await this.checkDuplicateEmail(data);
-        } catch (e) {
-            throw new Error(e.message);
-        }
-
         return user;
     }
 
-    public async updateUser(data: {
-        id: number | undefined, pair_id: number, belong_id: number, user_name: string, email: string, belong: number,
-        teams_id: number, pair_name: string, team_name: string
-    }, userEntity: User): Promise<User> {
+    public async updateUser(data: { id: number, user_name: string, email: string }, userEntity: User, pairData: User, belongData: User): Promise<User> {
         const teamIns = new Team({
-            id: data.teams_id ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
-            team_name: data.team_name ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
+            id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
+            team_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
         });
 
+        // idが変われば、temas_idも変わる
         const pairIns = new Pair({
-            id: data.pair_id ?? userEntity.getAllProperties().pair.getAllProperties().id,
-            teams_id: data.teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
-            pair_name: data.pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
+            id: pairData.getAllProperties().pair_id ?? userEntity.getAllProperties().pair.getAllProperties().id,
+            teams_id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
+            pair_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
             team: teamIns,
         })
 
         const belongObject = {
-            id: data.belong_id ?? userEntity.getAllProperties().belong_id,
-            belong: data.belong ?? userEntity.getAllProperties().belong,
+            id: belongData.getAllProperties().belong_id ?? userEntity.getAllProperties().belong_id,
+            belong: belongData.getAllProperties().belong.getBelongs().belong ?? userEntity.getAllProperties().belong,
         };
         const belongIns = new BelongsValueObject(belongObject);
 
         let user = new User({
             id: data.id,
-            pair_id: data.pair_id ?? userEntity.getAllProperties().pair_id,
-            belong_id: data.belong_id ?? userEntity.getAllProperties().belong_id,
+            pair_id: pairData.getAllProperties().pair_id ?? userEntity.getAllProperties().pair_id,
+            belong_id: belongData.getAllProperties().belong_id ?? userEntity.getAllProperties().belong_id,
             user_name: data.user_name ?? userEntity.getAllProperties().user_name,
             email: data.email ?? userEntity.getAllProperties().email,
             belong: belongIns,
             pair: pairIns,
         });
 
-        try {
-            await this.checkDuplicateEmail(data);
-        } catch (e) {
-            throw new Error(e.message);
-        }
-
         return user;
     }
+
+    public async updatePair(data: { id: number, pair_name: string, teams_id: number }, userPairEntity: User, teamData: User): Promise<User> {
+        const teamIns = new Team({
+            id: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
+            team_name: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
+        });
+        const pairIns = new Pair({
+            id: data.id,
+            teams_id: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().id ?? userPairEntity.getAllProperties().pair.getAllProperties().teams_id,
+            pair_name: data.pair_name ?? userPairEntity.getAllProperties().pair.getAllProperties().pair_name,
+            team: teamIns
+        });
+        const belongObject = {
+            id: userPairEntity.getAllProperties().belong.getBelongs().id,
+            belong: userPairEntity.getAllProperties().belong.getBelongs().belong,
+        };
+        const belongIns = new BelongsValueObject(belongObject);
+        const user = new User({
+            id: userPairEntity.getAllProperties().id,
+            pair_id: userPairEntity.getAllProperties().pair_id,
+            belong_id: userPairEntity.getAllProperties().belong_id,
+            user_name: userPairEntity.getAllProperties().user_name,
+            email: userPairEntity.getAllProperties().email,
+            belong: belongIns,
+            pair: pairIns
+        });
+        return user;
+    }
+
 
     // Userが参加しているペアをすべて返す
     public async createPairAll(userAggregations: User[]): Promise<PairDto[]> {
@@ -125,21 +147,6 @@ export default class UserFactory implements UserFactoryInterface {
         // NOTE:重複チームの削除
         const teamsDtoAll = filterDuplicatedObject(teamDtos);
         return teamsDtoAll;
-    }
-
-    // 重複するメールアドレスは許容しない
-    public async checkDuplicateEmail(data: { email: string }): Promise<void> {
-        const prisma = new PrismaClient();
-        const users = await prisma.user.findMany({
-            select: {
-                email: true,
-            }
-        });
-        const duplicateEmailUser = users.filter((user) => user.email === data.email);
-        if (duplicateEmailUser.length) {
-            throw new Error('email is duplicate.');
-        }
-        return;
     }
 }
 

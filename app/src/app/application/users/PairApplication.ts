@@ -1,14 +1,17 @@
 import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
-import UserFactoryInterface from 'domain/factory/UserFactoryInterface';
+import UserFactory from 'domain/factory/UserFactory';
+import UserDomainService from 'domain/domainservice/UserDomainService';
 
 
 export default class PairApplication {
     private readonly userRepository: UserRepositoryInterface;
-    private readonly userFactory: UserFactoryInterface;
+    private readonly userDomainService: UserDomainService;
+    private readonly userFactory: UserFactory;
 
-    constructor(userRepository: UserRepositoryInterface, userFactory: UserFactoryInterface) {
+    constructor(userRepository: UserRepositoryInterface) {
         this.userRepository = userRepository;
-        this.userFactory = userFactory;
+        this.userDomainService = new UserDomainService(userRepository);
+        this.userFactory = new UserFactory(this.userDomainService);
     }
 
     public async findPairAll() {
@@ -22,11 +25,13 @@ export default class PairApplication {
     }
 
     // NOTE::UserApplication::update()と全く同じになる
-    public async update(data: { id: number }) {
+    public async update(data: { id: number, pair_name: string, teams_id: number }) {
         try {
-            // TODO:userIdで検索しているのでpairIdで検索するようにする
-            const userAggregation = await this.userRepository.findByPairId(data.id);
-            const userData = await this.userFactory.updateUser(data, userAggregation);
+            // pair_idに紐づくPair情報を持ったUser集約
+            const userPairAggregation = await this.userRepository.findByPairId(data.id);
+            // teams_idに紐づくTeam情報を持ったUser集約
+            const teamData = await this.userRepository.findByTeamId(data.teams_id);
+            const userData = await this.userFactory.updatePair(data, userPairAggregation, teamData);
             await this.userRepository.update(userData);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);

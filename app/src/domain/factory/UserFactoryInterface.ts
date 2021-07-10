@@ -7,6 +7,5 @@ export default interface UserFactoryInterface {
     createPairAll(users: object[]): Promise<object[]>;
     createTeamAll(users: object[]): Promise<object[]>;
     createUser(user: object): Promise<User>;
-    updateUser(user: object, userEntity: User): Promise<User>;
-    checkDuplicateEmail(data: object): Promise<void>;
+    updateUser(data: object, userEntity: User, pairData: User, belongData: User): Promise<User>;
 }

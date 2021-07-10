@@ -1,14 +1,17 @@
 import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
-import UserFactoryInterface from 'domain/factory/UserFactoryInterface';
+import UserFactory from 'domain/factory/UserFactory';
+import UserDomainService from 'domain/domainservice/UserDomainService';
 
 
 export default class TeamApplication {
     private readonly userRepository: UserRepositoryInterface;
-    private readonly userFactory: UserFactoryInterface;
+    private readonly userFactory: UserFactory;
+    private readonly userDomainService: UserDomainService;
 
-    constructor(userRepository: UserRepositoryInterface, userFactory: UserFactoryInterface) {
+    constructor(userRepository: UserRepositoryInterface) {
         this.userRepository = userRepository;
-        this.userFactory = userFactory;
+        this.userDomainService = new UserDomainService(userRepository);
+        this.userFactory = new UserFactory(this.userDomainService);
     }
 
     public async findTeamAll() {

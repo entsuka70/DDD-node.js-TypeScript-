@@ -1,15 +1,13 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import UserApplication from "app/application/users/UserApplication";
-import UserFactory from "infra/factory/UserFactory";
 import UserRepository from "infra/repository/UserRepository";
 
 // ユーザー一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
-    const userFactory = new UserFactory();
     const userRepository = new UserRepository(prisma);
-    const userApplication = new UserApplication(userRepository, userFactory);
+    const userApplication = new UserApplication(userRepository);
     try {
         const userAll = await userApplication.findUserAll();
         res.set({
@@ -24,14 +22,13 @@ exports.view = async function (req: express.Request, res: express.Response) {
 // ユーザー新規作成
 exports.create = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
-    const userFactory = new UserFactory();
     const userRepository = new UserRepository(prisma);
-    const userApplication = new UserApplication(userRepository, userFactory);
+    const userApplication = new UserApplication(userRepository);
     const data = {
         'user_name': req.body.user_name,
         'email': req.body.email,
-        'pair_id': req.body.pair_id ? parseInt(req.body.pair_id) : null,
-        'belong_id': req.body.belong_id ? parseInt(req.body.belong_id) : null
+        'pair_id': parseInt(req.body.pair_id),
+        'belong_id': parseInt(req.body.belong_id)
     }
     try {
         const userCreate = await userApplication.create(data);
@@ -47,17 +44,16 @@ exports.create = async function (req: express.Request, res: express.Response) {
 // ユーザー更新
 exports.update = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
-    const userFactory = new UserFactory();
     const userRepository = new UserRepository(prisma);
-    const userApplication = new UserApplication(userRepository, userFactory);
+    const userApplication = new UserApplication(userRepository);
 
     // NOTE::pair, team情報がPOSTされた時の対処必要
     const data = {
         'id': parseInt(req.params.id),
-        'user_name': req.body.user_name ?? null,
-        'email': req.body.email ?? null,
-        'pair_id': req.body.pair_id ? parseInt(req.body.pair_id) : null,
-        'belong_id': req.body.belong_id ? parseInt(req.body.belong_id) : null,
+        'user_name': req.body.user_name,
+        'email': req.body.email,
+        'pair_id': parseInt(req.body.pair_id),
+        'belong_id': parseInt(req.body.belong_id),
     };
 
     try {
@@ -74,9 +70,8 @@ exports.update = async function (req: express.Request, res: express.Response) {
 // ユーザー削除
 exports.delete = async function (req: express.Request, res: express.Response) {
     const prism = new PrismaClient();
-    const userFactory = new UserFactory();
     const userRepository = new UserRepository(prism);
-    const userApplication = new UserApplication(userRepository, userFactory);
+    const userApplication = new UserApplication(userRepository);
     try {
         const userDelete = await userApplication.delete(parseInt(req.params.id));
         res.set({

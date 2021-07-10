@@ -2,8 +2,16 @@ import BelongsValueObject from "domain/valueobject/belongs";
 import User from "domain/entity/users/user";
 import Pair from "domain/entity/users/pair";
 import Team from "domain/entity/users/team";
+import UserRepositoryInterface from "domain/repository/UserRepositoryInterface";
 
 export default class UserDomainService {
+
+    private readonly userRepository: UserRepositoryInterface;
+
+    constructor(userRepository: UserRepositoryInterface) {
+        this.userRepository = userRepository;
+    }
+
     // ステータスが在籍中以外の場合、どのチームにもペアにも存在させない
     public setNoPairAndNoTeamByBelong(user: User): User {
         const belong = user.getAllProperties().belong;
@@ -41,5 +49,15 @@ export default class UserDomainService {
             }
         }
         return user;
+    }
+
+    // 重複するメールアドレスは許容しない
+    public async checkDuplicateEmail(data: { email: string }): Promise<void> {
+        const users = await this.userRepository.findAll();
+        const duplicateEmailUser = users.filter((user) => user.getAllProperties().email === data.email);
+        if (duplicateEmailUser.length) {
+            throw new Error('email is duplicate.');
+        }
+        return;
     }
 }

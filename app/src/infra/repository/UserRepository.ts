@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import User from 'domain/entity/users/user/index';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 import UserRepositoryInterface from "domain/repository/UserRepositoryInterface";
-import UserFactory from 'infra/factory/UserFactory';
+import UserFactory from 'domain/factory/UserFactory';
 import Pair from 'domain/entity/users/pair';
 import Team from 'domain/entity/users/team';
 
@@ -71,7 +71,6 @@ export default class UserRepository implements UserRepositoryInterface {
             },
         });
 
-
         if (user == null) {
             throw new Error(`Not Found User(pair_id : ${pair_id}).`)
         }
@@ -100,6 +99,96 @@ export default class UserRepository implements UserRepositoryInterface {
             pair: pairIns,
         });
 
+    }
+
+    public async findByBelongId(belong_id: number): Promise<User> {
+        const user = await this.prisma.user.findFirst({
+            where: {
+                belong_id: belong_id,
+            },
+            include: {
+                belong: true,
+                pair: {
+                    include: {
+                        team: true
+                    }
+                }
+            }
+        });
+
+        if (user == null) {
+            throw new Error(`Not Found User(pair_id : ${belong_id}).`)
+        }
+
+        const teamIns = new Team({
+            id: user.pair.team.id,
+            team_name: user.pair.team.team_name,
+        });
+
+        const pairIns = new Pair({
+            id: user.pair.id,
+            teams_id: user.pair.teams_id,
+            pair_name: user.pair.pair_name,
+            team: teamIns
+        });
+
+        const belongIns = new BelongsValueObject(user.belong);
+
+        return new User({
+            id: user.id,
+            pair_id: user.pair_id,
+            belong_id: user.belong_id,
+            user_name: user.user_name,
+            email: user.email,
+            belong: belongIns,
+            pair: pairIns,
+        });
+    }
+
+    public async findByTeamId(teams_id: number): Promise<User> {
+        const user = await this.prisma.user.findFirst({
+            where: {
+                pair: {
+                    teams_id: teams_id
+                }
+            },
+            include: {
+                belong: true,
+                pair: {
+                    include: {
+                        team: true
+                    }
+                }
+            }
+        });
+
+        if (user == null) {
+            throw new Error(`Not Found User(pair_id : ${teams_id}).`)
+        }
+
+        const teamIns = new Team({
+            id: user.pair.teams_id,
+            team_name: user.pair.team.team_name,
+        });
+
+        const pairIns = new Pair({
+            id: user.pair.id,
+            teams_id: user.pair.teams_id,
+            pair_name: user.pair.pair_name,
+            team: teamIns
+        });
+
+        const belongIns = new BelongsValueObject(user.belong);
+
+        return new User({
+            id: user.id,
+            pair_id: user.pair_id,
+            belong_id: user.belong_id,
+            user_name: user.user_name,
+            email: user.email,
+            belong: belongIns,
+            pair: pairIns,
+        });
     }
 
     public async findAll(): Promise<User[]> {
@@ -171,10 +260,6 @@ export default class UserRepository implements UserRepositoryInterface {
                 belong_id: belong_id,
                 user_name: user_name,
                 email: email,
-                // pair_id: userData.getAllProperties().pair_id ?? pair_id,
-                // belong_id: userData.getAllProperties().belong_id ?? belong_id,
-                // user_name: userData.getAllProperties().user_name ?? user_name,
-                // email: userData.getAllProperties().email ?? email,
             }
         });
 
@@ -198,6 +283,10 @@ export default class UserRepository implements UserRepositoryInterface {
         });
 
         return;
+    }
+
+    public async updatePairIdAll(user: User): Promise<void> {
+        const { id, pair_id } = user.getAllProperties();
     }
 
     public async delete(user_id: number): Promise<void> {

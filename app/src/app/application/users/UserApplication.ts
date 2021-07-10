@@ -1,18 +1,18 @@
 import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
-import UserFactoryInterface from 'domain/factory/UserFactoryInterface';
+import UserFactory from 'domain/factory/UserFactory';
 import UserDomainService from 'domain/domainservice/UserDomainService';
 
 
 export default class UserApplication {
     private readonly userRepository: UserRepositoryInterface;
-    private readonly userFactory: UserFactoryInterface;
     private readonly userDomainService: UserDomainService;
+    private readonly userFactory: UserFactory;
 
-    constructor(userRepository: UserRepositoryInterface, userFactory: UserFactoryInterface) {
+    constructor(userRepository: UserRepositoryInterface) {
         this.userRepository = userRepository;
-        this.userFactory = userFactory;
         // コンストラクタで渡すとコントローラー層で呼び出すことが必要になるので、ここでドメインサービス初期化
-        this.userDomainService = new UserDomainService();
+        this.userDomainService = new UserDomainService(userRepository);
+        this.userFactory = new UserFactory(this.userDomainService);
     }
 
     public async findUserAll() {
@@ -25,8 +25,10 @@ export default class UserApplication {
         }
     }
 
-    public async create(data: object) {
+    public async create(data: { user_name: string, email: string, pair_id: number, belong_id: number }) {
         try {
+            // メールアドレス重複チェック
+            await this.userDomainService.checkDuplicateEmail(data);
             let userAggregation = await this.userFactory.createUser(data);
             await this.userRepository.create(userAggregation);
         } catch (e) {
@@ -34,10 +36,24 @@ export default class UserApplication {
         }
     }
 
-    public async update(data: { id: number }) {
+    public async update(data: { id: number, user_name: string, email: string, pair_id: number, belong_id: number }) {
         try {
+            // メールアドレス重複チェック
+            await this.userDomainService.checkDuplicateEmail(data);
+            // User集約取得
             const userAggregation = await this.userRepository.findByUserId(data.id);
-            let userData = await this.userFactory.updateUser(data, userAggregation);
+            // pair_idに紐づくPair情報を持ったUser集約
+            const pairData = await this.userRepository.findByPairId(data.pair_id);
+            // belong_idに紐づくBelong情報を持ったUser集約
+            const belongData = await this.userRepository.findByBelongId(data.belong_id);
+
+            // Factoryで更新する集約を形成
+            let userData = await this.userFactory.updateUser(data, userAggregation, pairData, belongData);
+            console.log(userAggregation);
+            console.log(pairData);
+            console.log(belongData);
+            console.log(userData);
+            // 在籍以外の状態であれば自動でペア・チーム無所属
             userData = this.userDomainService.setNoPairAndNoTeamByBelong(userData);
             await this.userRepository.update(userData);
         } catch (e) {

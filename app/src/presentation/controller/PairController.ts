@@ -1,16 +1,14 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import PairApplication from "app/application/users/PairApplication";
-import UserFactory from "infra/factory/UserFactory";
 import UserRepository from "infra/repository/UserRepository";
 
 // ペア一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const pairApplication = new PairApplication(userRepository, userFactory);
+        const pairApplication = new PairApplication(userRepository);
         const pairAll = await pairApplication.findPairAll();
         res.set({
             'content-type': 'application/json',
@@ -25,15 +23,14 @@ exports.view = async function (req: express.Request, res: express.Response) {
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userFactory = new UserFactory();
         const userRepository = new UserRepository(prisma);
-        const pairApplication = new PairApplication(userRepository, userFactory);
+        const pairApplication = new PairApplication(userRepository);
 
         // NOTE::user, team情報がPOSTされた時の対処必要
         const data = {
             'id': parseInt(req.params.id),
-            'pair_name': req.body.pair_name ?? null,
-            'teams_id': req.body.teams_id ? parseInt(req.body.teams_id) : null,
+            'pair_name': req.body.pair_name,
+            'teams_id': parseInt(req.body.teams_id),
         };
 
         await pairApplication.update(data);
