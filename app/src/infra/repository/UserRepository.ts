@@ -57,97 +57,6 @@ export default class UserRepository implements UserRepositoryInterface {
         });
     }
 
-    public async findByPairId(pair_id: number): Promise<User> {
-        const user = await this.prisma.user.findFirst({
-            where: {
-                pair_id: pair_id
-            },
-            include: {
-                belong: true,
-                pair: {
-                    include: {
-                        team: true,
-                    }
-                }
-            },
-        });
-
-        if (user == null) {
-            throw new Error(`Not Found User(pair_id : ${pair_id}).`)
-        }
-
-        const teamIns = new Team({
-            id: user.pair.team.id,
-            team_name: user.pair.team.team_name,
-        });
-
-        const pairIns = new Pair({
-            id: user.pair.id,
-            teams_id: user.pair.teams_id,
-            pair_name: user.pair.pair_name,
-            team: teamIns,
-            user_id: [user.id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
-        });
-
-        const belongIns = new BelongsValueObject(user.belong);
-
-        return new User({
-            id: user.id,
-            pair_id: user.pair_id,
-            belong_id: user.belong_id,
-            user_name: user.user_name,
-            email: user.email,
-            belong: belongIns,
-            pair: pairIns,
-        });
-
-    }
-
-    public async findByBelongId(belong_id: number): Promise<User> {
-        const user = await this.prisma.user.findFirst({
-            where: {
-                belong_id: belong_id,
-            },
-            include: {
-                belong: true,
-                pair: {
-                    include: {
-                        team: true
-                    }
-                }
-            }
-        });
-
-        if (user == null) {
-            throw new Error(`Not Found User(belong_id : ${belong_id}).`)
-        }
-
-        const teamIns = new Team({
-            id: user.pair.team.id,
-            team_name: user.pair.team.team_name,
-        });
-
-        const pairIns = new Pair({
-            id: user.pair.id,
-            teams_id: user.pair.teams_id,
-            pair_name: user.pair.pair_name,
-            team: teamIns,
-            user_id: [user.id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
-        });
-
-        const belongIns = new BelongsValueObject(user.belong);
-
-        return new User({
-            id: user.id,
-            pair_id: user.pair_id,
-            belong_id: user.belong_id,
-            user_name: user.user_name,
-            email: user.email,
-            belong: belongIns,
-            pair: pairIns,
-        });
-    }
-
     public async findByTeamId(teams_id: number): Promise<User> {
         const user = await this.prisma.user.findFirst({
             where: {
@@ -239,6 +148,24 @@ export default class UserRepository implements UserRepositoryInterface {
         return users;
     }
 
+    public async findBelongByBelongId(belong_id: number): Promise<BelongsValueObject> {
+        const belongObject = await this.prisma.belong.findFirst({
+            where: {
+                id: belong_id,
+            }
+        });
+
+        if (belongObject === null) {
+            throw new Error(`Not Found Belong(belong_id : ${belong_id}).`)
+        }
+
+        const belong = new BelongsValueObject({
+            id: belong_id,
+            belong: belongObject?.belong,
+        });
+        return belong;
+    }
+
     public async create(user: User): Promise<void> {
         const { pair_id, belong_id, user_name, email } = user.getAllProperties();
 
@@ -268,25 +195,6 @@ export default class UserRepository implements UserRepositoryInterface {
                 belong_id: belong_id,
                 user_name: user_name,
                 email: email,
-            }
-        });
-
-        await this.prisma.pair.update({
-            where: {
-                id: pair.getAllProperties().id,
-            },
-            data: {
-                teams_id: pair.getAllProperties().teams_id,
-                pair_name: pair.getAllProperties().pair_name,
-            }
-        });
-
-        await this.prisma.team.update({
-            where: {
-                id: pair.getAllProperties().team.getAllProperties().id,
-            },
-            data: {
-                team_name: pair.getAllProperties().team.getAllProperties().team_name
             }
         });
 

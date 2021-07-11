@@ -46,7 +46,7 @@ export default class User {
     }
 
     public changeUserBelongs(props: { id: number, belong: number }) {
-        this.belong_id = new BelongsValueObject(props).getBelongs().id;
+        this.belong_id = new BelongsValueObject(props).getAllProperties().id;
         return this;
     }
 }

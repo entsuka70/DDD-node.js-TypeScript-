@@ -28,10 +28,11 @@ export default class PairApplication {
     public async update(data: { id: number, pair_name: string, teams_id: number }) {
         try {
             // pair_idに紐づくPair情報を持ったUser集約
-            const pairEntity = await this.pairRepository.findByPairId(data.id);
+            const pairEntity = await this.pairRepository.findById(data.id);
             // teams_idに紐づくTeam情報を持ったUser集約
-            const userData = await this.pairFactory.updatePair(data, pairEntity);
-            await this.pairRepository.update(userData);
+            let pairData = await this.pairFactory.updatePair(data, pairEntity);
+            pairData = await this.pairDomainService.controlPairUser(pairData);
+            await this.pairRepository.update(pairData);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }

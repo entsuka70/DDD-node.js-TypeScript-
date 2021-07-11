@@ -62,31 +62,34 @@ export default class UserFactory implements UserFactoryInterface {
         return user;
     }
 
-    public async updateUser(data: { id: number, user_name: string, email: string }, userEntity: User, pairData: User, belongData: User): Promise<User> {
+    public async updateUser(data: { id: number, user_name: string, email: string, pair_id: number, belong_id: number }, userEntity: User, belongEntity: BelongsValueObject): Promise<User> {
         const teamIns = new Team({
-            id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
-            team_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
+            id: userEntity.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
+            team_name: userEntity.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
         });
 
-        // idが変われば、temas_idも変わる
+        // pair および teamは別集約での更新処理とするので、データ変更は考慮しない
+        // 集約整合性の観点ではpair_idと整合性が無くなる可能性があるが、影響範囲が大きいので一旦保留
         const pairIns = new Pair({
-            id: pairData.getAllProperties().pair_id ?? userEntity.getAllProperties().pair.getAllProperties().id,
-            teams_id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
-            pair_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
+            id: userEntity.getAllProperties().pair.getAllProperties().id,
+            teams_id: userEntity.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
+            pair_name: userEntity.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
             team: teamIns,
             user_id: [data.id] // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         })
 
+        // blongはUser集約内の値オブジェエクトであるので、belongは変更せずuserのbelong_idを変更する
+        // 集約の整合性の観点でいうとbelongオブジェクトの整合性がbelong_idと無くなる可能性があるが、影響範囲広いので一旦保留
         const belongObject = {
-            id: belongData.getAllProperties().belong_id ?? userEntity.getAllProperties().belong_id,
-            belong: belongData.getAllProperties().belong.getBelongs().belong ?? userEntity.getAllProperties().belong,
+            id: belongEntity.getAllProperties().id ?? userEntity.getAllProperties().belong_id,
+            belong: belongEntity.getAllProperties().belong ?? userEntity.getAllProperties().belong.getAllProperties().belong,
         };
         const belongIns = new BelongsValueObject(belongObject);
 
         let user = new User({
             id: data.id,
-            pair_id: pairData.getAllProperties().pair_id ?? userEntity.getAllProperties().pair_id,
-            belong_id: belongData.getAllProperties().belong_id ?? userEntity.getAllProperties().belong_id,
+            pair_id: data.pair_id ?? userEntity.getAllProperties().pair_id,
+            belong_id: data.belong_id ?? userEntity.getAllProperties().belong_id,
             user_name: data.user_name ?? userEntity.getAllProperties().user_name,
             email: data.email ?? userEntity.getAllProperties().email,
             belong: belongIns,
@@ -110,8 +113,8 @@ export default class UserFactory implements UserFactoryInterface {
             user_id: [data.id],
         });
         const belongObject = {
-            id: userPairEntity.getAllProperties().belong.getBelongs().id,
-            belong: userPairEntity.getAllProperties().belong.getBelongs().belong,
+            id: userPairEntity.getAllProperties().belong.getAllProperties().id,
+            belong: userPairEntity.getAllProperties().belong.getAllProperties().belong,
         };
         const belongIns = new BelongsValueObject(belongObject);
         const user = new User({

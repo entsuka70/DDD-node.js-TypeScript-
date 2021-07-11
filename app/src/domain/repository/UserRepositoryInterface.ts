@@ -1,11 +1,11 @@
 import Team from 'domain/entity/users/team';
 import Pair from 'domain/entity/users/pair';
 import User from 'domain/entity/users/user';
+import BelongsValueObject from 'domain/valueobject/belongs/index';
 
 export default interface UserRepositoryInterface {
     findByUserId(id: number): Promise<User>;
-    findByPairId(id: number): Promise<User>;
-    findByBelongId(id: number): Promise<User>;
+    findBelongByBelongId(id: number): Promise<BelongsValueObject>
     findByTeamId(id: number): Promise<User>;
     findAll(): Promise<User[]>;
     create(data: object): Promise<void>;

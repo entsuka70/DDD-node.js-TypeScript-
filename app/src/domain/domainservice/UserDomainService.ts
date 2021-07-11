@@ -8,6 +8,8 @@ export default class UserDomainService {
 
     private readonly userRepository: UserRepositoryInterface;
 
+    static MAX_PAIR_USER = 3;
+
     constructor(userRepository: UserRepositoryInterface) {
         this.userRepository = userRepository;
     }
@@ -16,7 +18,7 @@ export default class UserDomainService {
     public setNoPairAndNoTeamByBelong(user: User): User {
         const belong = user.getAllProperties().belong;
 
-        if (belong.getBelongs().belong !== BelongsValueObject.BELONGS) {
+        if (belong.getAllProperties().belong !== BelongsValueObject.BELONGS) {
             let pairId = user.getAllProperties().pair_id;
             let teamId = user.getAllProperties().pair.getAllProperties().teams_id;
 
@@ -40,7 +42,7 @@ export default class UserDomainService {
                 const userProp = {
                     id: user.getAllProperties().id,
                     pair_id: Pair.DEFAULT_NO_PAIR_ID,
-                    belong_id: belong.getBelongs().id,
+                    belong_id: belong.getAllProperties().id,
                     user_name: user.getAllProperties().user_name,
                     email: user.getAllProperties().email,
                     belong: belong,
@@ -60,6 +62,14 @@ export default class UserDomainService {
         if (duplicateEmailUser.length) {
             throw new Error('email is duplicate.');
         }
+        return;
+    }
+
+    public controlPairUser(user: User): void {
+        // const user_ids = pair.getAllProperties().user_id;
+        // if (user_ids && user_ids.length > UserDomainService.MAX_PAIR_USER) {
+        //     let pop_user_id = user_ids.pop();
+        // }
         return;
     }
 }

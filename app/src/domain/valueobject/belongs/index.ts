@@ -13,7 +13,7 @@ export default class BelongsValueObject {
         this.belong = belong;
     }
 
-    public getBelongs() {
+    public getAllProperties() {
         return {
             id: this.id,
             belong: this.belong,

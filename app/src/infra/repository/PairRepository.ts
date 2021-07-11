@@ -12,7 +12,7 @@ export default class PairRepository implements PairRepositoryInterface {
         this.prisma = prisma;
     }
 
-    public async findByPairId(pair_id: number): Promise<Pair> {
+    public async findById(pair_id: number): Promise<Pair> {
         const pair = await this.prisma.pair.findFirst({
             where: {
                 id: pair_id
