@@ -43,8 +43,10 @@ export default class UserApplication {
             // User集約取得
             const userAggregation = await this.userRepository.findByUserId(data.id);
             // pair_idに紐づくPair情報を持ったUser集約
+            // ----- TODO:belongにidはあってもuserがdata.belong_idを持っていないと指定のbelong_idに更新できないので修正する -----
             const pairData = await this.userRepository.findByPairId(data.pair_id);
             // belong_idに紐づくBelong情報を持ったUser集約
+            // ----- TODO:belongにidはあってもuserがdata.belong_idを持っていないと指定のbelong_idに更新できないので修正する -----
             const belongData = await this.userRepository.findByBelongId(data.belong_id);
 
             // Factoryで更新する集約を形成

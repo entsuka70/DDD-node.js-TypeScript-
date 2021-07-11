@@ -40,7 +40,8 @@ export default class IssueRepository implements IssueRepositoryInterface {
             id: user.pair.id,
             teams_id: user.pair.teams_id,
             pair_name: user.pair.pair_name,
-            team: teamIns
+            team: teamIns,
+            user_id: [user.id]
         });
 
         const belongIns = new BelongsValueObject(user.belong);
@@ -78,7 +79,8 @@ export default class IssueRepository implements IssueRepositoryInterface {
                 id: user.pair.id,
                 teams_id: user.pair.teams_id,
                 pair_name: user.pair.pair_name,
-                team: teamIns
+                team: teamIns,
+                user_id: [user.id]
             });
 
             const belongIns = new BelongsValueObject(user.belong);

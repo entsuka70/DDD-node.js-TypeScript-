@@ -2,7 +2,6 @@ import User from "domain/entity/users/user/index";
 import Pair from "domain/entity/users/pair/index";
 import Team from "domain/entity/users/team/index";
 import UserFactoryInterface from "domain/factory/UserFactoryInterface";
-import UserPairAggregation from "domain/factory/UserFactoryInterface";
 import UserDto from "app/dto/UserDto";
 import PairDto from "app/dto/PairDto";
 import TeamDto from "app/dto/TeamDto";
@@ -41,6 +40,7 @@ export default class UserFactory implements UserFactoryInterface {
             teams_id: Pair.DEFAULT_NO_TEAM_ID,
             pair_name: Pair.PAIR_NAME_NO_BELONG,
             team: teamIns,
+            user_id: undefined, // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         })
 
         const belongObject = {
@@ -74,6 +74,7 @@ export default class UserFactory implements UserFactoryInterface {
             teams_id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
             pair_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
             team: teamIns,
+            user_id: [data.id] // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         })
 
         const belongObject = {
@@ -95,6 +96,7 @@ export default class UserFactory implements UserFactoryInterface {
         return user;
     }
 
+    // NOTE:ペアに関わるCRUDはペア集約で考えることが正しそうなので不要
     public async updatePair(data: { id: number, pair_name: string, teams_id: number }, userPairEntity: User, teamData: User): Promise<User> {
         const teamIns = new Team({
             id: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
@@ -104,7 +106,8 @@ export default class UserFactory implements UserFactoryInterface {
             id: data.id,
             teams_id: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().id ?? userPairEntity.getAllProperties().pair.getAllProperties().teams_id,
             pair_name: data.pair_name ?? userPairEntity.getAllProperties().pair.getAllProperties().pair_name,
-            team: teamIns
+            team: teamIns,
+            user_id: [data.id],
         });
         const belongObject = {
             id: userPairEntity.getAllProperties().belong.getBelongs().id,
@@ -123,7 +126,7 @@ export default class UserFactory implements UserFactoryInterface {
         return user;
     }
 
-
+    // NOTE:ペアに関わるCRUDはペア集約で考えることが正しそうなので不要
     // Userが参加しているペアをすべて返す
     public async createPairAll(userAggregations: User[]): Promise<PairDto[]> {
         const pairs: Pair[] = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair);
@@ -137,6 +140,7 @@ export default class UserFactory implements UserFactoryInterface {
         return pairsDtoAll;
     }
 
+    // NOTE:チームに関わるCRUDはチーム集約で考えることが正しそうなので不要
     public async createTeamAll(userAggregations: User[]): Promise<TeamDto[]> {
         const teams = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair.getAllProperties().team);
 

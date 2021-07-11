@@ -33,6 +33,7 @@ export default class IssueFactory implements IssueFactoryInterface {
             teams_id: data.teams_id ?? Pair.DEFAULT_NO_TEAM_ID,
             pair_name: data.pair_name ?? Pair.PAIR_NAME_NO_BELONG,
             team: teamIns,
+            user_id: undefined
         })
 
         const belongObject = {
@@ -68,6 +69,7 @@ export default class IssueFactory implements IssueFactoryInterface {
             teams_id: data.teams_id,
             pair_name: data.pair_name,
             team: teamIns,
+            user_id: undefined
         })
 
         const belongObject = {

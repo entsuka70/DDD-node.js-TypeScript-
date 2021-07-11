@@ -1,14 +1,14 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import PairApplication from "app/application/users/PairApplication";
-import UserRepository from "infra/repository/UserRepository";
+import PairRepository from "infra/repository/PairRepository";
 
 // ペア一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userRepository = new UserRepository(prisma);
-        const pairApplication = new PairApplication(userRepository);
+        const pairRepository = new PairRepository(prisma);
+        const pairApplication = new PairApplication(pairRepository);
         const pairAll = await pairApplication.findPairAll();
         res.set({
             'content-type': 'application/json',
@@ -23,7 +23,7 @@ exports.view = async function (req: express.Request, res: express.Response) {
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userRepository = new UserRepository(prisma);
+        const userRepository = new PairRepository(prisma);
         const pairApplication = new PairApplication(userRepository);
 
         // NOTE::user, team情報がPOSTされた時の対処必要

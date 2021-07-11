@@ -6,6 +6,7 @@ export default class PairDto {
     public readonly teams_id: number;
     public readonly pair_name: string;
     public readonly team: Team;
+    public readonly user_id: number[] | undefined;
 
     static DEFAULT_PAIR_ID = 1;
     static DEFAULT_TEAM_ID = 1;
@@ -16,5 +17,6 @@ export default class PairDto {
         this.teams_id = pair.getAllProperties().teams_id ?? PairDto.DEFAULT_TEAM_ID;
         this.pair_name = pair.getAllProperties().pair_name ?? PairDto.PAIR_NAME_NO_BELONG;
         this.team = pair.getAllProperties().team;
+        this.user_id = pair.getAllProperties().user_id;
     }
 }

@@ -7,19 +7,21 @@ export default class Pair {
     private id: number | undefined;
     private teams_id: number;
     private pair_name: string;
-    private team: Team;
+    private team: Team; // NOTE:本来はteams_idのみで良いが、他への波及が大きいので一旦保留
+    private user_id: number[] | undefined;
 
     static DEFAULT_NO_PAIR_ID = 1;
     static DEFAULT_NO_TEAM_ID = 1;
     static PAIR_NAME_NO_BELONG = 'n';
 
-    constructor(props: { id: number | undefined, teams_id: number, pair_name: string, team: Team }) {
-        const { id, teams_id, pair_name, team } = props;
+    constructor(props: { id: number | undefined, teams_id: number, pair_name: string, team: Team, user_id: number[] | undefined }) {
+        const { id, teams_id, pair_name, team, user_id } = props;
 
         this.id = id;
         this.teams_id = teams_id;
         this.pair_name = pair_name;
         this.team = team; // ここのteamはPairとTeam関係の整合性を保つためと考える 例)あるペアを削除した際にUserのPairIdを更新するとか
+        this.user_id = user_id;
     }
     public getAllProperties() {
         return {
@@ -27,6 +29,7 @@ export default class Pair {
             teams_id: this.teams_id,
             pair_name: this.pair_name,
             team: this.team,
+            user_id: this.user_id,
         };
     }
 }

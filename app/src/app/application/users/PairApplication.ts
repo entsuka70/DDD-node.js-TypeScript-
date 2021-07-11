@@ -1,23 +1,23 @@
-import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
-import UserFactory from 'domain/factory/UserFactory';
-import UserDomainService from 'domain/domainservice/UserDomainService';
+import PairRepositoryInterface from 'domain/repository/PairRepositoryInterface';
+import PairFactory from 'domain/factory/PairFactory';
+import PairDomainService from 'domain/domainservice/PairDomainService';
 
 
 export default class PairApplication {
-    private readonly userRepository: UserRepositoryInterface;
-    private readonly userDomainService: UserDomainService;
-    private readonly userFactory: UserFactory;
+    private readonly pairRepository: PairRepositoryInterface;
+    private readonly pairDomainService: PairDomainService;
+    private readonly pairFactory: PairFactory;
 
-    constructor(userRepository: UserRepositoryInterface) {
-        this.userRepository = userRepository;
-        this.userDomainService = new UserDomainService(userRepository);
-        this.userFactory = new UserFactory(this.userDomainService);
+    constructor(pairRepository: PairRepositoryInterface) {
+        this.pairRepository = pairRepository;
+        this.pairDomainService = new PairDomainService(pairRepository);
+        this.pairFactory = new PairFactory(this.pairDomainService);
     }
 
     public async findPairAll() {
         try {
-            const userAggregations = await this.userRepository.findAll();
-            const pairAll = await this.userFactory.createPairAll(userAggregations);
+            const pairAggregations = await this.pairRepository.findAll();
+            const pairAll = await this.pairFactory.createPairAll(pairAggregations);
             return pairAll;
         } catch (e) {
             throw new Error(`Error PairApplication::findPairAll(): ${e.message}`);
@@ -28,11 +28,10 @@ export default class PairApplication {
     public async update(data: { id: number, pair_name: string, teams_id: number }) {
         try {
             // pair_idに紐づくPair情報を持ったUser集約
-            const userPairAggregation = await this.userRepository.findByPairId(data.id);
+            const pairEntity = await this.pairRepository.findByPairId(data.id);
             // teams_idに紐づくTeam情報を持ったUser集約
-            const teamData = await this.userRepository.findByTeamId(data.teams_id);
-            const userData = await this.userFactory.updatePair(data, userPairAggregation, teamData);
-            await this.userRepository.update(userData);
+            const userData = await this.pairFactory.updatePair(data, pairEntity);
+            await this.pairRepository.update(userData);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }

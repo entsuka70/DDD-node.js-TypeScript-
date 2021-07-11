@@ -40,7 +40,8 @@ export default class UserRepository implements UserRepositoryInterface {
             id: user.pair.id,
             teams_id: user.pair.teams_id,
             pair_name: user.pair.pair_name,
-            team: teamIns
+            team: teamIns,
+            user_id: [user_id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         });
 
         const belongIns = new BelongsValueObject(user.belong);
@@ -84,7 +85,8 @@ export default class UserRepository implements UserRepositoryInterface {
             id: user.pair.id,
             teams_id: user.pair.teams_id,
             pair_name: user.pair.pair_name,
-            team: teamIns
+            team: teamIns,
+            user_id: [user.id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         });
 
         const belongIns = new BelongsValueObject(user.belong);
@@ -117,7 +119,7 @@ export default class UserRepository implements UserRepositoryInterface {
         });
 
         if (user == null) {
-            throw new Error(`Not Found User(pair_id : ${belong_id}).`)
+            throw new Error(`Not Found User(belong_id : ${belong_id}).`)
         }
 
         const teamIns = new Team({
@@ -129,7 +131,8 @@ export default class UserRepository implements UserRepositoryInterface {
             id: user.pair.id,
             teams_id: user.pair.teams_id,
             pair_name: user.pair.pair_name,
-            team: teamIns
+            team: teamIns,
+            user_id: [user.id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         });
 
         const belongIns = new BelongsValueObject(user.belong);
@@ -163,7 +166,7 @@ export default class UserRepository implements UserRepositoryInterface {
         });
 
         if (user == null) {
-            throw new Error(`Not Found User(pair_id : ${teams_id}).`)
+            throw new Error(`Not Found User(teams_id : ${teams_id}).`)
         }
 
         const teamIns = new Team({
@@ -175,7 +178,8 @@ export default class UserRepository implements UserRepositoryInterface {
             id: user.pair.id,
             teams_id: user.pair.teams_id,
             pair_name: user.pair.pair_name,
-            team: teamIns
+            team: teamIns,
+            user_id: [user.id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         });
 
         const belongIns = new BelongsValueObject(user.belong);
@@ -200,6 +204,9 @@ export default class UserRepository implements UserRepositoryInterface {
                         team: true
                     }
                 }
+            },
+            orderBy: {
+                id: "asc"
             }
         });
         const users = all_users.map((user): User => {
@@ -213,7 +220,8 @@ export default class UserRepository implements UserRepositoryInterface {
                 id: user.pair.id,
                 teams_id: user.pair.teams_id,
                 pair_name: user.pair.pair_name,
-                team: teamIns
+                team: teamIns,
+                user_id: [user.id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
             });
 
             const belongIns = new BelongsValueObject(user.belong);

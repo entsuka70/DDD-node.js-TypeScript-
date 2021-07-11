@@ -12,7 +12,7 @@ export default class User {
     private user_name: string;
     private email: string;
     private belong: BelongsValueObject;
-    private pair: Pair;
+    private pair: Pair; // 集約観点でpair_idのみで十分そうなのが判明したが、修正が全体へ波及するのと時間を要するので保留
 
     static DEFAULT_PAIR_ID = 1;
     static DEFAULT_BELONG_ID = 1;
