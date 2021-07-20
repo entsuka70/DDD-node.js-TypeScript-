@@ -52,6 +52,22 @@ export default class PairRepository implements PairRepositoryInterface {
 
     }
 
+    public async findNoUserPairByUserId(): Promise<any> {
+        const no_user_pair = await this.prisma.pair.findFirst({
+            where: {
+                user: {
+                    none: {}
+                }
+            }
+        });
+        if (no_user_pair == null) {
+            throw new Error(`Not Found No_User_Pair(PairRepository no_user_pair is null.`)
+        }
+        console.log('---- findNoUserPairByUserId ---');
+        console.log(no_user_pair);
+        return no_user_pair;
+    }
+
     public async findAll(): Promise<Pair[]> {
         const all_pairs = await this.prisma.pair.findMany({
             include: {

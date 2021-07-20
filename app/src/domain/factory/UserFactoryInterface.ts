@@ -8,5 +8,5 @@ export default interface UserFactoryInterface {
     createPairAll(users: object[]): Promise<object[]>;
     createTeamAll(users: object[]): Promise<object[]>;
     createUser(user: object): Promise<User>;
-    updateUser(data: object, userEntity: User, belongData: BelongsValueObject): Promise<User>;
+    updateUser(data: object, userEntity: User, pairData: User, belongData: BelongsValueObject): Promise<User>;
 }

@@ -31,6 +31,18 @@ export default class UserRepository implements UserRepositoryInterface {
             throw new Error(`Not Found User(user_id : ${user_id}).`)
         }
 
+        const users = await this.prisma.user.findMany({
+            where: {
+                pair_id: user.pair_id,
+            }
+        });
+        if (users == null) {
+            throw new Error(`Not Found Users(PairRepository users is null.`)
+        }
+        const user_ids = users.map((user): number => {
+            return user.id;
+        });
+
         const teamIns = new Team({
             id: user.pair.team.id,
             team_name: user.pair.team.team_name,
@@ -41,7 +53,130 @@ export default class UserRepository implements UserRepositoryInterface {
             teams_id: user.pair.teams_id,
             pair_name: user.pair.pair_name,
             team: teamIns,
-            user_id: [user_id], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
+            user_id: user_ids,
+        });
+
+        const belongIns = new BelongsValueObject(user.belong);
+
+        return new User({
+            id: user.id,
+            pair_id: user.pair_id,
+            belong_id: user.belong_id,
+            user_name: user.user_name,
+            email: user.email,
+            belong: belongIns,
+            pair: pairIns,
+        });
+    }
+
+    public async findByUserIds(ids: number[]): Promise<User[]> {
+        const users = await this.prisma.user.findMany({
+            where: {
+                id: {
+                    in: ids
+                }
+            },
+            include: {
+                belong: true,
+                pair: {
+                    include: {
+                        team: true
+                    }
+                }
+            }
+        });
+        if (users === null) {
+            throw new Error(`Not Found Users(UserRepository findByUserIds is null.`)
+        }
+
+        let userInsArray: User[] = [];
+        await users.map(async (user) => {
+            const teamIns = new Team({
+                id: user.pair.team.id,
+                team_name: user.pair.team.team_name
+            });
+
+            const users = await this.prisma.user.findMany({
+                where: {
+                    pair_id: user.pair_id,
+                },
+            });
+            if (users == null) {
+                throw new Error(`Not Found Users(PairRepository users is null.`)
+            }
+            const user_ids = users.map((user): number => {
+                return user.id;
+            });
+
+            const pairIns = new Pair({
+                id: user.pair.id,
+                teams_id: user.pair.teams_id,
+                pair_name: user.pair.pair_name,
+                team: teamIns,
+                user_id: user_ids
+            });
+
+            const belongIns = new BelongsValueObject(user.belong);
+            const uuser = new User({
+                id: user.id,
+                pair_id: user.pair_id,
+                belong_id: user.belong_id,
+                user_name: user.user_name,
+                email: user.email,
+                belong: belongIns,
+                pair: pairIns,
+            });
+
+            return await userInsArray.push(uuser);
+        });
+
+        return await userInsArray;
+    }
+
+    public async findByPairId(pair_id: number): Promise<User> {
+        const user = await this.prisma.user.findFirst({
+            where: {
+                pair: {
+                    id: pair_id
+                }
+            },
+            include: {
+                belong: true,
+                pair: {
+                    include: {
+                        team: true
+                    }
+                }
+            }
+        });
+
+        if (user == null) {
+            throw new Error(`Not Found User(teams_id : ${pair_id}).`)
+        }
+
+        const users = await this.prisma.user.findMany({
+            where: {
+                pair_id: pair_id,
+            }
+        });
+        if (users == null) {
+            throw new Error(`Not Found Users(PairRepository users is null.`)
+        }
+        const user_ids = users.map((user): number => {
+            return user.id;
+        });
+
+        const teamIns = new Team({
+            id: user.pair.teams_id,
+            team_name: user.pair.team.team_name,
+        });
+
+        const pairIns = new Pair({
+            id: user.pair.id,
+            teams_id: user.pair.teams_id,
+            pair_name: user.pair.pair_name,
+            team: teamIns,
+            user_id: user_ids, // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         });
 
         const belongIns = new BelongsValueObject(user.belong);
@@ -183,7 +318,7 @@ export default class UserRepository implements UserRepositoryInterface {
         return;
     }
 
-    public async update(user: User): Promise<void> {
+    public async update(user: any): Promise<void> {
         const { id, pair_id, belong_id, user_name, email, belong, pair } = user.getAllProperties();
 
         await this.prisma.user.update({

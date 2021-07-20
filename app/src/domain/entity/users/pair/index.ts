@@ -8,13 +8,13 @@ export default class Pair {
     private teams_id: number;
     private pair_name: string;
     private team: Team; // NOTE:本来はteams_idのみで良いが、他への波及が大きいので一旦保留
-    private user_id: number[] | undefined;
+    private user_id: number[] | [];
 
     static DEFAULT_NO_PAIR_ID = 1;
     static DEFAULT_NO_TEAM_ID = 1;
     static PAIR_NAME_NO_BELONG = 'n';
 
-    constructor(props: { id: number | undefined, teams_id: number, pair_name: string, team: Team, user_id: number[] | undefined }) {
+    constructor(props: { id: number | undefined, teams_id: number, pair_name: string, team: Team, user_id: number[] | [] }) {
         const { id, teams_id, pair_name, team, user_id } = props;
 
         this.id = id;

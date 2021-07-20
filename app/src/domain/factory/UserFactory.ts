@@ -40,7 +40,7 @@ export default class UserFactory implements UserFactoryInterface {
             teams_id: Pair.DEFAULT_NO_TEAM_ID,
             pair_name: Pair.PAIR_NAME_NO_BELONG,
             team: teamIns,
-            user_id: undefined, // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
+            user_id: [], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
         })
 
         const belongObject = {
@@ -62,24 +62,28 @@ export default class UserFactory implements UserFactoryInterface {
         return user;
     }
 
-    public async updateUser(data: { id: number, user_name: string, email: string, pair_id: number, belong_id: number }, userEntity: User, belongEntity: BelongsValueObject): Promise<User> {
+    public async updateUser(data: { id: number, user_name: string, email: string, pair_id: number, belong_id: number }, userEntity: User, pairData: User, belongEntity: BelongsValueObject): Promise<User> {
         const teamIns = new Team({
-            id: userEntity.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
-            team_name: userEntity.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
+            id: userEntity.getAllProperties().pair.getAllProperties().teams_id,
+            team_name: userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
         });
 
         // pair および teamは別集約での更新処理とするので、データ変更は考慮しない
         // 集約整合性の観点ではpair_idと整合性が無くなる可能性があるが、影響範囲が大きいので一旦保留
-        const pairIns = new Pair({
-            id: userEntity.getAllProperties().pair.getAllProperties().id,
-            teams_id: userEntity.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
-            pair_name: userEntity.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
-            team: teamIns,
-            user_id: [data.id] // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
-        })
+        let user_ids: number[] = [];
+        if (data.pair_id) {
+            user_ids = pairData.getAllProperties().pair.getAllProperties().user_id;
+            user_ids.push(data.id);
+        }
 
-        // blongはUser集約内の値オブジェエクトであるので、belongは変更せずuserのbelong_idを変更する
-        // 集約の整合性の観点でいうとbelongオブジェクトの整合性がbelong_idと無くなる可能性があるが、影響範囲広いので一旦保留
+        const pairIns = new Pair({
+            id: data.pair_id ?? userEntity.getAllProperties().pair.getAllProperties().id,
+            teams_id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
+            pair_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
+            team: teamIns,
+            user_id: data.pair_id ? user_ids : userEntity.getAllProperties().pair.getAllProperties().user_id // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
+        });
+
         const belongObject = {
             id: belongEntity.getAllProperties().id ?? userEntity.getAllProperties().belong_id,
             belong: belongEntity.getAllProperties().belong ?? userEntity.getAllProperties().belong.getAllProperties().belong,

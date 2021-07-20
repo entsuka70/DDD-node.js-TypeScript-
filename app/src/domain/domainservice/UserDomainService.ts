@@ -36,7 +36,7 @@ export default class UserDomainService {
                     pair_name: user.getAllProperties().pair.getAllProperties().pair_name,
                     team: teamIns,
                     // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
-                    user_id: user.getAllProperties().id != undefined ? [Pair.DEFAULT_NO_PAIR_ID] : undefined,
+                    user_id: user.getAllProperties().id != undefined ? [Pair.DEFAULT_NO_PAIR_ID] : [],
                 };
                 const pairIns = new Pair(pair);
                 const userProp = {

@@ -2,12 +2,14 @@ import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import UserApplication from "app/application/users/UserApplication";
 import UserRepository from "infra/repository/UserRepository";
+import PairRepository from "infra/repository/PairRepository"
 
 // ユーザー一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userRepository = new UserRepository(prisma);
-    const userApplication = new UserApplication(userRepository);
+    const pairRepository = new PairRepository(prisma);
+    const userApplication = new UserApplication(userRepository, pairRepository);
     try {
         const userAll = await userApplication.findUserAll();
         res.set({
@@ -23,7 +25,8 @@ exports.view = async function (req: express.Request, res: express.Response) {
 exports.create = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userRepository = new UserRepository(prisma);
-    const userApplication = new UserApplication(userRepository);
+    const pairRepository = new PairRepository(prisma);
+    const userApplication = new UserApplication(userRepository, pairRepository);
     const data = {
         'user_name': req.body.user_name,
         'email': req.body.email,
@@ -45,7 +48,8 @@ exports.create = async function (req: express.Request, res: express.Response) {
 exports.update = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userRepository = new UserRepository(prisma);
-    const userApplication = new UserApplication(userRepository);
+    const pairRepository = new PairRepository(prisma);
+    const userApplication = new UserApplication(userRepository, pairRepository);
 
     // NOTE::pair, team情報がPOSTされた時の対処必要
     const data = {
@@ -69,9 +73,10 @@ exports.update = async function (req: express.Request, res: express.Response) {
 
 // ユーザー削除
 exports.delete = async function (req: express.Request, res: express.Response) {
-    const prism = new PrismaClient();
-    const userRepository = new UserRepository(prism);
-    const userApplication = new UserApplication(userRepository);
+    const prisma = new PrismaClient();
+    const userRepository = new UserRepository(prisma);
+    const pairRepository = new PairRepository(prisma);
+    const userApplication = new UserApplication(userRepository, pairRepository);
     try {
         const userDelete = await userApplication.delete(parseInt(req.params.id));
         res.set({
