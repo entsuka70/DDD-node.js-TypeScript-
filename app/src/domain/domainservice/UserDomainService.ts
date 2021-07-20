@@ -1,5 +1,5 @@
 import BelongsValueObject from "domain/valueobject/belongs";
-import User from "domain/entity/users/user";
+import User from "domain/entity/users/user/user";
 import Pair from "domain/entity/users/pair";
 import Team from "domain/entity/users/team";
 import UserRepositoryInterface from "domain/repository/UserRepositoryInterface";

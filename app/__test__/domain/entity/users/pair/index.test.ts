@@ -1,5 +1,5 @@
 import Pair from 'domain/entity/users/pair/index';
-import User from 'domain/entity/users/user/index';
+import User from 'domain/entity/users/user/user';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 
 describe('Section entity Pair', () => {

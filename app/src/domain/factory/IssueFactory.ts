@@ -1,4 +1,4 @@
-import User from "domain/entity/users/user/index";
+import User from "domain/entity/users/user/user";
 import Pair from "domain/entity/users/pair/index";
 import Team from "domain/entity/users/team/index";
 import IssueFactoryInterface from "domain/factory/IssueFactoryInterface";

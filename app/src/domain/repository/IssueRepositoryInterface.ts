@@ -1,6 +1,6 @@
 import Team from 'domain/entity/users/team';
 import Pair from 'domain/entity/users/pair';
-import User from 'domain/entity/users/user';
+import User from 'domain/entity/users/user/user';
 
 export default interface IssueRepositoryInterface {
     findByIssueId(id: number): Promise<object>;

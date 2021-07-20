@@ -1,5 +1,5 @@
 import ProgressValueObject from "domain/valueobject/progress";
-import User from "domain/entity/users/user/index";
+import User from "domain/entity/users/user/user";
 import Issue from "domain/entity/issues/issue/index";
 
 export default class UserIssue {

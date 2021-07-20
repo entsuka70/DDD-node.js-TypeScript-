@@ -1,6 +1,6 @@
 import Team from 'domain/entity/users/team';
 import Pair from 'domain/entity/users/pair';
-import User from 'domain/entity/users/user';
+import User from 'domain/entity/users/user/user';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 
 export default interface UserRepositoryInterface {

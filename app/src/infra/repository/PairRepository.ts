@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import User from 'domain/entity/users/user/index';
+import User from 'domain/entity/users/user/user';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 import PairRepositoryInterface from "domain/repository/PairRepositoryInterface";
 import Pair from 'domain/entity/users/pair';

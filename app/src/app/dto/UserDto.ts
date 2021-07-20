@@ -1,5 +1,5 @@
 import Pair from "domain/entity/users/pair";
-import User from "domain/entity/users/user"
+import User from "domain/entity/users/user/user"
 import BelongsValueObject from "domain/valueobject/belongs";
 
 export default class UserDto {
