@@ -1,6 +1,6 @@
-import User from "domain/entity/users/user/user";
-import Pair from "domain/entity/users/pair";
-import Team from "domain/entity/users/team";
+import User from "domain/model/user/User";
+import Pair from "domain/model/pair";
+import Team from "domain/model/team";
 import PairRepositoryInterface from "domain/repository/PairRepositoryInterface";
 import UserRepositoryInterface from "domain/repository/UserRepositoryInterface";
 

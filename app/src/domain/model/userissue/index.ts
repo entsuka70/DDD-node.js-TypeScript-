@@ -1,6 +1,6 @@
 import ProgressValueObject from "domain/valueobject/progress";
-import User from "domain/entity/users/user/user";
-import Issue from "domain/entity/issues/issue/index";
+import User from "domain/model/user/User";
+import Issue from "domain/model/issue/index";
 
 export default class UserIssue {
     private id: number;

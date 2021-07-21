@@ -1,4 +1,4 @@
-import UserIssue from 'domain/entity/userissue/index';
+import UserIssue from 'domain/model/userissue/index';
 
 export default class Issue {
     private id: number;

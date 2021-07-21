@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import User from 'domain/entity/users/user/user';
+import User from 'domain/model/user/User';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 import UserRepositoryInterface from "domain/repository/UserRepositoryInterface";
 import UserFactory from 'domain/factory/UserFactory';
-import Pair from 'domain/entity/users/pair';
-import Team from 'domain/entity/users/team';
+import Pair from 'domain/model/pair';
+import Team from 'domain/model/team';
 
 export default class UserRepository implements UserRepositoryInterface {
     private prisma: PrismaClient

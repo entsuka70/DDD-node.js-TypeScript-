@@ -1,10 +1,10 @@
 import { PrismaClient } from '@prisma/client';
-import User from 'domain/entity/users/user/user';
+import User from 'domain/model/user/User';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 import IssueRepositoryInterface from "domain/repository/IssueRepositoryInterface";
 import IssueFactory from 'domain/factory/IssueFactory';
-import Pair from 'domain/entity/users/pair';
-import Team from 'domain/entity/users/team';
+import Pair from 'domain/model/pair';
+import Team from 'domain/model/team';
 
 export default class IssueRepository implements IssueRepositoryInterface {
     private prisma: PrismaClient

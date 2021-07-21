@@ -1,4 +1,4 @@
-import Team from 'domain/entity/users/team';
+import Team from 'domain/model/team';
 
 export default class Pair {
     // idはオートインクリメントによる生成にしているためUserを新規作成する時に

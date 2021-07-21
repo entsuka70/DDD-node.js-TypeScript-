@@ -1,6 +1,6 @@
 import UserDto from "app/dto/UserDto";
 import PairDto from "app/dto/PairDto";
-import User from "domain/entity/users/user/user"
+import User from "domain/model/user/User"
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 
 export default interface UserFactoryInterface {

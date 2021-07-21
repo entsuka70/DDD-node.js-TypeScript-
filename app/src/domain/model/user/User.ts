@@ -1,6 +1,6 @@
 import BelongsValueObject from 'domain/valueobject/belongs/index';
-import Pair from 'domain/entity/users/pair'
-import Team from 'domain/entity/users/team'
+import Pair from 'domain/model/pair'
+import Team from 'domain/model/team'
 
 export default class User {
     // idはオートインクリメントによる生成にしているためUserを新規作成する時に
