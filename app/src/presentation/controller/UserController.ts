@@ -75,7 +75,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
     };
 
     const data: Props = {
-        'id': req.body.id,
+        'id': req.params.id,
         'pair_id': req.body.pair_id,
         'team_id': req.body.team_id,
         'status': req.body.status,
@@ -84,7 +84,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
     };
 
     try {
-        const userUpdate = await userApplication.update(new UserCreateCommand(data));
+        await userApplication.update(new UserCreateCommand(data));
         res.set({
             'content-type': 'text/plain',
         });

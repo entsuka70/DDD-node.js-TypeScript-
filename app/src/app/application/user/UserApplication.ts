@@ -53,15 +53,17 @@ export default class UserApplication {
         try {
             const user = await this.userRepository.find(command.id);
             // メールアドレス重複チェック
-            await this.userDomainService.isExist(command.email);
+            if (await this.userDomainService.isExist(command.email)) {
+                throw new Error(`Email is already exist. You can not register ${command.email}`);
+            }
             // Factoryで更新する集約を形成
-            let userData = await this.userFactory.updateUser(user);
+            const userRebuild = await this.userFactory.update(command, user);
             // 在籍以外の状態であれば自動でペア・チーム無所属
             // userData = await this.userDomainService.setNoPairAndNoTeamByBelong(userData);
             // ペアの自動編成
             // 4人:2つに分割,1名自動移動(未実装)
             // const userDatas = await this.pairDomainService.controlPairUser(userData);
-            await this.userRepository.update(userData);
+            await this.userRepository.update(userRebuild);
 
         } catch (e) {
             throw new Error(e.message);
