@@ -13,9 +13,9 @@ export default class UserDomainService {
     }
 
     // 重複するメールアドレスは許容しない
-    public async isExist(data: { email: string }): Promise<Boolean> {
+    public async isExist(email: string): Promise<Boolean> {
         const users = await this.userRepository.findAll();
-        const duplicateEmailUser = users.filter((user) => user.getAllProperties().email === data.email);
+        const duplicateEmailUser = users.filter((user) => user.getEmail() === email);
         if (duplicateEmailUser.length) {
             return false;
         }

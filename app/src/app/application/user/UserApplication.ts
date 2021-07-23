@@ -4,6 +4,7 @@ import UserDomainService from 'domain/domainservice/UserDomainService';
 import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import PairDomainService from 'domain/domainservice/PairDomainService';
 import PairFactory from 'domain/factory/PairFactory';
+import UserCreateCommand from './UserCreateCommand';
 
 
 export default class UserApplication {
@@ -34,22 +35,22 @@ export default class UserApplication {
         }
     }
 
-    public async create(data: { user_name: string, email: string, pair_id: string, team_id: string, status: number }) {
+    public async create(command: UserCreateCommand) {
         try {
             // メールアドレス重複チェック
-            await this.userDomainService.isExist(data);
-            let userAggregation = await this.userFactory.create(data);
+            await this.userDomainService.isExist(command.email);
+            const userAggregation = await this.userFactory.create(command);
             await this.userRepository.save(userAggregation);
         } catch (e) {
             throw new Error(e.message);
         }
     }
 
-    public async update(data: { id: string, user_name: string, email: string, pair_id: string, team_id: string, status: number }) {
+    public async update(command: UserCreateCommand) {
         try {
-            const user = await this.userRepository.find(data.id);
+            const user = await this.userRepository.find(command.id);
             // メールアドレス重複チェック
-            await this.userDomainService.isExist(data);
+            await this.userDomainService.isExist(command.email);
             // Factoryで更新する集約を形成
             let userData = await this.userFactory.updateUser(user);
             // 在籍以外の状態であれば自動でペア・チーム無所属

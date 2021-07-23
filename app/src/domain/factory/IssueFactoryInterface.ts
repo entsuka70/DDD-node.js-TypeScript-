@@ -1,6 +1,6 @@
+import Issue from "domain/model/issue"
 
-export default interface UserFactoryInterface {
-    createIssueAll(issues: object[]): Promise<object[]>;
-    createIssue(issue: object): Promise<object>;
-    updateIssue(issue: object): Promise<object>;
+export default interface IssueFactoryInterface {
+    create(issue: object): Promise<any>;
+    updateIssue(issue: Issue): Promise<any>;
 }
