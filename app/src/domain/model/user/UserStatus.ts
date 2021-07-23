@@ -9,7 +9,7 @@ export default class UserStatus {
 
     constructor(userStatus?: number) {
         if (userStatus == 0 || (userStatus && !UserStatus.USERSTATUS_MATCHER.test(String(userStatus)))) {
-            throw new Error('Do not match UserBelong FORMAT')
+            throw new Error('Do not match UserStatus FORMAT')
         }
         this.userStatus = userStatus ?? UserStatus.STATUS_BELONG;
     }

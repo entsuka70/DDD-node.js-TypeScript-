@@ -1,52 +1,84 @@
-import BelongsValueObject from 'domain/valueobject/belongs/index';
-import Pair from 'domain/model/pair'
-import Team from 'domain/model/team'
+import UserId from './UserId';
+import UserName from './UserName';
+import UserEmail from './UserEmail';
+import UserStatus from './UserStatus';
+import PairId from '../pair/PairId';
+
+type UserProps = {
+    id: UserId
+    pair_id: PairId
+    status: UserStatus
+    user_name: UserName
+    email: UserEmail
+}
 
 export default class User {
-    // idはオートインクリメントによる生成にしているためUserを新規作成する時に
-    // FactoryでUserインスタンスを呼び出す際にid指定ができない。
-    // そのため、null許容指定にしている。
-    private id: number | undefined;
-    private pair_id: number;
-    private belong_id: number;
-    private user_name: string;
-    private email: string;
-    private belong: BelongsValueObject;
-    private pair: Pair; // 集約観点でpair_idのみで十分そうなのが判明したが、修正が全体へ波及するのと時間を要するので保留
+    private id: UserId;
+    private pair_id: PairId;
+    private status: UserStatus;
+    private user_name: UserName;
+    private email: UserEmail;
 
-    static DEFAULT_PAIR_ID = 1;
-    static DEFAULT_BELONG_ID = 1;
+    constructor(props: UserProps) {
+        const { id, pair_id, status, user_name, email } = props;
 
-    constructor(props: {
-        id: number | undefined, pair_id: number, belong_id: number, user_name: string, email: string,
-        belong: BelongsValueObject,
-        pair: Pair
-    }) {
-        const { id, pair_id, belong_id, user_name, email, belong, pair } = props;
+        if (!id) {
+            throw new Error('Please set id at User Domain')
+        }
+        if (!pair_id) {
+            throw new Error('Please set pair_id at User Domain')
+        }
+        if (!status) {
+            throw new Error('Please set status at User Domain')
+        }
+        if (!user_name) {
+            throw new Error('Please set user_name at User Domain')
+        }
+        if (!email) {
+            throw new Error('Please set email at User Domain')
+        }
 
         this.id = id;
         this.pair_id = pair_id;
-        this.belong_id = belong_id;
+        this.status = status;
         this.user_name = user_name;
         this.email = email;
-        this.belong = belong;
-        this.pair = pair;
     }
 
     public getAllProperties() {
         return {
-            id: this.id,
-            pair_id: this.pair_id,
-            user_name: this.user_name,
-            email: this.email,
-            belong_id: this.belong_id,
-            belong: this.belong,
-            pair: this.pair,
+            id: this.id.get(),
+            pair_id: this.pair_id.get(),
+            status: this.status.get(),
+            user_name: this.user_name.get(),
+            email: this.email.get(),
         };
     }
 
-    public changeUserBelongs(props: { id: number, belong: number }) {
-        this.belong_id = new BelongsValueObject(props).getAllProperties().id;
-        return this;
+    public getId() {
+        return this.id.get()
+    }
+
+    public getPairId() {
+        return this.pair_id.get()
+    }
+
+    public getStatus() {
+        return this.status.get()
+    }
+
+    public getUserName() {
+        return this.user_name.get()
+    }
+
+    public getEmail() {
+        return this.email.get()
+    }
+
+    public changeStatus(status: UserStatus) {
+        if (!status) {
+            throw new Error('chnageStatus is empty');
+        }
+        this.status = status;
     }
 }
