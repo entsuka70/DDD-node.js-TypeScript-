@@ -17,9 +17,9 @@ export default class UserDomainService {
         const users = await this.userRepository.findAll();
         const duplicateEmailUser = users.filter((user) => user.getEmail() === email);
         if (duplicateEmailUser.length) {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
 }

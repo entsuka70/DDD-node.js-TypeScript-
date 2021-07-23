@@ -39,9 +39,11 @@ export default class UserApplication {
     public async create(command: UserCreateCommand) {
         try {
             // メールアドレス重複チェック
-            await this.userDomainService.isExist(command.email);
-            const userAggregation = await this.userFactory.create(command);
-            await this.userRepository.save(userAggregation);
+            if (await this.userDomainService.isExist(command.email)) {
+                throw new Error(`Email is already exist. You can not register ${command.email}`);
+            }
+            const user = await this.userFactory.create(command);
+            await this.userRepository.save(user);
         } catch (e) {
             throw new Error(e.message);
         }

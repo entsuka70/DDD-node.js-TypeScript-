@@ -3,12 +3,13 @@ export default class PairId {
 
     static UUID_FORMAT = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
     static UUID_MATCHER = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+    static DEFAULT_PAIR_ID = '8392ec7e-da7c-46d4-9178-bfef97416400'
 
     constructor(pairId?: string) {
         if (pairId && !PairId.UUID_MATCHER.test(pairId)) {
             throw new Error('Do not match UUID FORMAT')
         }
-        this.pairId = pairId ?? PairId.generateUuid();
+        this.pairId = pairId ?? PairId.DEFAULT_PAIR_ID;
     }
 
     public get(): string {

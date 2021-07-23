@@ -3,12 +3,13 @@ export default class TeamId {
 
     static UUID_FORMAT = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
     static UUID_MATCHER = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
+    static DEFAULT_TEAM_ID = '06b5ea23-5029-4906-89c4-979f833715c4'
 
     constructor(teamId?: string) {
         if (teamId && !TeamId.UUID_MATCHER.test(teamId)) {
             throw new Error('Do not match UUID FORMAT')
         }
-        this.teamId = teamId ?? TeamId.generateUuid();
+        this.teamId = teamId ?? TeamId.DEFAULT_TEAM_ID;
     }
 
     public get(): string {

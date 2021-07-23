@@ -52,7 +52,7 @@ exports.create = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(201).send('Create : ' + req.body.user_name + ', ' + req.body.email)
+        res.status(201).send('Create User: UserName ' + req.body.user_name + ', Email ' + req.body.email)
     } catch (e) {
         res.status(400).send(`Error: User Create (${e.message})`);
     }
