@@ -19,6 +19,7 @@ model setupData {
 model User {
     id         String   @id @default(uuid())
     pair_id    String
+    team_id    String
     user_name  String
     email      String   @unique
     status     Int /// 1:在籍中, 2:休会中, 3:退会済み
@@ -27,6 +28,7 @@ model User {
 
     userIssue UserIssue[]
     pair      Pair        @relation(fields: [pair_id], references: [id])
+    team      Team        @relation(fields: [team_id], references: [id])
 }
 
 model UserIssue {
@@ -53,7 +55,7 @@ model Issue {
 
 model Pair {
     id         String   @id @default(uuid())
-    pair_name  String
+    pair_name  String   @unique
     belong     Boolean /// true: User所属, false: User無所属
     team_id    String
     created_at DateTime @default(now())
@@ -65,10 +67,11 @@ model Pair {
 
 model Team {
     id         String   @id @default(uuid())
-    team_name  String
+    team_name  Int      @unique
     belong     Boolean /// true: Pair所属 false: Pair無所属
     created_at DateTime @default(now())
     updated_at DateTime @updatedAt
 
     pair Pair[]
+    user User[]
 }
