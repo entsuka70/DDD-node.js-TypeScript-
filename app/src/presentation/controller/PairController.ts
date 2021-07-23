@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
-import PairApplication from "app/application/users/PairApplication";
+import PairApplication from "app/application/pair/PairApplication";
 import PairRepository from "infra/repository/PairRepository";
 import UserRepository from "infra/repository/UserRepository";
 
@@ -29,13 +29,18 @@ exports.update = async function (req: express.Request, res: express.Response) {
         const userRepository = new UserRepository(prisma);
         const pairApplication = new PairApplication(pairRepository, userRepository);
 
-        // NOTE::user, team情報がPOSTされた時の対処必要
-        const data = {
-            'id': parseInt(req.params.id),
+        type Props = {
+            id: string
+            team_id: string
+            belong: boolean
+            pair_name: string
+        }
+        const data: Props = {
+            'id': req.params.id,
+            'team_id': req.body.teams_id,
+            'belong': req.body.belong,
             'pair_name': req.body.pair_name,
-            'teams_id': parseInt(req.body.teams_id),
         };
-
         await pairApplication.update(data);
         res.set({
             'content-type': 'text/plain',

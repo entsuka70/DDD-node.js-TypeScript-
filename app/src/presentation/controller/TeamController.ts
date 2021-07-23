@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
-import TeamApplication from "app/application/users/TeamApplication";
+import TeamApplication from "app/application/team/TeamApplication";
 import UserRepository from "infra/repository/UserRepository";
 
 // チーム一覧取得
@@ -26,9 +26,14 @@ exports.update = async function (req: express.Request, res: express.Response) {
         const userRepository = new UserRepository(prisma);
         const teamApplication = new TeamApplication(userRepository);
 
-        // NOTE::user, team情報がPOSTされた時の対処必要
-        const data = {
-            'id': parseInt(req.params.id),
+        type Props = {
+            id: string
+            belong: boolean
+            team_name: string
+        }
+        const data: Props = {
+            'id': req.params.id,
+            'belong': req.body.belong,
             'team_name': req.body.team_name,
         };
 

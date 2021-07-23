@@ -28,7 +28,7 @@ export default class PairApplication {
     }
 
     // NOTE::UserApplication::update()と全く同じになる
-    public async update(data: { id: string, pair_name: string, teams_id: number }) {
+    public async update(data: { id: string, team_id: string, belong: boolean, pair_name: string }) {
         try {
             // pair_idに紐づくPair情報を持ったUser集約
             const pairEntity = await this.pairRepository.find(data.id);

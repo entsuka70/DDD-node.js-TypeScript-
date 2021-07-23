@@ -1,6 +1,6 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
-import UserApplication from "app/application/users/UserApplication";
+import UserApplication from "app/application/user/UserApplication";
 import UserRepository from "infra/repository/UserRepository";
 import PairRepository from "infra/repository/PairRepository"
 
@@ -27,12 +27,22 @@ exports.create = async function (req: express.Request, res: express.Response) {
     const userRepository = new UserRepository(prisma);
     const pairRepository = new PairRepository(prisma);
     const userApplication = new UserApplication(userRepository, pairRepository);
-    const data = {
+
+    type Props = {
+        pair_id: string
+        team_id: string
+        status: number
+        user_name: string
+        email: string
+    }
+    const data: Props = {
+        'pair_id': req.body.pair_id,
+        'team_id': req.body.team_id,
+        'status': req.body.status,
         'user_name': req.body.user_name,
         'email': req.body.email,
-        'pair_id': parseInt(req.body.pair_id),
-        'belong_id': parseInt(req.body.belong_id)
     }
+
     try {
         const userCreate = await userApplication.create(data);
         res.set({
@@ -51,13 +61,22 @@ exports.update = async function (req: express.Request, res: express.Response) {
     const pairRepository = new PairRepository(prisma);
     const userApplication = new UserApplication(userRepository, pairRepository);
 
-    // NOTE::pair, team情報がPOSTされた時の対処必要
-    const data = {
-        'id': parseInt(req.params.id),
+    type Props = {
+        id: string
+        pair_id: string
+        team_id: string
+        status: number
+        user_name: string
+        email: string
+    };
+
+    const data: Props = {
+        'id': req.body.id,
+        'pair_id': req.body.pair_id,
+        'team_id': req.body.team_id,
+        'status': req.body.status,
         'user_name': req.body.user_name,
         'email': req.body.email,
-        'pair_id': parseInt(req.body.pair_id),
-        'belong_id': parseInt(req.body.belong_id),
     };
 
     try {
@@ -78,7 +97,7 @@ exports.delete = async function (req: express.Request, res: express.Response) {
     const pairRepository = new PairRepository(prisma);
     const userApplication = new UserApplication(userRepository, pairRepository);
     try {
-        const userDelete = await userApplication.delete(parseInt(req.params.id));
+        const userDelete = await userApplication.delete(req.params.id);
         res.set({
             'content-type': 'text/plain',
         });
