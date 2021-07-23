@@ -4,17 +4,19 @@ import UserName from 'domain/model/user/UserName';
 import UserEmail from 'domain/model/user/UserEmail';
 import UserStatus from 'domain/model/user/UserStatus';
 import PairId from 'domain/model/pair/PairId';
+import TeamId from 'domain/model/team/TeamId';
 import UserFactoryInterface from "domain/factory/UserFactoryInterface";
 
 export default class UserFactory implements UserFactoryInterface {
 
     public async create(data: {
-        pair_id: string, status: number, user_name: string, email: string,
+        pair_id: string, team_id: string, status: number, user_name: string, email: string,
     }): Promise<User> {
 
         const props = {
             id: new UserId(),
             pair_id: new PairId(data.pair_id),
+            team_id: new TeamId(data.team_id),
             status: new UserStatus(data.status),
             user_name: new UserName(data.user_name),
             email: new UserEmail(data.email)
@@ -23,10 +25,11 @@ export default class UserFactory implements UserFactoryInterface {
     }
 
     public async updateUser(user: User): Promise<User> {
-        const { id, pair_id, status, user_name, email } = user.getAllProperties();
+        const { id, pair_id, team_id, status, user_name, email } = user.getAllProperties();
         const props = {
             id: new UserId(id),
             pair_id: new PairId(pair_id),
+            team_id: new TeamId(team_id),
             status: new UserStatus(status),
             user_name: new UserName(user_name),
             email: new UserEmail(email)

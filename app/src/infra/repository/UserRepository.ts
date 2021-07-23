@@ -5,6 +5,7 @@ import UserName from 'domain/model/user/UserName';
 import UserEmail from 'domain/model/user/UserEmail';
 import UserStatus from 'domain/model/user/UserStatus';
 import PairId from 'domain/model/pair/PairId';
+import TeamId from 'domain/model/team/TeamId';
 import UserRepositoryInterface from "domain/model/user/UserRepositoryInterface";
 
 export default class UserRepository implements UserRepositoryInterface {
@@ -27,6 +28,7 @@ export default class UserRepository implements UserRepositoryInterface {
         const props = {
             id: new UserId(user.id),
             pair_id: new PairId(user.pair_id),
+            team_id: new TeamId(user.team_id),
             status: new UserStatus(user.status),
             user_name: new UserName(user.user_name),
             email: new UserEmail(user.email)
@@ -42,6 +44,7 @@ export default class UserRepository implements UserRepositoryInterface {
             const props = {
                 id: new UserId(user.id),
                 pair_id: new PairId(user.pair_id),
+                team_id: new TeamId(user.team_id),
                 status: new UserStatus(user.status),
                 user_name: new UserName(user.user_name),
                 email: new UserEmail(user.email)
@@ -52,12 +55,13 @@ export default class UserRepository implements UserRepositoryInterface {
     }
 
     public async save(user: User): Promise<void> {
-        const { id, pair_id, status, user_name, email } = user.getAllProperties();
+        const { id, pair_id, team_id, status, user_name, email } = user.getAllProperties();
 
         await this.prisma.user.create({
             data: {
                 id: id,
                 pair_id: pair_id,
+                team_id: team_id,
                 status: status,
                 user_name: user_name,
                 email: email,
@@ -69,7 +73,7 @@ export default class UserRepository implements UserRepositoryInterface {
 
 
     public async update(user: User): Promise<void> {
-        const { id, pair_id, status, user_name, email } = user.getAllProperties();
+        const { id, pair_id, team_id, status, user_name, email } = user.getAllProperties();
 
         await this.prisma.user.update({
             where: {
@@ -77,6 +81,7 @@ export default class UserRepository implements UserRepositoryInterface {
             },
             data: {
                 pair_id: pair_id,
+                team_id: team_id,
                 status: status,
                 user_name: user_name,
                 email: email,

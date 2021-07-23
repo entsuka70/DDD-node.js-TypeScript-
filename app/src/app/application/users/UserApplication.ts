@@ -34,7 +34,7 @@ export default class UserApplication {
         }
     }
 
-    public async create(data: { user_name: string, email: string, pair_id: string, status: number }) {
+    public async create(data: { user_name: string, email: string, pair_id: string, team_id: string, status: number }) {
         try {
             // メールアドレス重複チェック
             await this.userDomainService.isExist(data);
@@ -45,7 +45,7 @@ export default class UserApplication {
         }
     }
 
-    public async update(data: { id: string, user_name: string, email: string, pair_id: string, status: number }) {
+    public async update(data: { id: string, user_name: string, email: string, pair_id: string, team_id: string, status: number }) {
         try {
             const user = await this.userRepository.find(data.id);
             // メールアドレス重複チェック
