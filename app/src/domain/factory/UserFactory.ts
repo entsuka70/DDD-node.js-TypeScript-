@@ -1,164 +1,39 @@
 import User from "domain/model/user/User";
-import Pair from "domain/model/pair/index";
-import Team from "domain/model/team/index";
+import UserId from 'domain/model/user/UserId';
+import UserName from 'domain/model/user/UserName';
+import UserEmail from 'domain/model/user/UserEmail';
+import UserStatus from 'domain/model/user/UserStatus';
+import PairId from 'domain/model/pair/PairId';
 import UserFactoryInterface from "domain/factory/UserFactoryInterface";
-import UserDto from "app/dto/UserDto";
-import PairDto from "app/dto/PairDto";
-import TeamDto from "app/dto/TeamDto";
-import BelongsValueObject from "domain/valueobject/belongs";
-import { PrismaClient } from '@prisma/client';
-import UserDomainService from "domain/domainservice/UserDomainService";
 
 export default class UserFactory implements UserFactoryInterface {
 
-    private readonly userDomainService: UserDomainService;
-
-    constructor(userDomainService: UserDomainService) {
-        this.userDomainService = userDomainService;
-    }
-
-    public async createUserAll(userAggregations: User[]): Promise<UserDto[]> {
-        const users = await userAggregations.map(
-            (userAggregation): UserDto => {
-                return new UserDto(userAggregation);
-            }
-        )
-        return users;
-    }
-
-    public async createUser(data: {
-        pair_id: number, belong_id: number, user_name: string, email: string,
+    public async create(data: {
+        pair_id: string, status: number, user_name: string, email: string,
     }): Promise<User> {
 
-        const teamIns = new Team({
-            id: undefined,
-            team_name: Team.TEAM_NAME_NO_BELONG,
-        });
-
-        const pairIns = new Pair({
-            id: data.pair_id,
-            teams_id: Pair.DEFAULT_NO_TEAM_ID,
-            pair_name: Pair.PAIR_NAME_NO_BELONG,
-            team: teamIns,
-            user_id: [], // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
-        })
-
-        const belongObject = {
-            id: BelongsValueObject.DEFAULT_BLONGS_ID,
-            belong: BelongsValueObject.BELONGS,
-        };
-        const belongIns = new BelongsValueObject(belongObject);
-
-        const user = new User({
-            id: undefined,
-            pair_id: data.pair_id ?? Pair.DEFAULT_NO_PAIR_ID,
-            belong_id: BelongsValueObject.DEFAULT_BLONGS_ID,
-            user_name: data.user_name,
-            email: data.email,
-            belong: belongIns,
-            pair: pairIns,
-        });
-
-        return user;
-    }
-
-    public async updateUser(data: { id: number, user_name: string, email: string, pair_id: number, belong_id: number }, userEntity: User, pairData: User, belongEntity: BelongsValueObject): Promise<User> {
-        const teamIns = new Team({
-            id: userEntity.getAllProperties().pair.getAllProperties().teams_id,
-            team_name: userEntity.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
-        });
-
-        // pair および teamは別集約での更新処理とするので、データ変更は考慮しない
-        // 集約整合性の観点ではpair_idと整合性が無くなる可能性があるが、影響範囲が大きいので一旦保留
-        let user_ids: number[] = [];
-        if (data.pair_id) {
-            user_ids = pairData.getAllProperties().pair.getAllProperties().user_id;
-            user_ids.push(data.id);
+        const props = {
+            id: new UserId(),
+            pair_id: new PairId(data.pair_id),
+            status: new UserStatus(data.status),
+            user_name: new UserName(data.user_name),
+            email: new UserEmail(data.email)
         }
-
-        const pairIns = new Pair({
-            id: data.pair_id ?? userEntity.getAllProperties().pair.getAllProperties().id,
-            teams_id: pairData.getAllProperties().pair.getAllProperties().teams_id ?? userEntity.getAllProperties().pair.getAllProperties().teams_id,
-            pair_name: pairData.getAllProperties().pair.getAllProperties().pair_name ?? userEntity.getAllProperties().pair.getAllProperties().pair_name,
-            team: teamIns,
-            user_id: data.pair_id ? user_ids : userEntity.getAllProperties().pair.getAllProperties().user_id // NOTE:本来は複数入るが、Userエンティティに関わる処理を全体的に見直し必要なので一旦保留
-        });
-
-        const belongObject = {
-            id: belongEntity.getAllProperties().id ?? userEntity.getAllProperties().belong_id,
-            belong: belongEntity.getAllProperties().belong ?? userEntity.getAllProperties().belong.getAllProperties().belong,
-        };
-        const belongIns = new BelongsValueObject(belongObject);
-
-        let user = new User({
-            id: data.id,
-            pair_id: data.pair_id ?? userEntity.getAllProperties().pair_id,
-            belong_id: data.belong_id ?? userEntity.getAllProperties().belong_id,
-            user_name: data.user_name ?? userEntity.getAllProperties().user_name,
-            email: data.email ?? userEntity.getAllProperties().email,
-            belong: belongIns,
-            pair: pairIns,
-        });
-
-        return user;
+        return new User(props);
     }
 
-    // NOTE:ペアに関わるCRUDはペア集約で考えることが正しそうなので不要
-    public async updatePair(data: { id: number, pair_name: string, teams_id: number }, userPairEntity: User, teamData: User): Promise<User> {
-        const teamIns = new Team({
-            id: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().id,
-            team_name: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().team_name,
-        });
-        const pairIns = new Pair({
-            id: data.id,
-            teams_id: teamData.getAllProperties().pair.getAllProperties().team.getAllProperties().id ?? userPairEntity.getAllProperties().pair.getAllProperties().teams_id,
-            pair_name: data.pair_name ?? userPairEntity.getAllProperties().pair.getAllProperties().pair_name,
-            team: teamIns,
-            user_id: [data.id],
-        });
-        const belongObject = {
-            id: userPairEntity.getAllProperties().belong.getAllProperties().id,
-            belong: userPairEntity.getAllProperties().belong.getAllProperties().belong,
-        };
-        const belongIns = new BelongsValueObject(belongObject);
-        const user = new User({
-            id: userPairEntity.getAllProperties().id,
-            pair_id: userPairEntity.getAllProperties().pair_id,
-            belong_id: userPairEntity.getAllProperties().belong_id,
-            user_name: userPairEntity.getAllProperties().user_name,
-            email: userPairEntity.getAllProperties().email,
-            belong: belongIns,
-            pair: pairIns
-        });
-        return user;
+    public async updateUser(user: User): Promise<User> {
+        const { id, pair_id, status, user_name, email } = user.getAllProperties();
+        const props = {
+            id: new UserId(id),
+            pair_id: new PairId(pair_id),
+            status: new UserStatus(status),
+            user_name: new UserName(user_name),
+            email: new UserEmail(email)
+        }
+        return new User(props);
     }
 
-    // NOTE:ペアに関わるCRUDはペア集約で考えることが正しそうなので不要
-    // Userが参加しているペアをすべて返す
-    public async createPairAll(userAggregations: User[]): Promise<PairDto[]> {
-        const pairs: Pair[] = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair);
-
-        const pairsDtos: PairDto[] = await pairs.map((pair) => {
-            return new PairDto(pair);
-        });
-
-        // NOTE:重複ペアの削除
-        const pairsDtoAll = filterDuplicatedObject(pairsDtos);
-        return pairsDtoAll;
-    }
-
-    // NOTE:チームに関わるCRUDはチーム集約で考えることが正しそうなので不要
-    public async createTeamAll(userAggregations: User[]): Promise<TeamDto[]> {
-        const teams = await userAggregations.map(userAggregation => userAggregation.getAllProperties().pair.getAllProperties().team);
-
-        const teamDtos: TeamDto[] = await teams.map(team => {
-            return new TeamDto(team);
-        })
-
-        // NOTE:重複チームの削除
-        const teamsDtoAll = filterDuplicatedObject(teamDtos);
-        return teamsDtoAll;
-    }
 }
 
 // 重複するオブジェクトを除外する

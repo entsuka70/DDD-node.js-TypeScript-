@@ -1,7 +1,7 @@
-import PairRepositoryInterface from 'domain/repository/PairRepositoryInterface';
+import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import PairFactory from 'domain/factory/PairFactory';
 import PairDomainService from 'domain/domainservice/PairDomainService';
-import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 
 
 export default class PairApplication {
@@ -20,20 +20,20 @@ export default class PairApplication {
     public async findPairAll() {
         try {
             const pairAggregations = await this.pairRepository.findAll();
-            const pairAll = await this.pairFactory.createPairAll(pairAggregations);
-            return pairAll;
+            // ※※※※ DTOに詰め替えること ※※※※
+            return pairAggregations;
         } catch (e) {
             throw new Error(`Error PairApplication::findPairAll(): ${e.message}`);
         }
     }
 
     // NOTE::UserApplication::update()と全く同じになる
-    public async update(data: { id: number, pair_name: string, teams_id: number }) {
+    public async update(data: { id: string, pair_name: string, teams_id: number }) {
         try {
             // pair_idに紐づくPair情報を持ったUser集約
-            const pairEntity = await this.pairRepository.findById(data.id);
+            const pairEntity = await this.pairRepository.find(data.id);
             // teams_idに紐づくTeam情報を持ったUser集約
-            let pairData = await this.pairFactory.updatePair(data, pairEntity);
+            let pairData = await this.pairFactory.updatePair(pairEntity);
             await this.pairRepository.update(pairData);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);

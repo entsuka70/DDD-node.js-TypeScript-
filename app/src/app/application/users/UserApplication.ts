@@ -1,7 +1,7 @@
-import UserRepositoryInterface from 'domain/repository/UserRepositoryInterface';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 import UserFactory from 'domain/factory/UserFactory';
 import UserDomainService from 'domain/domainservice/UserDomainService';
-import PairRepositoryInterface from 'domain/repository/PairRepositoryInterface';
+import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import PairDomainService from 'domain/domainservice/PairDomainService';
 import PairFactory from 'domain/factory/PairFactory';
 
@@ -19,7 +19,7 @@ export default class UserApplication {
         this.pairRepository = pairRepository
         // コンストラクタで渡すとコントローラー層で呼び出すことが必要になるので、ここでドメインサービス初期化
         this.userDomainService = new UserDomainService(userRepository);
-        this.userFactory = new UserFactory(this.userDomainService);
+        this.userFactory = new UserFactory();
         this.pairDomainService = new PairDomainService(pairRepository, userRepository);
         this.pairFactory = new PairFactory(this.pairDomainService);
     }
@@ -27,37 +27,33 @@ export default class UserApplication {
     public async findUserAll() {
         try {
             const userAggregations = await this.userRepository.findAll();
-            const userAll = await this.userFactory.createUserAll(userAggregations);
-            return userAll;
+            // ※※※※ DTOに詰め替えること ※※※※
+            return userAggregations;
         } catch (e) {
             throw new Error(e.message);
         }
     }
 
-    public async create(data: { user_name: string, email: string, pair_id: number, belong_id: number }) {
+    public async create(data: { user_name: string, email: string, pair_id: string, status: number }) {
         try {
             // メールアドレス重複チェック
-            await this.userDomainService.checkDuplicateEmail(data);
-            let userAggregation = await this.userFactory.createUser(data);
-            await this.userRepository.create(userAggregation);
+            await this.userDomainService.isExist(data);
+            let userAggregation = await this.userFactory.create(data);
+            await this.userRepository.save(userAggregation);
         } catch (e) {
             throw new Error(e.message);
         }
     }
 
-    public async update(data: { id: number, user_name: string, email: string, pair_id: number, belong_id: number }) {
+    public async update(data: { id: string, user_name: string, email: string, pair_id: string, status: number }) {
         try {
+            const user = await this.userRepository.find(data.id);
             // メールアドレス重複チェック
-            await this.userDomainService.checkDuplicateEmail(data);
-            // User集約取得
-            const userAggregation = await this.userRepository.findByUserId(data.id);
-            const pairData = await this.userRepository.findByPairId(data.pair_id);
-            const belongObject = await this.userRepository.findBelongByBelongId(data.belong_id);
-
+            await this.userDomainService.isExist(data);
             // Factoryで更新する集約を形成
-            let userData = await this.userFactory.updateUser(data, userAggregation, pairData, belongObject);
+            let userData = await this.userFactory.updateUser(user);
             // 在籍以外の状態であれば自動でペア・チーム無所属
-            userData = await this.userDomainService.setNoPairAndNoTeamByBelong(userData);
+            // userData = await this.userDomainService.setNoPairAndNoTeamByBelong(userData);
             // ペアの自動編成
             // 4人:2つに分割,1名自動移動(未実装)
             // const userDatas = await this.pairDomainService.controlPairUser(userData);
@@ -68,7 +64,7 @@ export default class UserApplication {
         }
     }
 
-    public async delete(id: number) {
+    public async delete(id: string) {
         try {
             await this.userRepository.delete(id);
         } catch (e) {
