@@ -1,11 +1,4 @@
-type Props = {
-    id: string
-    pair_id: string
-    team_id: string
-    status: number
-    user_name: string
-    email: string
-}
+import express from 'express';
 
 export default class UserCreateCommand {
     public id: string
@@ -15,14 +8,13 @@ export default class UserCreateCommand {
     public user_name: string
     public email: string
 
-    constructor(props: Props) {
-        const { id, pair_id, team_id, status, user_name, email } = props;
-        this.id = id;
-        this.pair_id = pair_id;
-        this.team_id = team_id;
-        this.status = status;
-        this.user_name = user_name;
-        this.email = email;
+    constructor(req: express.Request) {
+        this.id = req.params.id
+        this.pair_id = req.body.pair_id;
+        this.team_id = req.body.team_id;
+        this.status = req.body.status;
+        this.user_name = req.body.user_name;
+        this.email = req.body.email;
     }
 
     public getId() {

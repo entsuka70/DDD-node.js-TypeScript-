@@ -29,26 +29,8 @@ exports.create = async function (req: express.Request, res: express.Response) {
     const pairRepository = new PairRepository(prisma);
     const userApplication = new UserApplication(userRepository, pairRepository);
 
-    type Props = {
-        id: string
-        pair_id: string
-        team_id: string
-        status: number
-        user_name: string
-        email: string
-    }
-
-    const data: Props = {
-        'id': req.body.id,
-        'pair_id': req.body.pair_id,
-        'team_id': req.body.team_id,
-        'status': req.body.status,
-        'user_name': req.body.user_name,
-        'email': req.body.email,
-    }
-
     try {
-        const userCreate = await userApplication.create(new UserCreateCommand(data));
+        const userCreate = await userApplication.create(new UserCreateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });
@@ -65,26 +47,8 @@ exports.update = async function (req: express.Request, res: express.Response) {
     const pairRepository = new PairRepository(prisma);
     const userApplication = new UserApplication(userRepository, pairRepository);
 
-    type Props = {
-        id: string
-        pair_id: string
-        team_id: string
-        status: number
-        user_name: string
-        email: string
-    };
-
-    const data: Props = {
-        'id': req.params.id,
-        'pair_id': req.body.pair_id,
-        'team_id': req.body.team_id,
-        'status': req.body.status,
-        'user_name': req.body.user_name,
-        'email': req.body.email,
-    };
-
     try {
-        await userApplication.update(new UserCreateCommand(data));
+        await userApplication.update(new UserCreateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });
