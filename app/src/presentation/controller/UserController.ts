@@ -12,7 +12,7 @@ exports.view = async function (req: express.Request, res: express.Response) {
     const pairRepository = new PairRepository(prisma);
     const userApplication = new UserApplication(userRepository, pairRepository);
     try {
-        const userAll = await userApplication.findUserAll();
+        const userAll = await userApplication.findAll();
         res.set({
             'content-type': 'application/json',
         });

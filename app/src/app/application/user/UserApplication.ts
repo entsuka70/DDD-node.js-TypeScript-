@@ -5,6 +5,7 @@ import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import PairDomainService from 'domain/domainservice/PairDomainService';
 import PairFactory from 'domain/factory/PairFactory';
 import UserCreateCommand from './UserCreateCommand';
+import UserDto from './UserDto';
 
 
 export default class UserApplication {
@@ -25,11 +26,11 @@ export default class UserApplication {
         this.pairFactory = new PairFactory(this.pairDomainService);
     }
 
-    public async findUserAll() {
+    public async findAll() {
         try {
             const userAggregations = await this.userRepository.findAll();
-            // ※※※※ DTOに詰め替えること ※※※※
-            return userAggregations;
+            const userDtos = userAggregations.map((userAggregation) => new UserDto(userAggregation))
+            return userDtos;
         } catch (e) {
             throw new Error(e.message);
         }
