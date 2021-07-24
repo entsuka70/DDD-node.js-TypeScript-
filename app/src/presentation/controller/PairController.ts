@@ -3,6 +3,7 @@ import { PrismaClient } from ".prisma/client";
 import PairApplication from "app/application/pair/PairApplication";
 import PairRepository from "infra/repository/PairRepository";
 import UserRepository from "infra/repository/UserRepository";
+import PairCreateCommand from 'app/application/pair/PairCreateCommand';
 
 // ペア一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
@@ -29,19 +30,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
         const userRepository = new UserRepository(prisma);
         const pairApplication = new PairApplication(pairRepository, userRepository);
 
-        type Props = {
-            id: string
-            team_id: string
-            belong: boolean
-            pair_name: string
-        }
-        const data: Props = {
-            'id': req.params.id,
-            'team_id': req.body.teams_id,
-            'belong': req.body.belong,
-            'pair_name': req.body.pair_name,
-        };
-        await pairApplication.update(data);
+        await pairApplication.update(new PairCreateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });

@@ -5,7 +5,7 @@ import UserStatus from './UserStatus';
 import PairId from '../pair/PairId';
 import TeamId from '../team/TeamId';
 
-type UserProps = {
+export type UserProps = {
     id: UserId
     pair_id: PairId
     team_id: TeamId

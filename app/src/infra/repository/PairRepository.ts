@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import PairRepositoryInterface from "domain/model/pair/PairRepositoryInterface";
-import Pair from 'domain/model/pair/Pair';
+import Pair, { PairProps } from 'domain/model/pair/Pair';
 import PairId from 'domain/model/pair/PairId';
 import TeamId from 'domain/model/team/TeamId';
 import UserId from 'domain/model/user/UserId';
@@ -14,8 +14,25 @@ export default class PairRepository implements PairRepositoryInterface {
         this.prisma = prisma;
     }
 
-    public async find(id: string): Promise<void> {
-
+    public async find(id: string): Promise<Pair> {
+        const pair = await this.prisma.pair.findFirst({
+            where: {
+                id: id
+            },
+            include: {
+                user: true
+            }
+        });
+        if (pair == null) {
+            throw new Error(`Not Found Pair Id : id is ${id}`)
+        }
+        const props: PairProps = {
+            id: new PairId(pair.id),
+            team_id: new TeamId(pair.team_id),
+            pair_name: new PairName(pair.pair_name),
+            user_ids: pair.user.map((u) => new UserId(u.id))
+        }
+        return new Pair(props);
     }
 
     public async findAll(): Promise<Pair[]> {
@@ -25,7 +42,7 @@ export default class PairRepository implements PairRepositoryInterface {
             }
         });
         const pairs = all_pairs.map((pair) => {
-            const props = {
+            const props: PairProps = {
                 id: new PairId(pair.id),
                 team_id: new TeamId(pair.team_id),
                 pair_name: new PairName(pair.pair_name),
@@ -40,8 +57,31 @@ export default class PairRepository implements PairRepositoryInterface {
 
     }
 
-    public async update(user: void): Promise<void> {
+    public async update(pair: Pair): Promise<void> {
+        const { id, team_id, pair_name, user_ids } = pair.getAllProperties();
 
+        await this.prisma.pair.update({
+            where: {
+                id: id,
+            },
+            data: {
+                team_id: team_id,
+                pair_name: pair_name,
+            }
+        });
+
+        if (user_ids.length != 0) {
+            await this.prisma.user.updateMany({
+                where: {
+                    id: {
+                        in: user_ids
+                    }
+                },
+                data: {
+                    pair_id: id
+                }
+            })
+        }
     }
 
     public async delete(id: string): Promise<void> {

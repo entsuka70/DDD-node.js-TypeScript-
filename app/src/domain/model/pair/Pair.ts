@@ -3,7 +3,7 @@ import TeamId from 'domain/model/team/TeamId';
 import UserId from '../user/UserId';
 import PairName from './PairName';
 
-type PairProps = {
+export type PairProps = {
     id: PairId
     team_id: TeamId
     pair_name: PairName
@@ -46,10 +46,10 @@ export default class Pair {
 
     public getAllProperties() {
         return {
-            id: this.id,
-            teams_id: this.team_id,
-            pair_name: this.pair_name,
-            user_ids: this.user_ids,
+            id: this.id.get(),
+            team_id: this.team_id.get(),
+            pair_name: this.pair_name.get(),
+            user_ids: this.user_ids.map((id) => id.get()),
         };
     }
 

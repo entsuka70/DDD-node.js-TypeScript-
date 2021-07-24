@@ -37,18 +37,3 @@ export default class UserFactory implements UserFactoryInterface {
     }
 
 }
-
-// 重複するオブジェクトを除外する
-function filterDuplicatedObject<T extends dtoProperty>(dtos: T[]): T[] {
-    const dtoIds = dtos.map((dto) => {
-        return dto.id;
-    });
-    const filterd: T[] = dtos.filter((dto: T, index: number) => {
-        return dtoIds.indexOf(dto.id) === index;
-    });
-    return filterd;
-}
-
-interface dtoProperty {
-    id: number | undefined;
-}

@@ -1,7 +1,12 @@
 import Pair from "domain/model/pair/Pair";
+import PairId from 'domain/model/pair/PairId';
+import TeamId from "domain/model/team/TeamId";
+import PairName from "domain/model/pair/PairName";
 import PairFactoryInterface from "domain/factory/PairFactoryInterface";
 import { PrismaClient } from '@prisma/client';
 import PairDomainService from "domain/domainservice/PairDomainService";
+import PairCreateCommand from "app/application/pair/PairCreateCommand";
+import UserId from "domain/model/user/UserId";
 
 export default class PairFactory implements PairFactoryInterface {
 
@@ -15,24 +20,15 @@ export default class PairFactory implements PairFactoryInterface {
         return data;
     }
 
-    public async updatePair(pairEntity: void): Promise<void> {
-
-        return;
+    public async update(command: PairCreateCommand, pair: Pair): Promise<Pair> {
+        const { id, team_id, pair_name, user_ids } = pair.getAllProperties();
+        const props = {
+            id: new PairId(command.id),
+            team_id: command.team_id ? new TeamId(command.team_id) : new TeamId(team_id),
+            pair_name: command.pair_name ? new PairName(command.pair_name) : new PairName(pair_name),
+            user_ids: command.user_ids ? command.user_ids.map((id) => new UserId(id)) : user_ids.map((id) => new UserId(id))
+        }
+        return new Pair(props);
     }
 
-}
-
-// 重複するオブジェクトを除外する
-function filterDuplicatedObject<T extends dtoProperty>(dtos: T[]): T[] {
-    const dtoIds = dtos.map((dto) => {
-        return dto.id;
-    });
-    const filterd: T[] = dtos.filter((dto: T, index: number) => {
-        return dtoIds.indexOf(dto.id) === index;
-    });
-    return filterd;
-}
-
-interface dtoProperty {
-    id: number | undefined;
 }

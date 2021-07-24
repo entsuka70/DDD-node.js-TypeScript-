@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import User from 'domain/model/user/User';
+import User, { UserProps } from 'domain/model/user/User';
 import UserId from 'domain/model/user/UserId';
 import UserName from 'domain/model/user/UserName';
 import UserEmail from 'domain/model/user/UserEmail';
@@ -25,7 +25,7 @@ export default class UserRepository implements UserRepositoryInterface {
             throw new Error(`Not Found User Id : id is ${id}`)
         }
 
-        const props = {
+        const props: UserProps = {
             id: new UserId(user.id),
             pair_id: new PairId(user.pair_id),
             team_id: new TeamId(user.team_id),
@@ -41,7 +41,7 @@ export default class UserRepository implements UserRepositoryInterface {
     public async findAll(): Promise<User[]> {
         const all_users = await this.prisma.user.findMany();
         const users = all_users.map((user): User => {
-            const props = {
+            const props: UserProps = {
                 id: new UserId(user.id),
                 pair_id: new PairId(user.pair_id),
                 team_id: new TeamId(user.team_id),

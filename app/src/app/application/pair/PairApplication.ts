@@ -3,6 +3,7 @@ import PairFactory from 'domain/factory/PairFactory';
 import PairDomainService from 'domain/domainservice/PairDomainService';
 import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 import PairDto from './PairDto';
+import PairCreateCommand from './PairCreateCommand';
 
 
 export default class PairApplication {
@@ -28,14 +29,11 @@ export default class PairApplication {
         }
     }
 
-    // NOTE::UserApplication::update()と全く同じになる
-    public async update(data: { id: string, team_id: string, belong: boolean, pair_name: string }) {
+    public async update(command: PairCreateCommand) {
         try {
-            // pair_idに紐づくPair情報を持ったUser集約
-            const pairEntity = await this.pairRepository.find(data.id);
-            // teams_idに紐づくTeam情報を持ったUser集約
-            let pairData = await this.pairFactory.updatePair(pairEntity);
-            await this.pairRepository.update(pairData);
+            const pair = await this.pairRepository.find(command.id);
+            const pairRebuild = await this.pairFactory.update(command, pair);
+            await this.pairRepository.update(pairRebuild);
         } catch (e) {
             throw new Error(`Error PairApplication::update(): ${e.message}`);
         }
