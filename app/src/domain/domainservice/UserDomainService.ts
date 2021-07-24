@@ -12,14 +12,27 @@ export default class UserDomainService {
         this.userRepository = userRepository;
     }
 
-    // 重複するメールアドレスは許容しない
-    public async isExist(email: string): Promise<Boolean> {
-        if (!email) {
+    // 既に永続下層に存在する対象User確認
+    public async isExist(target: string, type: string): Promise<Boolean> {
+        if (!target) {
             return false;
         }
         const users = await this.userRepository.findAll();
-        const duplicateEmailUser = users.filter((user) => user.getEmail() === email);
-        if (duplicateEmailUser.length) {
+        const isExistUser = users.filter((user) => {
+            switch (type) {
+                case 'email':
+                    user.getEmail() === target
+                    break;
+                case 'pair_id':
+                    user.getPairId() === target
+                    break;
+                case 'team_id':
+                    user.getTeamId() === target
+                    break;
+                default:
+            }
+        });
+        if (isExistUser.length) {
             return true;
         }
         return false;

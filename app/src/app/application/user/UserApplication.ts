@@ -39,7 +39,7 @@ export default class UserApplication {
     public async create(command: UserCreateCommand) {
         try {
             // メールアドレス重複チェック
-            if (await this.userDomainService.isExist(command.email)) {
+            if (await this.userDomainService.isExist(command.email, 'email')) {
                 throw new Error(`Email is already exist. You can not register ${command.email}`);
             }
             const user = await this.userFactory.create(command);
@@ -53,10 +53,19 @@ export default class UserApplication {
         try {
             const user = await this.userRepository.find(command.id);
             // メールアドレス重複チェック
-            if (await this.userDomainService.isExist(command.email)) {
+            if (await this.userDomainService.isExist(command.email, 'email')) {
                 throw new Error(`Email is already exist. You can not register ${command.email}`);
             }
-            // Factoryで更新する集約を形成
+            // 移動先ペア存在チェック
+            if (!await this.userDomainService.isExist(command.pair_id, 'pair_id')) {
+                throw new Error(`PairId does not exist. You can not register ${command.pair_id}`);
+            }
+            // 移動先チーム存在チェック
+            if (!await this.userDomainService.isExist(command.team_id, 'team_id')) {
+                throw new Error(`TeamId does not exist. You can not register ${command.team_id}`);
+            }
+
+            // Factoryで更新する集約を再構築
             const userRebuild = await this.userFactory.update(command, user);
             // 在籍以外の状態であれば自動でペア・チーム無所属
             // userData = await this.userDomainService.setNoPairAndNoTeamByBelong(userData);
