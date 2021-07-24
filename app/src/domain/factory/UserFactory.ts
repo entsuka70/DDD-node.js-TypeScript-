@@ -10,17 +10,15 @@ import UserCreateCommand from "app/application/user/UserCreateCommand";
 
 export default class UserFactory implements UserFactoryInterface {
 
-    public async create(data: {
-        pair_id: string, team_id: string, status: number, user_name: string, email: string,
-    }): Promise<User> {
+    public async create(command: UserCreateCommand): Promise<User> {
 
         const props = {
             id: new UserId(),
-            pair_id: new PairId(data.pair_id),
-            team_id: new TeamId(data.team_id),
-            status: new UserStatus(data.status),
-            user_name: new UserName(data.user_name),
-            email: new UserEmail(data.email)
+            pair_id: new PairId(command.pair_id),
+            team_id: new TeamId(command.team_id),
+            status: new UserStatus(command.status),
+            user_name: new UserName(command.user_name),
+            email: new UserEmail(command.email)
         }
         return new User(props);
     }
