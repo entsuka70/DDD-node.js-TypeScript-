@@ -1,5 +1,5 @@
 import User from "domain/model/user/User";
-import Pair from "domain/model/pair";
+import Pair from "domain/model/pair/Pair";
 import Team from "domain/model/team";
 import PairRepositoryInterface from "domain/model/pair/PairRepositoryInterface";
 import UserRepositoryInterface from "domain/model/user/UserRepositoryInterface";

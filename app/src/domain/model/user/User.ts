@@ -72,7 +72,7 @@ export default class User {
     }
 
     public getTeamId() {
-        return this.pair_id.get()
+        return this.team_id.get()
     }
 
     public getStatus() {

@@ -1,4 +1,4 @@
-import Pair from "domain/model/pair/index"
+import Pair from "domain/model/pair/Pair"
 
 export default interface PairFactoryInterface {
     create(user: object): Promise<object>;

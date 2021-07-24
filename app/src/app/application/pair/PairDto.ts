@@ -1,22 +1,15 @@
-import Pair from "domain/model/pair"
-import Team from "domain/model/team"
+import Pair from "domain/model/pair/Pair"
 
 export default class PairDto {
-    public readonly id: number | undefined;
-    public readonly teams_id: number;
+    public readonly id: string;
+    public readonly team_id: string;
     public readonly pair_name: string;
-    public readonly team: Team;
-    public readonly user_id: number[] | undefined;
-
-    static DEFAULT_PAIR_ID = 1;
-    static DEFAULT_TEAM_ID = 1;
-    static PAIR_NAME_NO_BELONG = 'n';
+    public readonly user_ids: string[];
 
     constructor(pair: Pair) {
-        this.id = pair.getAllProperties().id ?? PairDto.DEFAULT_PAIR_ID;
-        this.teams_id = pair.getAllProperties().teams_id ?? PairDto.DEFAULT_TEAM_ID;
-        this.pair_name = pair.getAllProperties().pair_name ?? PairDto.PAIR_NAME_NO_BELONG;
-        this.team = pair.getAllProperties().team;
-        this.user_id = pair.getAllProperties().user_id;
+        this.id = pair.getId();
+        this.team_id = pair.getTeamId();
+        this.pair_name = pair.getPairName();
+        this.user_ids = pair.getUserIds();
     }
 }

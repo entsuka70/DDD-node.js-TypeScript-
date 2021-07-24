@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 
 import PairRepositoryInterface from "domain/model/pair/PairRepositoryInterface";
-import Pair from 'domain/model/pair';
+import Pair from 'domain/model/pair/Pair';
 
 export default class PairRepository implements PairRepositoryInterface {
     private prisma: PrismaClient

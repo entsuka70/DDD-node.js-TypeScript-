@@ -1,4 +1,4 @@
-import Pair from "domain/model/pair/index";
+import Pair from "domain/model/pair/Pair";
 import PairFactoryInterface from "domain/factory/PairFactoryInterface";
 import { PrismaClient } from '@prisma/client';
 import PairDomainService from "domain/domainservice/PairDomainService";

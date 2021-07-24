@@ -3,7 +3,7 @@ import User from 'domain/model/user/User';
 import BelongsValueObject from 'domain/valueobject/belongs/index';
 import IssueRepositoryInterface from "domain/model/issue/IssueRepositoryInterface";
 import IssueFactory from 'domain/factory/IssueFactory';
-import Pair from 'domain/model/pair';
+import Pair from 'domain/model/pair/Pair';
 import Team from 'domain/model/team';
 
 export default class IssueRepository implements IssueRepositoryInterface {
