@@ -11,6 +11,9 @@ type PairProps = {
 }
 
 export default class Pair {
+    static MIN_PAIR_USER = 1;
+    static MAX_PAIR_USER = 4;
+
     private id: PairId;
     private team_id: TeamId;
     private pair_name: PairName;
@@ -30,6 +33,9 @@ export default class Pair {
         }
         if (!user_ids) {
             throw new Error('Please set user_ids at Pair Domain')
+        }
+        if (user_ids.length <= Pair.MIN_PAIR_USER && user_ids.length >= Pair.MAX_PAIR_USER) {
+            throw new Error('Incorrect number of users joining the pair at Pair Domain')
         }
 
         this.id = id;
