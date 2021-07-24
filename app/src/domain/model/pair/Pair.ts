@@ -34,8 +34,8 @@ export default class Pair {
         if (!user_ids) {
             throw new Error('Please set user_ids at Pair Domain')
         }
-        if (user_ids.length <= Pair.MIN_PAIR_USER && user_ids.length >= Pair.MAX_PAIR_USER) {
-            throw new Error('Incorrect number of users joining the pair at Pair Domain')
+        if (user_ids.length <= Pair.MIN_PAIR_USER || user_ids.length >= Pair.MAX_PAIR_USER) {
+            throw new Error(`Incorrect number of users joining the pair at Pair Domain. Pair id : ${id.get()}}`)
         }
 
         this.id = id;

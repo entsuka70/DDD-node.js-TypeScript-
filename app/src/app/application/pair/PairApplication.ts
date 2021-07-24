@@ -2,6 +2,7 @@ import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import PairFactory from 'domain/factory/PairFactory';
 import PairDomainService from 'domain/domainservice/PairDomainService';
 import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
+import PairDto from './PairDto';
 
 
 export default class PairApplication {
@@ -20,8 +21,8 @@ export default class PairApplication {
     public async findPairAll() {
         try {
             const pairAggregations = await this.pairRepository.findAll();
-            // ※※※※ DTOに詰め替えること ※※※※
-            return pairAggregations;
+            const pairDtos = pairAggregations.map((pairAggregation) => new PairDto(pairAggregation));
+            return pairDtos;
         } catch (e) {
             throw new Error(`Error PairApplication::findPairAll(): ${e.message}`);
         }
