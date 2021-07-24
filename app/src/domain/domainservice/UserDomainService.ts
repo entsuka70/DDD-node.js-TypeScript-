@@ -1,7 +1,6 @@
-import BelongsValueObject from "domain/valueobject/belongs";
 import User from "domain/model/user/User";
-import Pair from "domain/model/pair";
-import Team from "domain/model/team";
+import PairId from 'domain/model/pair/PairId';
+import TeamId from 'domain/model/team/TeamId';
 import UserRepositoryInterface from "domain/model/user/UserRepositoryInterface";
 
 export default class UserDomainService {
@@ -36,6 +35,13 @@ export default class UserDomainService {
             return true;
         }
         return false;
+    }
+
+    // 在籍以外の状態であれば自動でペア・チーム無所属
+    public async setPairAndTeam(user: User): Promise<User> {
+        user.changePairId(new PairId(PairId.DEFAULT_PAIR_ID));
+        user.changeTeamId(new TeamId(TeamId.DEFAULT_TEAM_ID));
+        return user;
     }
 
 }

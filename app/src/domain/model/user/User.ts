@@ -87,6 +87,20 @@ export default class User {
         return this.email.get()
     }
 
+    public changePairId(pair_id: PairId) {
+        if (!pair_id) {
+            throw new Error('changePairId is empty');
+        }
+        this.pair_id = pair_id;
+    }
+
+    public changeTeamId(team_id: TeamId) {
+        if (!team_id) {
+            throw new Error('changeTeamId is empty');
+        }
+        this.team_id = team_id;
+    }
+
     public changeStatus(status: UserStatus) {
         if (!status) {
             throw new Error('chnageStatus is empty');
