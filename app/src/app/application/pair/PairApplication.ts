@@ -32,6 +32,10 @@ export default class PairApplication {
     public async update(command: PairCreateCommand) {
         try {
             const pair = await this.pairRepository.find(command.id);
+            // ユーザーid存在チェック
+            if (command.user_ids && !await this.pairDomainService.isExist(command, 'user_ids')) {
+                throw new Error(`UserId does not exist. You can not register ${command.user_ids}`);
+            }
             const pairRebuild = await this.pairFactory.update(command, pair);
             await this.pairRepository.update(pairRebuild);
         } catch (e) {
