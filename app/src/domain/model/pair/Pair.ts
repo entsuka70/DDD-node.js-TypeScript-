@@ -12,6 +12,7 @@ export type PairProps = {
 
 export default class Pair {
     static MIN_PAIR_USER = 1;
+    static MIN_ACCEPTABLE_PAIR_USER = 2;
     static MAX_PAIR_USER = 4;
 
     private id: PairId;
@@ -30,12 +31,6 @@ export default class Pair {
         }
         if (!pair_name) {
             throw new Error('Please set pair_name at Pair Domain')
-        }
-        if (!user_ids) {
-            throw new Error('Please set user_ids at Pair Domain')
-        }
-        if (id.get() !== PairId.DEFAULT_PAIR_ID && (user_ids.length == Pair.MIN_PAIR_USER || user_ids.length >= Pair.MAX_PAIR_USER)) {
-            throw new Error(`Incorrect number of users joining the pair at Pair Domain. Pair id : ${id.get()}}`)
         }
 
         this.id = id;
@@ -67,5 +62,13 @@ export default class Pair {
 
     public getUserIds() {
         return this.user_ids.map((user_id) => user_id.get());
+    }
+
+    public changeUserIds(user_ids?: UserId[]) {
+        this.user_ids = user_ids ?? []
+    }
+
+    public isExistUser(user_id: string) {
+        return this.user_ids.some((u_id) => u_id.get() === user_id);
     }
 }
