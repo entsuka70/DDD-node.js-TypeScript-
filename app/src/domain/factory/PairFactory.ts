@@ -31,4 +31,16 @@ export default class PairFactory implements PairFactoryInterface {
         return new Pair(props);
     }
 
+    public move(from: Pair, to: Pair): Pair[] {
+        if (from.getUserIds().length != Pair.MIN_PAIR_USER) {
+            throw new Error('UserIds which Pair has is not MIN_PAIR_USER(length = 1)')
+        }
+        const fromUser = from.getUserIds();
+        const toUser = to.getUserIds();
+        toUser.push(fromUser[0]);
+        from.changeUserIds();
+        to.changeUserIds(toUser.map((u) => new UserId(u)));
+        return [from, to];
+    }
+
 }

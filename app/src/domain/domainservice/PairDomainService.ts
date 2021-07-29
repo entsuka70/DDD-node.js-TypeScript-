@@ -53,6 +53,5 @@ export default class PairDomainService {
         return false;
     }
 
-    // ペア人数の自動編成
 
 }
