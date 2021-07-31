@@ -3,7 +3,6 @@ import PairId from 'domain/model/pair/PairId';
 import TeamId from "domain/model/team/TeamId";
 import PairName from "domain/model/pair/PairName";
 import PairFactoryInterface from "domain/factory/PairFactoryInterface";
-import { PrismaClient } from '@prisma/client';
 import PairDomainService from "domain/domainservice/PairDomainService";
 import PairCreateCommand from "app/application/pair/PairCreateCommand";
 import UserId from "domain/model/user/UserId";

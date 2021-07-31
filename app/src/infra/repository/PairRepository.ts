@@ -93,6 +93,34 @@ export default class PairRepository implements PairRepositoryInterface {
         return new Pair(props);
     }
 
+    public async findFree(): Promise<Pair[]> {
+        const pairs = await this.prisma.pair.findMany({
+            include: {
+                _count: {
+                    select: {
+                        user: true
+                    }
+                },
+                user: true
+            }
+        });
+
+        // ユーザーを含まないペア抽出
+        const freePairs = pairs.filter((pair) => pair._count?.user == 0);
+        if (!freePairs.length) {
+            throw new Error('Not found free pair.');
+        }
+
+        return freePairs.map((p) => {
+            return new Pair({
+                id: new PairId(p.id),
+                team_id: new TeamId(p.team_id),
+                pair_name: new PairName(p.pair_name),
+                user_ids: p.user.map((u) => new UserId(u.id))
+            })
+        });
+    }
+
     public async save(user: Pair): Promise<void> {
 
     }

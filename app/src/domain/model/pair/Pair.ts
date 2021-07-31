@@ -64,6 +64,10 @@ export default class Pair {
         return this.user_ids.map((user_id) => user_id.get());
     }
 
+    public getUserIdsInstance() {
+        return this.user_ids;
+    }
+
     public changeUserIds(user_ids?: UserId[]) {
         this.user_ids = user_ids ?? []
     }

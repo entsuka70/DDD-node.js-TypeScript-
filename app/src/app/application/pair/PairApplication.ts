@@ -40,6 +40,29 @@ export default class PairApplication {
             }
             const pairRebuild = await this.pairFactory.update(command, pair);
 
+            // ※※※ ペアにユーザーが増えた時の自動制御および不整合制御 ※※※
+            if (pairRebuild.getUserIds().length > Pair.MAX_PAIR_USER) {
+                throw new Error('You can not set the User to other pair because the maximum number of users is 4 in pair.')
+            }
+
+            // ※※※ ペアにユーザーが増えた時の自動制御および不整合制御 ※※※
+            if (pairRebuild.getUserIds().length == Pair.MAX_PAIR_USER) {
+                // ※※※ プログラムからペア作成を行わず、ペアを事前に多量作成しておいてそこにあてがう仕様 ※※※
+                // ユーザーが所属していないペアA,Bを2つ探す
+                // ペアAにユーザー2名設定する。ペアBにユーザー2名を設定する。
+                const shouldJoinPairs = await this.pairRepository.findFree();
+
+                if (!shouldJoinPairs || shouldJoinPairs.length <= 2) {
+                    throw new Error(`The pair that user can join is too few. ${shouldJoinPairs}`);
+                }
+
+                // ランダムに抽出したペアにユーザーをセット
+                shouldJoinPairs[0].changeUserIds(pairRebuild.getUserIdsInstance().filter((ins, index) => index <= 1));
+                shouldJoinPairs[1].changeUserIds(pairRebuild.getUserIdsInstance().filter((ins, index) => index > 1));
+                await Promise.all(shouldJoinPairs.map(async (pair) => await this.pairRepository.update(pair)));
+                return;
+            }
+
             // ※※※ ペア内ユーザーが減った時(ユーザー2名からユーザー1名)の自動制御および不整合制御 ※※※
             if (pairRebuild.getUserIds().length == Pair.MIN_PAIR_USER && pair.getUserIds().length == Pair.MIN_ACCEPTABLE_PAIR_USER) {
                 const pairMinUser = await this.pairRepository.findMinUser(pairRebuild);
