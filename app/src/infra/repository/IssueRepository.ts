@@ -4,7 +4,7 @@ import BelongsValueObject from 'domain/valueobject/belongs/index';
 import IssueRepositoryInterface from "domain/model/issue/IssueRepositoryInterface";
 import IssueFactory from 'domain/factory/IssueFactory';
 import Pair from 'domain/model/pair/Pair';
-import Team from 'domain/model/team';
+import Team from 'domain/model/team/Team';
 
 export default class IssueRepository implements IssueRepositoryInterface {
     private prisma: PrismaClient

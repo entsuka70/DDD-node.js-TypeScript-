@@ -1,6 +1,6 @@
 import User from "domain/model/user/User";
 import Pair from "domain/model/pair/Pair";
-import Team from "domain/model/team";
+import Team from "domain/model/team/Team";
 import PairRepositoryInterface from "domain/model/pair/PairRepositoryInterface";
 import UserRepositoryInterface from "domain/model/user/UserRepositoryInterface";
 import PairCreateCommand from "app/application/pair/PairCreateCommand";
