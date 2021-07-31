@@ -1,6 +1,7 @@
 import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
 import TeamFactory from 'domain/factory/TeamFactory';
 import TeamCreateCommand from './TeamCreateCommand';
+import TeamDto from './TeamDto';
 
 export default class TeamApplication {
     private readonly teamRepository: TeamRepositoryInterface;
@@ -14,10 +15,10 @@ export default class TeamApplication {
     public async findTeamAll() {
         try {
             const teamEntities = await this.teamRepository.findAll();
-            // ※※※※ DTOに詰め替えること ※※※※
-            return teamEntities;
+            const teamDtos = teamEntities.map((teamEntity) => new TeamDto(teamEntity));
+            return teamDtos;
         } catch (e) {
-            throw new Error(`Error TeamApplication::findPairAll(): ${e.message}`);
+            throw new Error(`Error TeamApplication::findTeamAll(): ${e.message}`);
         }
     }
 

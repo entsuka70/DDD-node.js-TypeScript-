@@ -34,9 +34,10 @@ export default class Team {
             throw new Error('Please set user_ids at Team Domain')
         }
 
-        if (user_ids.length < Team.MIN_TEAM_USER) {
-            throw new Error('Make sure you have at least 3 users in your team.')
-        }
+        // 現時点で未所属チームが発生しているので仮コメントアウト
+        // if (user_ids.length < Team.MIN_TEAM_USER) {
+        //     throw new Error('Make sure you have at least 3 users in your team.')
+        // }
 
         this.id = id;
         this.team_name = team_name;
