@@ -1,14 +1,14 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import TeamApplication from "app/application/team/TeamApplication";
-import UserRepository from "infra/repository/UserRepository";
+import TeamRepository from "infra/repository/TeamRepository";
 
 // チーム一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userRepository = new UserRepository(prisma);
-        const teamApplication = new TeamApplication(userRepository);
+        const teamRepository = new TeamRepository(prisma);
+        const teamApplication = new TeamApplication(teamRepository);
         const teamAll = await teamApplication.findTeamAll();
         res.set({
             'content-type': 'application/json',
@@ -23,8 +23,8 @@ exports.view = async function (req: express.Request, res: express.Response) {
 exports.update = async function (req: express.Request, res: express.Response) {
     try {
         const prisma = new PrismaClient();
-        const userRepository = new UserRepository(prisma);
-        const teamApplication = new TeamApplication(userRepository);
+        const teamRepository = new TeamRepository(prisma);
+        const teamApplication = new TeamApplication(teamRepository);
 
         type Props = {
             id: string

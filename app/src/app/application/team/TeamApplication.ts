@@ -1,36 +1,32 @@
-import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
-import UserFactory from 'domain/factory/UserFactory';
-import UserDomainService from 'domain/domainservice/UserDomainService';
-
+import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
+import TeamFactory from 'domain/factory/TeamFactory';
 
 export default class TeamApplication {
-    private readonly userRepository: UserRepositoryInterface;
-    private readonly userFactory: UserFactory;
-    private readonly userDomainService: UserDomainService;
+    private readonly teamRepository: TeamRepositoryInterface;
+    private readonly teamFactory: TeamFactory;
 
-    constructor(userRepository: UserRepositoryInterface) {
-        this.userRepository = userRepository;
-        this.userDomainService = new UserDomainService(userRepository);
-        this.userFactory = new UserFactory();
+    constructor(teamRepository: TeamRepositoryInterface) {
+        this.teamRepository = teamRepository;
+        this.teamFactory = new TeamFactory();
     }
 
     public async findTeamAll() {
         try {
-            const userEntities = await this.userRepository.findAll();
+            const teamEntities = await this.teamRepository.findAll();
             // ※※※※ DTOに詰め替えること ※※※※
-            return userEntities;
+            return teamEntities;
         } catch (e) {
-            throw new Error(`Error PairApplication::findPairAll(): ${e.message}`);
+            throw new Error(`Error TeamApplication::findPairAll(): ${e.message}`);
         }
     }
 
     public async update(data: { id: string }) {
         try {
-            const userAggregation = await this.userRepository.find(data.id);
+            const teamAggregation = await this.teamRepository.find(data.id);
             // TODO:要動作確認
-            await this.userRepository.update(userAggregation);
+            await this.teamRepository.update(teamAggregation);
         } catch (e) {
-            throw new Error(`Error PairApplication::update(): ${e.message}`);
+            throw new Error(`Error TeamApplication::update(): ${e.message}`);
         }
     }
 }
