@@ -15,7 +15,6 @@ export default class UserApplication {
     private readonly userFactory: UserFactory;
     private readonly pairRepository: PairRepositoryInterface;
     private readonly pairDomainService: PairDomainService;
-    private readonly pairFactory: PairFactory;
 
     constructor(userRepository: UserRepositoryInterface, pairRepository: PairRepositoryInterface) {
         this.userRepository = userRepository;
@@ -24,7 +23,6 @@ export default class UserApplication {
         this.userDomainService = new UserDomainService(userRepository);
         this.userFactory = new UserFactory();
         this.pairDomainService = new PairDomainService(pairRepository, userRepository);
-        this.pairFactory = new PairFactory(this.pairDomainService);
     }
 
     public async findAll() {

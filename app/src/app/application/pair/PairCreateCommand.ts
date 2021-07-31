@@ -12,20 +12,4 @@ export default class PairCreateCommand {
         this.pair_name = req.body.pair_name;
         this.user_ids = req.body.user_ids
     }
-
-    public getId() {
-        return this.id;
-    }
-
-    public getTeamId() {
-        return this.team_id;
-    }
-
-    public getPairName() {
-        return this.pair_name;
-    }
-
-    public getUserIds() {
-        return this.user_ids;
-    }
 }

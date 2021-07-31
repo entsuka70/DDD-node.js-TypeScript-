@@ -18,7 +18,7 @@ export default class PairApplication {
         this.pairRepository = pairRepository;
         this.userRepository = userRepository;
         this.pairDomainService = new PairDomainService(pairRepository, userRepository);
-        this.pairFactory = new PairFactory(this.pairDomainService);
+        this.pairFactory = new PairFactory();
     }
 
     public async findPairAll() {
