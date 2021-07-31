@@ -1,5 +1,6 @@
 import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
 import TeamFactory from 'domain/factory/TeamFactory';
+import TeamCreateCommand from './TeamCreateCommand';
 
 export default class TeamApplication {
     private readonly teamRepository: TeamRepositoryInterface;
@@ -20,9 +21,9 @@ export default class TeamApplication {
         }
     }
 
-    public async update(data: { id: string }) {
+    public async update(command: TeamCreateCommand) {
         try {
-            const teamAggregation = await this.teamRepository.find(data.id);
+            const teamAggregation = await this.teamRepository.find(command.id);
             // TODO:要動作確認
             await this.teamRepository.update(teamAggregation);
         } catch (e) {

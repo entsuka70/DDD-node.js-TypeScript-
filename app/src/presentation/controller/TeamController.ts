@@ -2,6 +2,7 @@ import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import TeamApplication from "app/application/team/TeamApplication";
 import TeamRepository from "infra/repository/TeamRepository";
+import TeamCreateCommand from "app/application/team/TeamCreateCommand"
 
 // チーム一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
@@ -26,18 +27,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
         const teamRepository = new TeamRepository(prisma);
         const teamApplication = new TeamApplication(teamRepository);
 
-        type Props = {
-            id: string
-            belong: boolean
-            team_name: string
-        }
-        const data: Props = {
-            'id': req.params.id,
-            'belong': req.body.belong,
-            'team_name': req.body.team_name,
-        };
-
-        await teamApplication.update(data);
+        await teamApplication.update(new TeamCreateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });
