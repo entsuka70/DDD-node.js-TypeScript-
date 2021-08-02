@@ -44,13 +44,15 @@ export default class TeamApplication {
             const rebuildTeam = await this.teamFactory.update(command, team);
             // ※※※ 2名以下のチームは他のチームに自動合流 ※※※
             if (rebuildTeam.getUserIds().length < Team.MIN_TEAM_USER) {
-                // ※※※ TODO: 動作未検証 ※※※
+                console.log('Automatic merging due to small number of users to be updated.')
                 // 3名以上参加しているチームを探索
                 const canJoinTeam = await this.teamRepository.findMinUser();
-                // ※※※　canJoinTeamが存在しない場合、参加できるチームを自動作成する処理の追加が必要 ※※※
+                if (canJoinTeam == null) {
+                    throw new Error('There is not exist Team which has min user')
+                }
                 // チーム合流
-                rebuildTeam.changeTeam(canJoinTeam);
-                await this.teamRepository.update(rebuildTeam);
+                canJoinTeam.acceptTeam(rebuildTeam);
+                await this.teamRepository.update(canJoinTeam);
                 return;
             }
 

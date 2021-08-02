@@ -83,7 +83,7 @@ export default class TeamRepository implements TeamRepositoryInterface {
             }
         });
         // ユーザー数3名以上のチームを抽出
-        const minUserTeams = teams.filter((team) => team._count && team._count.user >= Team.MIN_TEAM_USER)
+        const minUserTeams = teams.filter((team) => team._count && team._count.user >= Team.MIN_TEAM_USER && team.id !== TeamId.DEFAULT_TEAM_ID);
         if (!minUserTeams || !minUserTeams.length) {
             // ※※※ 自動的にユーザー数3人以上のチームを作成する処理が必要 ※※※
             throw new Error('There is not exist Team which has min user');

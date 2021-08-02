@@ -78,9 +78,9 @@ export default class Team {
         this.user_ids = user_ids ?? []
     }
 
-    public changeTeam(team: Team) {
-        this.pair_ids = team.pair_ids;
-        this.user_ids = team.user_ids;
+    public acceptTeam(team: Team) {
+        this.pair_ids = this.pair_ids.concat(team.pair_ids);
+        this.user_ids = this.user_ids.concat(team.user_ids);
     }
 
 }
