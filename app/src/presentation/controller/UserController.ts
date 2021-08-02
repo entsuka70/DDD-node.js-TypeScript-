@@ -16,9 +16,9 @@ exports.view = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'application/json',
         });
-        res.status(200).json(userAll);
+        return res.status(200).json(userAll);
     } catch (e) {
-        res.status(400).send(`Error: User View (${e.message})`);
+        return res.status(400).send(`Error: User View (${e.message})`);
     }
 }
 
@@ -34,9 +34,9 @@ exports.create = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(201).send('Create User: UserName ' + req.body.user_name + ', Email ' + req.body.email)
+        return res.status(201).send('Create User: UserName ' + req.body.user_name + ', Email ' + req.body.email)
     } catch (e) {
-        res.status(400).send(`Error: User Create (${e.message})`);
+        return res.status(400).send(`Error: User Create (${e.message})`);
     }
 }
 
@@ -52,9 +52,9 @@ exports.update = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(201).send('Update success');
+        return res.status(201).send('Update success');
     } catch (e) {
-        res.status(400).send(`Error: User Update (${e.message})`);
+        return res.status(400).send(`Error: User Update (${e.message})`);
     }
 }
 
@@ -69,8 +69,8 @@ exports.delete = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(201).send('Delete success');
+        return res.status(201).send('Delete success');
     } catch (e) {
-        res.status(400).send(`Error: User Delete (${e.message})`);
+        return res.status(400).send(`Error: User Delete (${e.message})`);
     }
 }

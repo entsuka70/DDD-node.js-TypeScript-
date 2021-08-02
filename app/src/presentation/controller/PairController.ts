@@ -16,9 +16,9 @@ exports.view = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'application/json',
         });
-        res.status(200).json(pairAll);
+        return res.status(200).json(pairAll);
     } catch (e) {
-        res.status(400).send(e.message);
+        return res.status(400).send(e.message);
     }
 }
 
@@ -34,8 +34,8 @@ exports.update = async function (req: express.Request, res: express.Response) {
         res.set({
             'content-type': 'text/plain',
         });
-        res.status(201).send('Update success');
+        return res.status(201).send('Update success');
     } catch (e) {
-        res.status(400).send(e.message);
+        return res.status(400).send(e.message);
     }
 }
