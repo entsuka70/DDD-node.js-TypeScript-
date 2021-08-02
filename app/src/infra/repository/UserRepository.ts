@@ -54,6 +54,31 @@ export default class UserRepository implements UserRepositoryInterface {
         return users;
     }
 
+    public async findByPairIds(ids: string[]): Promise<User[]> {
+        const users = await this.prisma.user.findMany({
+            where: {
+                pair: {
+                    id: {
+                        in: ids
+                    }
+                }
+            }
+        });
+
+        const all_users = users.map((user) => {
+            const props: UserProps = {
+                id: new UserId(user.id),
+                pair_id: new PairId(user.pair_id),
+                team_id: new TeamId(user.team_id),
+                status: new UserStatus(user.status),
+                user_name: new UserName(user.user_name),
+                email: new UserEmail(user.email),
+            }
+            return new User(props);
+        });
+        return all_users;
+    }
+
     public async save(user: User): Promise<void> {
         const { id, pair_id, team_id, status, user_name, email } = user.getAllProperties();
 

@@ -78,4 +78,9 @@ export default class Team {
         this.user_ids = user_ids ?? []
     }
 
+    public changeTeam(team: Team) {
+        this.pair_ids = team.pair_ids;
+        this.user_ids = team.user_ids;
+    }
+
 }

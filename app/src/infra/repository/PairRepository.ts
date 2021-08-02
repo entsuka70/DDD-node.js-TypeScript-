@@ -66,31 +66,59 @@ export default class PairRepository implements PairRepositoryInterface {
         });
 
         // ユーザー数2名のペア抽出
-        const minUserPair = pairs.filter((pair) => pair._count?.user == Pair.MIN_ACCEPTABLE_PAIR_USER);
+        const minUserPairs = pairs.filter((pair) => pair._count?.user == Pair.MIN_ACCEPTABLE_PAIR_USER);
 
-        if (!minUserPair || !minUserPair.length) {
+        if (!minUserPairs || !minUserPairs.length) {
             throw new Error('There is not exist Pair which has min user')
         }
 
         // findMinUser()に渡されたペア内のユーザーが、抽出したユーザー数2名のペア内に含まれるかをチェック
-        const isExistsUserArray = minUserPair.map((mP) => mP.user.map((u) => pair.isExistUser(u.id)));
+        const isExistsUserArray = minUserPairs.map((mP) => mP.user.map((u) => pair.isExistUser(u.id)));
         const isExist = isExistsUserArray.some((is) => is.some((i) => i == true));
 
         // ユーザー数2名のペアが2組で、その片方に渡されたペアに対象ユーザーが存在した場合は
         // ユーザー移動・ペア形成の不整合が発生するので例外発生処理
-        if (minUserPair.length == Pair.MIN_ACCEPTABLE_PAIR_USER && isExist) {
+        if (minUserPairs.length == Pair.MIN_ACCEPTABLE_PAIR_USER && isExist) {
             throw new Error('Can not set User to new Pair because of few pair')
         }
 
         // ランダム(適当)に最小ユーザー数ペアを抽出
         const props: PairProps = {
-            id: new PairId(minUserPair[0].id),
-            team_id: new TeamId(minUserPair[0].team_id),
-            pair_name: new PairName(minUserPair[0].pair_name),
-            user_ids: minUserPair[0].user.map((u) => new UserId(u.id))
+            id: new PairId(minUserPairs[0].id),
+            team_id: new TeamId(minUserPairs[0].team_id),
+            pair_name: new PairName(minUserPairs[0].pair_name),
+            user_ids: minUserPairs[0].user.map((u) => new UserId(u.id))
         }
 
         return new Pair(props);
+    }
+
+    public async findByUserIds(ids: string[]): Promise<Pair[]> {
+        const pairs = await this.prisma.pair.findMany({
+            where: {
+                user: {
+                    some: {
+                        id: {
+                            in: ids
+                        }
+                    }
+                }
+            },
+            include: {
+                user: true
+            }
+        });
+
+        const all_pairs = pairs.map((pair) => {
+            const props: PairProps = {
+                id: new PairId(pair.id),
+                team_id: new TeamId(pair.team_id),
+                pair_name: new PairName(pair.pair_name),
+                user_ids: pair.user.map((u) => new UserId(u.id))
+            };
+            return new Pair(props);
+        })
+        return all_pairs;
     }
 
     public async findFree(): Promise<Pair[]> {

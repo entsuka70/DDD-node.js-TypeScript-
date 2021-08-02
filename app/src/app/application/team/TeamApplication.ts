@@ -3,19 +3,26 @@ import TeamDomainService from 'domain/domainservice/TeamDomainService';
 import TeamFactory from 'domain/factory/TeamFactory';
 import TeamCreateCommand from './TeamCreateCommand';
 import TeamDto from './TeamDto';
+import Team from 'domain/model/team/Team';
+import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 
 export default class TeamApplication {
     private readonly teamRepository: TeamRepositoryInterface;
+    private readonly pairRepository: PairRepositoryInterface;
+    private readonly userRepository: UserRepositoryInterface;
     private readonly teamDomainService: TeamDomainService;
     private readonly teamFactory: TeamFactory;
 
-    constructor(teamRepository: TeamRepositoryInterface) {
+    constructor(teamRepository: TeamRepositoryInterface, pairRepository: PairRepositoryInterface, userRepository: UserRepositoryInterface) {
         this.teamRepository = teamRepository;
+        this.pairRepository = pairRepository;
+        this.userRepository = userRepository;
         this.teamDomainService = new TeamDomainService(teamRepository);
-        this.teamFactory = new TeamFactory();
+        this.teamFactory = new TeamFactory(teamRepository, pairRepository, userRepository);
     }
 
-    public async findTeamAll() {
+    public async findTeamAll(): Promise<TeamDto[]> {
         try {
             const teamEntities = await this.teamRepository.findAll();
             const teamDtos = teamEntities.map((teamEntity) => new TeamDto(teamEntity));
@@ -25,16 +32,32 @@ export default class TeamApplication {
         }
     }
 
-    public async update(command: TeamCreateCommand) {
+    public async update(command: TeamCreateCommand): Promise<void> {
         try {
-            const teamAggregation = await this.teamRepository.find(command.id);
+            const team = await this.teamRepository.find(command.id);
+
             // チーム集約・重複存在がないか確認
-            if (teamAggregation.getTeamName() && !await this.teamDomainService.isExist(command.team_name, 'team_name')) {
+            if (command.team_name && !await this.teamDomainService.isExist(command.team_name, 'team_name')) {
                 throw new Error(`Cannot register because of duplicate team name. team_name: ${command.team_name} `)
             }
 
+            const rebuildTeam = await this.teamFactory.update(command, team);
+            // ※※※ 2名以下のチームは他のチームに自動合流 ※※※
+            if (rebuildTeam.getUserIds().length < Team.MIN_TEAM_USER) {
+                // ※※※ TODO: 動作未検証 ※※※
+                // 3名以上参加しているチームを探索
+                const canJoinTeam = await this.teamRepository.findMinUser();
+                // ※※※　canJoinTeamが存在しない場合、参加できるチームを自動作成する処理の追加が必要 ※※※
+                // チーム合流
+                rebuildTeam.changeTeam(canJoinTeam);
+                await this.teamRepository.update(rebuildTeam);
+                return;
+            }
 
-            await this.teamRepository.update(teamAggregation);
+            // ※※※ ユーザーに紐付くペア ※※※
+            // ※※※ ペアに紐付くユーザー ※※※
+            // どちらも同時更新
+            await this.teamRepository.update(rebuildTeam);
         } catch (e) {
             throw new Error(`Error TeamApplication::update(): ${e.message}`);
         }

@@ -32,6 +32,7 @@ export default class PairApplication {
     }
 
     public async update(command: PairCreateCommand) {
+        // ※※※ TODO: ペアのチームID更新時に所属するユーザーのチームIDも変更 ※※※
         try {
             const pair = await this.pairRepository.find(command.id);
             // ユーザーid存在チェック
