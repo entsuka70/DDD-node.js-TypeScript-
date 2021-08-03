@@ -3,12 +3,14 @@ import TeamName from "./TeamName";
 import UserId from "../user/UserId";
 import PairId from "../pair/PairId";
 
-export type TeamProps = {
+type Props = {
     id: TeamId
     team_name: TeamName
     pair_ids: PairId[]
     user_ids: UserId[]
 }
+
+export type TeamProps = Required<Props>
 
 export default class Team {
     private id: TeamId;
@@ -20,19 +22,6 @@ export default class Team {
 
     constructor(props: TeamProps) {
         const { id, team_name, pair_ids, user_ids } = props;
-
-        if (!id) {
-            throw new Error('Please set id at TeamId Domain')
-        }
-        if (!team_name) {
-            throw new Error('Please set team_name at Team Domain')
-        }
-        if (!pair_ids) {
-            throw new Error('Please set pair_ids at Team Domain')
-        }
-        if (!user_ids) {
-            throw new Error('Please set user_ids at Team Domain')
-        }
 
         // 現時点で未所属チームが発生しているので仮コメントアウト
         // if (user_ids.length < Team.MIN_TEAM_USER) {

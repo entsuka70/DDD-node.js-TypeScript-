@@ -3,12 +3,14 @@ import TeamId from 'domain/model/team/TeamId';
 import UserId from '../user/UserId';
 import PairName from './PairName';
 
-export type PairProps = {
+type Props = {
     id: PairId
     team_id: TeamId
     pair_name: PairName
     user_ids: UserId[]
 }
+
+export type PairProps = Required<Props>
 
 export default class Pair {
     static MIN_PAIR_USER = 1;
@@ -22,16 +24,6 @@ export default class Pair {
 
     constructor(props: PairProps) {
         const { id, team_id, pair_name, user_ids } = props;
-
-        if (!id) {
-            throw new Error('Please set id at Pair Domain')
-        }
-        if (!team_id) {
-            throw new Error('Please set team_id at Pair Domain')
-        }
-        if (!pair_name) {
-            throw new Error('Please set pair_name at Pair Domain')
-        }
 
         this.id = id;
         this.team_id = team_id;

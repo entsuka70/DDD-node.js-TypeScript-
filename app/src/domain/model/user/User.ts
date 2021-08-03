@@ -5,7 +5,7 @@ import UserStatus from './UserStatus';
 import PairId from '../pair/PairId';
 import TeamId from '../team/TeamId';
 
-export type UserProps = {
+type Props = {
     id: UserId
     pair_id: PairId
     team_id: TeamId
@@ -13,6 +13,8 @@ export type UserProps = {
     user_name: UserName
     email: UserEmail
 }
+
+export type UserProps = Required<Props>
 
 export default class User {
     private id: UserId;
@@ -24,25 +26,6 @@ export default class User {
 
     constructor(props: UserProps) {
         const { id, pair_id, team_id, status, user_name, email } = props;
-
-        if (!id) {
-            throw new Error('Please set id at User Domain')
-        }
-        if (!pair_id) {
-            throw new Error('Please set pair_id at User Domain')
-        }
-        if (!team_id) {
-            throw new Error('Please set team_id at User Domain')
-        }
-        if (!status) {
-            throw new Error('Please set status at User Domain')
-        }
-        if (!user_name) {
-            throw new Error('Please set user_name at User Domain')
-        }
-        if (!email) {
-            throw new Error('Please set email at User Domain')
-        }
 
         this.id = id;
         this.pair_id = pair_id;
