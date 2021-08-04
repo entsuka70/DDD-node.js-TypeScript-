@@ -70,24 +70,17 @@ export default class User {
         return this.email.get()
     }
 
+    // この辺りメソッドは元のPairIdインスタンスなどで例外処理を行っているので
+    // 例外が入ることは無いと判断して、例外処理を含めない
     public changePairId(pair_id: PairId) {
-        if (!pair_id) {
-            throw new Error('changePairId is empty');
-        }
         this.pair_id = pair_id;
     }
 
     public changeTeamId(team_id: TeamId) {
-        if (!team_id) {
-            throw new Error('changeTeamId is empty');
-        }
         this.team_id = team_id;
     }
 
     public changeStatus(status: UserStatus) {
-        if (!status) {
-            throw new Error('chnageStatus is empty');
-        }
         this.status = status;
     }
 }

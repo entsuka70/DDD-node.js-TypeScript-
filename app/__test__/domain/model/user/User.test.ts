@@ -6,7 +6,7 @@ import UserStatus from 'domain/model/user/UserStatus';
 import UserName from 'domain/model/user/UserName';
 import UserEmail from 'domain/model/user/UserEmail';
 
-describe('domain/model/user User.ts', () => {
+describe('domain/model/user User', () => {
     describe('正常系テスト', () => {
         // 利用するUser初期化
         const userId: UserId = new UserId('8312ec7e-da7c-46d4-9178-bfef97416400');
