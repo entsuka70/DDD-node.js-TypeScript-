@@ -40,7 +40,7 @@ describe('domain/model/team Team', () => {
             expect(team).toBeDefined();
             expect.stringContaining(team.getId());
             expect(team.getId()).toMatch(TeamId.UUID_MATCHER);
-            expect(String(team.getTeamName)).toMatch(TeamName.TEAMNAME_MATCHER);
+            expect(String(team.getTeamName())).toMatch(TeamName.TEAMNAME_MATCHER);
             expect.arrayContaining(team.getPairIds());
             expect.arrayContaining(team.getUserIds());
         });
