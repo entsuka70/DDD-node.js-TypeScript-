@@ -25,6 +25,11 @@ export default class Pair {
     constructor(props: PairProps) {
         const { id, team_id, pair_name, user_ids } = props;
 
+        // ユーザー数5名以上のペアは形成不可
+        if (user_ids.length > Pair.MAX_PAIR_USER) {
+            throw new Error(`Can not set many users. ${user_ids}`)
+        }
+
         this.id = id;
         this.team_id = team_id;
         this.pair_name = pair_name;
