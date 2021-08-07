@@ -9,7 +9,7 @@ export default class UserCreateCommand {
     public email: string
 
     constructor(req: express.Request) {
-        this.id = req.params.id
+        this.id = req.params.id || req.body.id
         this.pair_id = req.body.pair_id;
         this.team_id = req.body.team_id;
         this.status = req.body.status;
