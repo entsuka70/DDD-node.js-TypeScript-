@@ -3,18 +3,12 @@
 
 datasource db {
     provider = "postgresql"
-    url      = env("DATABASE_URL_DEV")
+    url      = env("DATABASE_URL_TEST")
 }
 
 generator client {
     provider        = "prisma-client-js"
     previewFeatures = ["selectRelationCount"]
-}
-
-model setupData {
-    id       String  @id @default(uuid())
-    required Boolean
-    number   Int     @db.SmallInt
 }
 
 model User {
