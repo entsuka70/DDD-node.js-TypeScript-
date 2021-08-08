@@ -1,8 +1,9 @@
+import Issue from "./Issue";
 
 export default interface IssueRepositoryInterface {
-    findByIssueId(id: number): Promise<void>;
-    findAll(): Promise<void>;
-    create(data: object): Promise<void>;
-    update(entity: void): Promise<void>;
-    delete(id: number): Promise<void>;
+    find(id: string): Promise<Issue>;
+    findAll(): Promise<Issue[]>;
+    create(issue: Issue): Promise<void>;
+    update(issue: Issue): Promise<void>;
+    delete(id: string): Promise<void>;
 }
