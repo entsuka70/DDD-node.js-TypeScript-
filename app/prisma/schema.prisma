@@ -46,6 +46,7 @@ model UserIssue {
 
 model Issue {
     id          String   @id @default(uuid())
+    issue_no    Int
     issue_name  String
     issue_group Int /// 1:未分類 2:WEBの基礎, 3:テスト, 4:DB, 5:設計
     created_at  DateTime @default(now())
