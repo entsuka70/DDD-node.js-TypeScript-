@@ -1,6 +1,6 @@
 import express from 'express';
 
-export default class UserIssueCommand {
+export default class UserIssueCreateCommand {
     public id: string;
     public issue_id: string;
     public user_id: string;
