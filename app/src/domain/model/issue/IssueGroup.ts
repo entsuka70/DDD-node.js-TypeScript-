@@ -7,7 +7,7 @@ export default class IssueGroup {
     static GROUP_WEB_DB = 4; // DB
     static GROUP_WEB_ARCHITECT = 5 // 設計
 
-    static ISSUE_GROUP_MATCHER = /^[1-9]{1,2}$/;
+    static ISSUE_GROUP_MATCHER = /^[0-9]{1,2}$/;
 
     constructor(issueGroup?: number) {
         if (issueGroup == 0 || (issueGroup && !IssueGroup.ISSUE_GROUP_MATCHER.test(String(issueGroup)))) {

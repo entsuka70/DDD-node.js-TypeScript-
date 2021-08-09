@@ -56,6 +56,23 @@ export default class UserIssueRepository implements UserIssueRepositoryInterface
         return;
     }
 
+    public async createMany(userIssues: UserIssue[]): Promise<void> {
+        const datas = userIssues.map((userIssue) => {
+            const data = {
+                id: userIssue.getId(),
+                user_id: userIssue.getUserId(),
+                issue_id: userIssue.getIssueId(),
+                progress: userIssue.getProgress()
+            };
+            return data;
+        });
+        await this.prisma.userIssue.createMany({
+            data: datas,
+            skipDuplicates: true,
+        });
+        return;
+    }
+
     public async update(userIssue: UserIssue): Promise<void> {
         const { id, user_id, issue_id, progress } = userIssue.getAllProperties();
         await this.prisma.userIssue.update({

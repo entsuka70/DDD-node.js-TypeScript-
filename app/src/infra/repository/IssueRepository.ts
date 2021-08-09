@@ -54,6 +54,16 @@ export default class IssueRepository implements IssueRepositoryInterface {
     }
 
     public async create(issue: Issue): Promise<void> {
+        const { id, issue_no, issue_name, issue_group } = issue.getAllProperties();
+
+        await this.prisma.issue.create({
+            data: {
+                id: id,
+                issue_no: issue_no,
+                issue_name: issue_name,
+                issue_group: issue_group
+            }
+        })
         return;
     }
 

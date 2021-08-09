@@ -1,8 +1,10 @@
 import UserIssue from "domain/model/userissue/UserIssue"
-import UserIssueCommand from "app/application/userIssue/UserIssueCreateCommand"
+import UserIssueCreateCommand from "app/application/userIssue/UserIssueCreateCommand"
 import UserIssueUpdateCommand from "app/application/userIssue/UserIssueUpdateCommand"
+import User from "domain/model/user/User"
 
 export default interface UserIssueFactoryInterface {
-    create(UserIssueCommand: UserIssueCommand): Promise<UserIssue>;
+    create(UserIssueCommand: UserIssueCreateCommand): Promise<UserIssue>;
     update(command: UserIssueUpdateCommand, userIssue: UserIssue): UserIssue;
+    createMany(issue_id: string, users: User[]): UserIssue[];
 }

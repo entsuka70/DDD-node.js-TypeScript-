@@ -3,13 +3,12 @@ export default class UserIssueId {
 
     static UUID_FORMAT = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx";
     static UUID_MATCHER = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/;
-    static DEFAULT_USER_ISSUE_ID = '8311ec7e-da7c-46d4-9178-bfef97416400'
 
     constructor(userIssueId?: string) {
         if (userIssueId && !UserIssueId.UUID_MATCHER.test(userIssueId)) {
             throw new Error('Do not match UUID FORMAT')
         }
-        this.userIssueId = userIssueId ?? UserIssueId.DEFAULT_USER_ISSUE_ID;
+        this.userIssueId = userIssueId ?? UserIssueId.generateUuid();
     }
 
     public get(): string {
