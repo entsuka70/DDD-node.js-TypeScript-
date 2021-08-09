@@ -56,12 +56,25 @@ export default class UserIssueRepository implements UserIssueRepositoryInterface
         return;
     }
 
-    public async update(userissue: UserIssue): Promise<void> {
+    public async update(userIssue: UserIssue): Promise<void> {
+        const { id, user_id, issue_id, progress } = userIssue.getAllProperties();
+        await this.prisma.userIssue.update({
+            where: {
+                id: id,
+            },
+            data: {
+                progress: progress
+            }
+        })
         return;
     }
 
     public async delete(id: string): Promise<void> {
-        return;
+        await this.prisma.userIssue.delete({
+            where: {
+                id: id
+            }
+        });
     }
 
 }

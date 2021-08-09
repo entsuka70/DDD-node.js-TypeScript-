@@ -1,5 +1,4 @@
 import UserId from "domain/model/user/UserId";
-import UserIssue from "domain/model/userissue/UserIssue";
 
 type Props = {
     user_id: UserId

@@ -11,7 +11,7 @@ module.exports = function (app: any) {
         // viewではクエリパラメータを受け取る
         .get(UserIssueController.user)
 
-    // app.route('/userissue/:id')
-    //     .post(UserIssueController.update)
+    app.route('/userissue/:id/user/:user_id/issue/:issue_id')
+        .post(UserIssueController.update)
     //     .delete(UserIssueController.delete);
 }

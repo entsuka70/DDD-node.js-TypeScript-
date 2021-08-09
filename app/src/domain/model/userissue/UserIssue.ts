@@ -52,8 +52,8 @@ export default class UserIssue {
     }
 
     public changeProgress(progress: UserIssueProgress, requestUser: string) {
-        if (progress.get() == UserIssueProgress.PROGRESS_COMPLETE) {
-            throw new Error('Can not change progress because the progress has already completed.')
+        if (!progress) {
+            throw new Error('Not Found progress properties.')
         }
         if (requestUser !== this.user_id.get()) {
             throw new Error('Can not change progress because issue owner is not correct.')

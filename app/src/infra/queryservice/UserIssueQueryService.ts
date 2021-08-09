@@ -97,7 +97,7 @@ export default class UserIssueQueryService implements UserIssueQueryServiceInter
             skip: command.list_no && command.list ? Number(command.list) * Number(command.list_no) : undefined,
             take: command.list ? Number(command.list) : UserIssueQueryService.DEFAULT_PAGINATION,
             orderBy: {
-                issue_id: 'asc',
+                user_id: 'asc',
             }
         });
 

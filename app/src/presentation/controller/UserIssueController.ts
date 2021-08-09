@@ -3,6 +3,7 @@ import { PrismaClient } from ".prisma/client";
 import UserIssueApplication from "app/application/userIssue/UserIssueApplication";
 import UserIssueGetCommand from 'app/application/userIssue/UserIssueGetCommand';
 import UserIssueCreateCommand from 'app/application/userIssue/UserIssueCreateCommand';
+import UserIssueUpdateCommand from 'app/application/userIssue/UserIssueUpdateCommand';
 import UserIssueRepository from "infra/repository/UserIssueRepository";
 import UserIssueQueryService from 'infra/queryservice/UserIssueQueryService';
 
@@ -48,7 +49,7 @@ exports.update = async function (req: express.Request, res: express.Response) {
     const userIssueApplication = new UserIssueApplication(userIssueRepository, userIssueQueryService);
 
     try {
-        await userIssueApplication.update(new UserIssueCreateCommand(req));
+        await userIssueApplication.update(new UserIssueUpdateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });
@@ -66,7 +67,7 @@ exports.delete = async function (req: express.Request, res: express.Response) {
     const userIssueApplication = new UserIssueApplication(userIssueRepository, userIssueQueryService);
 
     try {
-        const userDelete = await userIssueApplication.delete(req.params.id);
+        const userDelete = await userIssueApplication.delete(new UserIssueUpdateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });
