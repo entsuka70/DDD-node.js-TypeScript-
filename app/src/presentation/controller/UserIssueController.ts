@@ -1,16 +1,19 @@
 import express from 'express';
 import { PrismaClient } from ".prisma/client";
 import UserIssueApplication from "app/application/userIssue/UserIssueApplication";
-import UserIssueCommand from 'app/application/userIssue/UserIssueCommand';
+import UserIssueGetCommand from 'app/application/userIssue/UserIssueGetCommand';
+import UserIssueCreateCommand from 'app/application/userIssue/UserIssueCreateCommand';
 import UserIssueRepository from "infra/repository/UserIssueRepository";
+import UserIssueQueryService from 'infra/queryservice/UserIssueQueryService';
 
 // ユーザーが所有する課題一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userIssueRepository = new UserIssueRepository(prisma);
-    const userIssueApplication = new UserIssueApplication(userIssueRepository);
+    const userIssueQueryService = new UserIssueQueryService(prisma);
+    const userIssueApplication = new UserIssueApplication(userIssueRepository, userIssueQueryService);
     try {
-        const userAll = await userIssueApplication.findAll();
+        const userAll = await userIssueApplication.findAll(new UserIssueGetCommand(req));
         res.set({
             'content-type': 'application/json',
         });
@@ -24,10 +27,11 @@ exports.view = async function (req: express.Request, res: express.Response) {
 exports.update = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userIssueRepository = new UserIssueRepository(prisma);
-    const userIssueApplication = new UserIssueApplication(userIssueRepository);
+    const userIssueQueryService = new UserIssueQueryService(prisma);
+    const userIssueApplication = new UserIssueApplication(userIssueRepository, userIssueQueryService);
 
     try {
-        await userIssueApplication.update(new UserIssueCommand(req));
+        await userIssueApplication.update(new UserIssueCreateCommand(req));
         res.set({
             'content-type': 'text/plain',
         });
@@ -41,7 +45,9 @@ exports.update = async function (req: express.Request, res: express.Response) {
 exports.delete = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userIssueRepository = new UserIssueRepository(prisma);
-    const userIssueApplication = new UserIssueApplication(userIssueRepository);
+    const userIssueQueryService = new UserIssueQueryService(prisma);
+    const userIssueApplication = new UserIssueApplication(userIssueRepository, userIssueQueryService);
+
     try {
         const userDelete = await userIssueApplication.delete(req.params.id);
         res.set({
