@@ -5,6 +5,7 @@ import IssueCreateCommand from './IssueCreateCommand';
 import UserIssueRepositoryInterface from 'domain/model/userissue/UserIssueRepositoryInterface';
 import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 import UserIssueFactory from 'domain/factory/UserIssueFactory';
+import IssueDeleteCommand from './IssueDeleteCommand';
 
 
 export default class IssueApplication {
@@ -41,6 +42,15 @@ export default class IssueApplication {
             const userIssuesRebuild = this.userIssueFactory.createMany(newIssue.getId(), users);
             await this.userIssueRepository.createMany(userIssuesRebuild)
             return;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
+    public async delete(command: IssueDeleteCommand) {
+        try {
+            await this.issueRepository.delete(command.id);
+            await this.userIssueRepository.deletManyIssue(command.id);
         } catch (e) {
             throw new Error(e.message);
         }

@@ -94,4 +94,13 @@ export default class UserIssueRepository implements UserIssueRepositoryInterface
         });
     }
 
+    public async deletManyIssue(id: string): Promise<void> {
+        await this.prisma.userIssue.deleteMany({
+            where: {
+                issue_id: id
+            },
+        });
+        return;
+    }
+
 }

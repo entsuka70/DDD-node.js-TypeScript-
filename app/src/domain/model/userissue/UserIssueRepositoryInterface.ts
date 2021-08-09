@@ -7,4 +7,5 @@ export default interface UserIssueRepositoryInterface {
     createMany(userIssues: UserIssue[]): Promise<void>;
     update(userIssue: UserIssue): Promise<void>;
     delete(id: string): Promise<void>;
+    deletManyIssue(id: string): Promise<void>;
 }
