@@ -1,6 +1,6 @@
 import User from "domain/model/user/User";
 import UserIssueFactoryInterface from "domain/factory/UserIssueFactoryInterface";
-import UserIssueCommand from "app/application/userIssue/UserIssueCommand";
+import UserIssueCommand from "app/application/userIssue/UserIssueCreateCommand";
 
 export default class UserIssueFactory implements UserIssueFactoryInterface {
     // TODO: User集約の引数のままなのでIssue集約へ修正する
