@@ -4,6 +4,7 @@ import IssueId from 'domain/model/issue/IssueId';
 import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
 import UserIssueQueryServiceInterface from 'app/application/userIssue/UserIssueQueryServiceInterface';
 import UserIssueListDto from 'app/application/userIssue/UserIssueListDto';
+import UserListDto from 'app/application/userIssue/UserListDto';
 import UserIssueGetCommand from 'app/application/userIssue/UserIssueGetCommand';
 import IssueName from 'domain/model/issue/IssueName';
 import UserName from 'domain/model/user/UserName';
@@ -22,25 +23,7 @@ export default class UserIssueQueryService implements UserIssueQueryServiceInter
     }
 
     public async find(command: UserIssueGetCommand): Promise<UserIssueListDto[]> {
-        // 動的にオブジェクトが形成されるためここだけany
-        let searchRule: any = { issue: {}, user: {} };
-
-        if (command) {
-            command.user_id ? searchRule.user_id = command.user_id : searchRule;
-            command.issue_id ? searchRule.issue_id = command.issue_id : searchRule;
-            command.progress ? searchRule.progress = Number(command.progress) : searchRule;
-            command.issue_no ? searchRule.issue.issue_no = Number(command.issue_no) : searchRule;
-            command.issue_name ? searchRule.issue.issue_name = command.issue_name : searchRule;
-            command.issue_group ? searchRule.issue.issue_group = Number(command.issue_group) : searchRule;
-            command.user_name ? searchRule.user.user_name = command.user_name : searchRule;
-            command.status ? searchRule.user.staus = command.status : searchRule;
-            if (0 === Object.keys(searchRule.issue).length) {
-                delete searchRule.issue;
-            }
-            if (0 === Object.keys(searchRule.user).length) {
-                delete searchRule.user;
-            }
-        }
+        const searchRule = this.setQueryRule(command);
 
         const userIssueLists = await this.prisma.userIssue.findMany({
             include: {
@@ -87,5 +70,81 @@ export default class UserIssueQueryService implements UserIssueQueryServiceInter
         });
 
         return allUserIssue;
+    }
+
+    public async findUsers(command: UserIssueGetCommand): Promise<UserListDto[]> {
+        const searchRule = this.setQueryRule(command);
+
+        const userIssueLists = await this.prisma.userIssue.findMany({
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        user_name: true,
+                        status: true,
+                    }
+                },
+                issue: {
+                    select: {
+                        id: true,
+                        issue_no: true,
+                        issue_group: true,
+                        issue_name: true,
+                    }
+                }
+            },
+            where: searchRule,
+            skip: command.list_no && command.list ? Number(command.list) * Number(command.list_no) : undefined,
+            take: command.list ? Number(command.list) : UserIssueQueryService.DEFAULT_PAGINATION,
+            orderBy: {
+                issue_id: 'asc',
+            }
+        });
+
+        if (userIssueLists == null) {
+            throw new Error('Not found userIssues.')
+        }
+
+        const allUsers = userIssueLists.map((userIssueList) => {
+            const prop = {
+                user_id: new UserId(userIssueList.user.id),
+            }
+            return new UserListDto(prop);
+        });
+
+        return this.filterDuplicatedObject(allUsers);
+    }
+
+    // クエリwhereによる検索条件をまとめる
+    public setQueryRule(command: UserIssueGetCommand) {
+        // 動的にオブジェクトが形成されるためここだけany
+        let searchRule: any = { issue: {}, user: {} };
+
+        command.user_id ? searchRule.user_id = command.user_id : searchRule;
+        command.issue_id ? searchRule.issue_id = command.issue_id : searchRule;
+        command.progress ? searchRule.progress = Number(command.progress) : searchRule;
+        command.issue_no ? searchRule.issue.issue_no = Number(command.issue_no) : searchRule;
+        command.issue_name ? searchRule.issue.issue_name = command.issue_name : searchRule;
+        command.issue_group ? searchRule.issue.issue_group = Number(command.issue_group) : searchRule;
+        command.user_name ? searchRule.user.user_name = command.user_name : searchRule;
+        command.status ? searchRule.user.staus = command.status : searchRule;
+        if (0 === Object.keys(searchRule.issue).length) {
+            delete searchRule.issue;
+        }
+        if (0 === Object.keys(searchRule.user).length) {
+            delete searchRule.user;
+        }
+        return searchRule;
+    }
+
+    // 重複するオブジェクトを除外する
+    public filterDuplicatedObject(dtos: UserListDto[]): UserListDto[] {
+        const dtoIds = dtos.map((dto) => {
+            return dto.user_id;
+        });
+        const filterd = dtos.filter((dto, index) => {
+            return dtoIds.indexOf(dto.user_id) === index;
+        });
+        return filterd;
     }
 }

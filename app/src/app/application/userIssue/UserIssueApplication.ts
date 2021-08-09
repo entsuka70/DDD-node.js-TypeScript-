@@ -1,6 +1,5 @@
 import UserIssueRepositoryInterface from 'domain/model/userissue/UserIssueRepositoryInterface';
 import UserIssueFactory from 'domain/factory/UserIssueFactory';
-import UserIssueDto from './UserIssueDto';
 import UserIssueGetCommand from './UserIssueGetCommand';
 import UserIssueCreateCommand from './UserIssueCreateCommand';
 import UserIssueQueryServiceInterface from './UserIssueQueryServiceInterface';
@@ -20,6 +19,15 @@ export default class UserIssueApplication {
         try {
             const userIssues = await this.userIssueQueryService.find(command);
             return userIssues;
+        } catch (e) {
+            throw new Error(e.message);
+        }
+    }
+
+    public async findUsers(command: UserIssueGetCommand) {
+        try {
+            const users = await this.userIssueQueryService.findUsers(command);
+            return users;
         } catch (e) {
             throw new Error(e.message);
         }

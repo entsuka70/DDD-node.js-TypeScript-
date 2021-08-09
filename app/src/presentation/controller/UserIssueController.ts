@@ -6,7 +6,7 @@ import UserIssueCreateCommand from 'app/application/userIssue/UserIssueCreateCom
 import UserIssueRepository from "infra/repository/UserIssueRepository";
 import UserIssueQueryService from 'infra/queryservice/UserIssueQueryService';
 
-// ユーザーが所有する課題一覧取得
+// ユーザーが所有する情報一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
     const prisma = new PrismaClient();
     const userIssueRepository = new UserIssueRepository(prisma);
@@ -18,6 +18,23 @@ exports.view = async function (req: express.Request, res: express.Response) {
             'content-type': 'application/json',
         });
         return res.status(200).json(userAll);
+    } catch (e) {
+        return res.status(400).send(`Error: User View (${e.message})`);
+    }
+}
+
+// 条件に合致するユーザー一覧取得
+exports.user = async function (req: express.Request, res: express.Response) {
+    const prisma = new PrismaClient();
+    const userIssueRepository = new UserIssueRepository(prisma);
+    const userIssueQueryService = new UserIssueQueryService(prisma);
+    const userIssueApplication = new UserIssueApplication(userIssueRepository, userIssueQueryService);
+    try {
+        const users = await userIssueApplication.findUsers(new UserIssueGetCommand(req));
+        res.set({
+            'content-type': 'application/json',
+        });
+        return res.status(200).json(users);
     } catch (e) {
         return res.status(400).send(`Error: User View (${e.message})`);
     }
