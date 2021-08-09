@@ -5,12 +5,13 @@ import UserCreateCommand from 'app/application/user/UserCreateCommand';
 import UserRepository from "infra/repository/UserRepository";
 import PairRepository from "infra/repository/PairRepository"
 
+const prisma = new PrismaClient();
+const userRepository = new UserRepository(prisma);
+const pairRepository = new PairRepository(prisma);
+const userApplication = new UserApplication(userRepository, pairRepository);
+
 // ユーザー一覧取得
 exports.view = async function (req: express.Request, res: express.Response) {
-    const prisma = new PrismaClient();
-    const userRepository = new UserRepository(prisma);
-    const pairRepository = new PairRepository(prisma);
-    const userApplication = new UserApplication(userRepository, pairRepository);
     try {
         const userAll = await userApplication.findAll();
         res.set({
@@ -24,11 +25,6 @@ exports.view = async function (req: express.Request, res: express.Response) {
 
 // ユーザー新規作成
 exports.create = async function (req: express.Request, res: express.Response) {
-    const prisma = new PrismaClient();
-    const userRepository = new UserRepository(prisma);
-    const pairRepository = new PairRepository(prisma);
-    const userApplication = new UserApplication(userRepository, pairRepository);
-
     try {
         const userCreate = await userApplication.create(new UserCreateCommand(req));
         res.set({
@@ -42,11 +38,6 @@ exports.create = async function (req: express.Request, res: express.Response) {
 
 // ユーザー更新
 exports.update = async function (req: express.Request, res: express.Response) {
-    const prisma = new PrismaClient();
-    const userRepository = new UserRepository(prisma);
-    const pairRepository = new PairRepository(prisma);
-    const userApplication = new UserApplication(userRepository, pairRepository);
-
     try {
         await userApplication.update(new UserCreateCommand(req));
         res.set({
@@ -60,10 +51,6 @@ exports.update = async function (req: express.Request, res: express.Response) {
 
 // ユーザー削除
 exports.delete = async function (req: express.Request, res: express.Response) {
-    const prisma = new PrismaClient();
-    const userRepository = new UserRepository(prisma);
-    const pairRepository = new PairRepository(prisma);
-    const userApplication = new UserApplication(userRepository, pairRepository);
     try {
         const userDelete = await userApplication.delete(req.params.id);
         res.set({
