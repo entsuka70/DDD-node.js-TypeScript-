@@ -4,9 +4,9 @@ module.exports = function (app: any) {
 
     app.route('/issue')
         .get(IssueController.view)
-        .post(IssueController.create);
+    // .post(IssueController.create);
 
-    app.route('/issue/:id')
-        .post(IssueController.update)
-        .delete(IssueController.delete);
+    // app.route('/issue/:id')
+    // .post(IssueController.update)
+    // .delete(IssueController.delete);
 }
