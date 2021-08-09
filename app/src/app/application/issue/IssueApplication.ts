@@ -49,8 +49,10 @@ export default class IssueApplication {
 
     public async delete(command: IssueDeleteCommand) {
         try {
-            await this.issueRepository.delete(command.id);
+            // カスケード削除対象になるので先に外部キー参照しているUserIssueから削除
+            // (Prisma公式記載SQLでテーブル変更が手間)
             await this.userIssueRepository.deletManyIssue(command.id);
+            await this.issueRepository.delete(command.id);
         } catch (e) {
             throw new Error(e.message);
         }
