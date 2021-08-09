@@ -5,7 +5,7 @@ export default class IssueNo {
 
     constructor(issueNo: number) {
         if (issueNo && !IssueNo.ISSUE_NO_MATCHER.test(String(issueNo))) {
-            throw new Error('Do not match TeamName FORMAT')
+            throw new Error('Do not match IssueNo FORMAT')
         }
         this.issueNo = issueNo
     }
