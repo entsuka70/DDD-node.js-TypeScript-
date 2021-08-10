@@ -67,10 +67,6 @@ export default class IssueRepository implements IssueRepositoryInterface {
         return;
     }
 
-    public async update(issue: Issue): Promise<void> {
-        return;
-    }
-
     public async delete(id: string): Promise<void> {
         await this.prisma.issue.delete({
             where: {

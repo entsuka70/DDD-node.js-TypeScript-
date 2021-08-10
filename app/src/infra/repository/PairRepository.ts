@@ -149,10 +149,6 @@ export default class PairRepository implements PairRepositoryInterface {
         });
     }
 
-    public async save(user: Pair): Promise<void> {
-
-    }
-
     public async update(pair: Pair): Promise<void> {
         const { id, team_id, pair_name, user_ids } = pair.getAllProperties();
 
@@ -179,9 +175,4 @@ export default class PairRepository implements PairRepositoryInterface {
             })
         }
     }
-
-    public async delete(id: string): Promise<void> {
-
-    }
-
 }

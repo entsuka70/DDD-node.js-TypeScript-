@@ -8,11 +8,6 @@ import IssueId from "domain/model/issue/IssueId";
 import UserIssueProgress from "domain/model/userissue/UserIssueProgress";
 
 export default class UserIssueFactory implements UserIssueFactoryInterface {
-    // TODO: User集約の引数のままなのでIssue集約へ修正する
-    public create(issue: object): any {
-        return;
-    }
-
     public update(command: UserIssueUpdateCommand, userIssue: UserIssue): UserIssue {
         const { id, user_id, issue_id, progress } = userIssue.getAllProperties();
         const props: UserIssueProps = {

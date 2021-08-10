@@ -52,10 +52,6 @@ export default class UserIssueRepository implements UserIssueRepositoryInterface
         return allUserIssue;
     }
 
-    public async create(userissue: UserIssue): Promise<void> {
-        return;
-    }
-
     public async createMany(userIssues: UserIssue[]): Promise<void> {
         const datas = userIssues.map((userIssue) => {
             const data = {

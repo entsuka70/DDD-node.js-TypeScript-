@@ -22,10 +22,6 @@ export default class TeamFactory implements TeamFactoryInterface {
         this.userRepository = userRepository;
     }
 
-    public create(team: Team): Team {
-        return team;
-    }
-
     public async update(command: TeamCreateCommand, team: Team): Promise<Team> {
         const { id, team_name, pair_ids, user_ids } = team.getAllProperties();
 

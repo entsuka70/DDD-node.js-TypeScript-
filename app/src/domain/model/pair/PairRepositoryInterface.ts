@@ -6,7 +6,5 @@ export default interface PairRepositoryInterface {
     findMinUser(pair: Pair): Promise<Pair>;
     findByUserIds(ids: string[]): Promise<Pair[]>
     findFree(): Promise<Pair[]>;
-    save(user: Pair): Promise<void>;
     update(pair: Pair): Promise<void>;
-    delete(id: string): Promise<void>;
 }

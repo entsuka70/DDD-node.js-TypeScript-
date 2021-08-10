@@ -100,10 +100,6 @@ export default class TeamRepository implements TeamRepositoryInterface {
         return new Team(props);
     }
 
-    public async save(team: Team): Promise<void> {
-
-    }
-
     public async update(team: Team): Promise<void> {
         await this.prisma.team.update({
             where: {
@@ -193,9 +189,4 @@ export default class TeamRepository implements TeamRepositoryInterface {
             }
         });
     }
-
-    public async delete(id: string): Promise<void> {
-
-    }
-
 }

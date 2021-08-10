@@ -18,9 +18,4 @@ export default class IssueFactory implements IssueFactoryInterface {
 
         return new Issue(props);
     }
-
-    public updateIssue(issue: object): any {
-        return;
-    }
-
 }
