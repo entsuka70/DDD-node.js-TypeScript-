@@ -2,11 +2,10 @@ import Pair from "domain/model/pair/Pair";
 import PairId from 'domain/model/pair/PairId';
 import TeamId from "domain/model/team/TeamId";
 import PairName from "domain/model/pair/PairName";
-import PairFactoryInterface from "domain/factory/PairFactoryInterface";
 import PairCreateCommand from "app/application/pair/PairCreateCommand";
 import UserId from "domain/model/user/UserId";
 
-export default class PairFactory implements PairFactoryInterface {
+export default class PairFactory {
     public async create(data: { pair_name: string, belong: boolean, team_id: string }): Promise<object> {
         return data;
     }

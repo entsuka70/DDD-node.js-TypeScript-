@@ -1,5 +1,4 @@
 import UserIssue, { UserIssueProps } from "domain/model/userissue/UserIssue";
-import UserIssueFactoryInterface from "domain/factory/UserIssueFactoryInterface";
 import UserIssueUpdateCommand from "app/application/userIssue/UserIssueUpdateCommand";
 import UserIssueId from "domain/model/userissue/UserIssueId";
 import User from "domain/model/user/User";
@@ -7,7 +6,7 @@ import UserId from "domain/model/user/UserId";
 import IssueId from "domain/model/issue/IssueId";
 import UserIssueProgress from "domain/model/userissue/UserIssueProgress";
 
-export default class UserIssueFactory implements UserIssueFactoryInterface {
+export default class UserIssueFactory {
     public update(command: UserIssueUpdateCommand, userIssue: UserIssue): UserIssue {
         const { id, user_id, issue_id, progress } = userIssue.getAllProperties();
         const props: UserIssueProps = {

@@ -5,13 +5,12 @@ import PairId from 'domain/model/pair/PairId';
 import UserId from "domain/model/user/UserId";
 import User from 'domain/model/user/User';
 import Pair from 'domain/model/pair/Pair';
-import TeamFactoryInterface from "domain/factory/TeamFactoryInterface";
 import TeamCreateCommand from 'app/application/team/TeamCreateCommand';
 import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
 import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 
-export default class TeamFactory implements TeamFactoryInterface {
+export default class TeamFactory {
     private readonly teamRepository: TeamRepositoryInterface
     private readonly pairRepository: PairRepositoryInterface
     private readonly userRepository: UserRepositoryInterface

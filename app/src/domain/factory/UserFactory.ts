@@ -5,10 +5,9 @@ import UserEmail from 'domain/model/user/UserEmail';
 import UserStatus from 'domain/model/user/UserStatus';
 import PairId from 'domain/model/pair/PairId';
 import TeamId from 'domain/model/team/TeamId';
-import UserFactoryInterface from "domain/factory/UserFactoryInterface";
 import UserCreateCommand from "app/application/user/UserCreateCommand";
 
-export default class UserFactory implements UserFactoryInterface {
+export default class UserFactory {
 
     public async create(command: UserCreateCommand): Promise<User> {
 
