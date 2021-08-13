@@ -19,6 +19,7 @@ export default class UserApplication {
     constructor(userRepository: UserRepositoryInterface, pairRepository: PairRepositoryInterface) {
         this.userRepository = userRepository;
         this.pairRepository = pairRepository
+        // ここで初期化してしまうとテストし辛くなってしまうのかなと思いました。（コントローラー層で呼び出してはいけない理由が気になります。）
         // コンストラクタで渡すとコントローラー層で呼び出すことが必要になるので、ここでドメインサービス初期化
         this.userDomainService = new UserDomainService(userRepository);
         this.userFactory = new UserFactory();
@@ -37,6 +38,9 @@ export default class UserApplication {
 
     public async create(command: UserCreateCommand) {
         try {
+            // 重複チェックはドメインの知識なのでドメインサービスに入れたいかなと思いました。
+            // （もしくは↓の選択肢もあるらしいです。）
+            // https://github.com/little-hands/ddd-q-and-a/issues/573
             // メールアドレス重複チェック
             if (await this.userDomainService.isExist(command.email, 'email')) {
                 throw new Error(`Email is already exist. You can not register ${command.email}`);

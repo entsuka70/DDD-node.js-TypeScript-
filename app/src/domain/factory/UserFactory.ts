@@ -23,6 +23,7 @@ export default class UserFactory implements UserFactoryInterface {
         return new User(props);
     }
 
+    // factoryにupdateメソッドを実装して良いかどうか気になりました。
     public async update(command: UserCreateCommand, user: User): Promise<User> {
         const { id, pair_id, team_id, status, user_name, email } = user.getAllProperties();
         const props = {

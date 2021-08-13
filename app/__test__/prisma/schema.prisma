@@ -1,6 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
+// テストと本番のスキーマが分かれているのが気になりました。（一緒のほうが変更するときに１箇所で済むので楽かな？と）
 datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL_TEST")
