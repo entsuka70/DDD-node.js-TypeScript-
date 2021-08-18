@@ -20,3 +20,4 @@ jobs:
           POSTGRES_DB: prisma
         ports:
           - 5402:5432
+        run: yarn test
