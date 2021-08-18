@@ -20,5 +20,3 @@ jobs:
           POSTGRES_DB: prisma
         ports:
           - 5402:5432
-        - name: Run Unit & Integration Test
-          run: yarn test
