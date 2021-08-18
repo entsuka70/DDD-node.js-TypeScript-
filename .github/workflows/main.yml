@@ -1,0 +1,24 @@
+name CI
+
+on: [push, pull_request]
+
+jobs:
+  eslint-jest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: yarn install
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint
+    steps:
+      services:
+        image: postgres:12
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: prisma2020
+          POSTGRES_DB: prisma
+        ports:
+          - 5402:5432
+        - name: Run Unit & Integration Test
+          run: yarn test
