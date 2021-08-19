@@ -1,8 +1,8 @@
-import Issue from "./Issue";
+import Issue from './Issue';
 
 export default interface IssueRepositoryInterface {
-    find(id: string): Promise<Issue>;
-    findAll(): Promise<Issue[]>;
-    create(issue: Issue): Promise<void>;
-    delete(id: string): Promise<void>;
+  find(id: string): Promise<Issue>;
+  findAll(): Promise<Issue[]>;
+  create(issue: Issue): Promise<void>;
+  delete(id: string): Promise<void>;
 }
