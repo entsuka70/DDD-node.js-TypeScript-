@@ -5,21 +5,29 @@ on: [push]
 jobs:
   eslint-jest:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: yarn install
-        run: yarn install
-      - name: Run ESLint
-        run: yarn lint
-    steps:
-      services:
+    services:
+      postgres:
         image: postgres:12
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: prisma2020
-          POSTGRES_DB: prisma
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
         ports:
           - 5402:5432
+
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: yarn install
+        run: yarn install
+      - name: Run ESLint
+        run: yarn lint
       - name: Run Unit & Integration Test
         run: yarn test
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5402
