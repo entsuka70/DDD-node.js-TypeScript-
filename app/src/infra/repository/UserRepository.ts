@@ -22,7 +22,7 @@ export default class UserRepository implements UserRepositoryInterface {
       },
     });
     if (user == null) {
-      throw new Error(`Not Found User Id : id is ${id}`);
+      throw new ReferenceError(`Not Found User Id : id is ${id}`);
     }
 
     const props: UserProps = {
@@ -39,7 +39,10 @@ export default class UserRepository implements UserRepositoryInterface {
 
   public async findAll(): Promise<User[]> {
     const all_users = await this.prisma.user.findMany();
-    const users = all_users.map((user): User => {
+    if (all_users == null) {
+      throw new ReferenceError(`Not Found Any User`);
+    }
+    const users: User[] = all_users.map((user): User => {
       const props: UserProps = {
         id: new UserId(user.id),
         pair_id: new PairId(user.pair_id),

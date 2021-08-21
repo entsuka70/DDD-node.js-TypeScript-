@@ -1,11 +1,10 @@
-module.exports = function (app: any) {
-  console.log('-----  Read routes/issue -----');
-  const IssueController = require('presentation/controller/IssueController');
+import express from 'express';
+import { view, create, remove } from 'presentation/controller/IssueController';
 
-  app.route('/issue').get(IssueController.view).post(IssueController.create);
+const router = express.Router();
 
-  app
-    .route('/issue/:id')
-    // .post(IssueController.update)
-    .delete(IssueController.delete);
-};
+router.get('/issue', view);
+router.post('/issue', create);
+router.delete('/issue/:id', remove);
+
+export default router;

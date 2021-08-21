@@ -1,4 +1,6 @@
-import express from 'express';
+import { Request } from 'express';
+import { PostRequest } from 'presentation/controller/UserController';
+import { ParamsDictionary } from 'express-serve-static-core';
 
 export default class UserCreateCommand {
   public id: string;
@@ -8,7 +10,7 @@ export default class UserCreateCommand {
   public user_name: string;
   public email: string;
 
-  constructor(req: express.Request) {
+  constructor(req: Request<ParamsDictionary>) {
     this.id = req.params.id || req.body.id;
     this.pair_id = req.body.pair_id;
     this.team_id = req.body.team_id;

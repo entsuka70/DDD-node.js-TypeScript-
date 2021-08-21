@@ -18,9 +18,9 @@ const issueApplication = new IssueApplication(
 );
 
 // 課題一覧取得
-exports.view = async function (req: express.Request, res: express.Response) {
+export function view(req: express.Request, res: express.Response) {
   try {
-    const issues = await issueApplication.findAll();
+    const issues = issueApplication.findAll();
     res.set({
       'content-type': 'application/json',
     });
@@ -28,11 +28,11 @@ exports.view = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(`Error: Issue View (${e.message})`);
   }
-};
+}
 
-exports.create = async function (req: express.Request, res: express.Response) {
+export function create(req: express.Request, res: express.Response) {
   try {
-    await issueApplication.create(new IssueCreateCommand(req));
+    issueApplication.create(new IssueCreateCommand(req));
     res.set({
       'content-type': 'application/json',
     });
@@ -40,11 +40,11 @@ exports.create = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(`Error: Issue Create (${e.message})`);
   }
-};
+}
 
-exports.delete = async function (req: express.Request, res: express.Response) {
+export function remove(req: express.Request, res: express.Response) {
   try {
-    await issueApplication.delete(new IssueDeleteCommand(req));
+    issueApplication.delete(new IssueDeleteCommand(req));
     res.set({
       'content-type': 'application/json',
     });
@@ -52,4 +52,4 @@ exports.delete = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(`Error: Issue Delete (${e.message})`);
   }
-};
+}

@@ -1,11 +1,16 @@
-module.exports = function (app: any) {
-  console.log('-----  Read routes/user -----');
-  const UserController = require('presentation/controller/UserController');
+import * as express from 'express';
+import {
+  view,
+  create,
+  update,
+  remove,
+} from '../presentation/controller/UserController';
 
-  app.route('/user').get(UserController.view).post(UserController.create);
+const router = express.Router();
 
-  app
-    .route('/user/:id')
-    .post(UserController.update)
-    .delete(UserController.delete);
-};
+router.get('/user', view);
+router.post('/user', create);
+router.post('/user/:id', update);
+router.delete('/user/:id', remove);
+
+export default router;

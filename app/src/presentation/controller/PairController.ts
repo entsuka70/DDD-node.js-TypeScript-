@@ -11,9 +11,9 @@ const userRepository = new UserRepository(prisma);
 const pairApplication = new PairApplication(pairRepository, userRepository);
 
 // ペア一覧取得
-exports.view = async function (req: express.Request, res: express.Response) {
+export function view(req: express.Request, res: express.Response) {
   try {
-    const pairAll = await pairApplication.findPairAll();
+    const pairAll = pairApplication.findPairAll();
     res.set({
       'content-type': 'application/json',
     });
@@ -21,12 +21,12 @@ exports.view = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(e.message);
   }
-};
+}
 
 // ペア更新
-exports.update = async function (req: express.Request, res: express.Response) {
+export function update(req: express.Request, res: express.Response) {
   try {
-    await pairApplication.update(new PairCreateCommand(req));
+    pairApplication.update(new PairCreateCommand(req));
     res.set({
       'content-type': 'text/plain',
     });
@@ -34,4 +34,4 @@ exports.update = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(e.message);
   }
-};
+}

@@ -17,9 +17,9 @@ const teamApplication = new TeamApplication(
 );
 
 // チーム一覧取得
-exports.view = async function (req: express.Request, res: express.Response) {
+export function view(req: express.Request, res: express.Response) {
   try {
-    const teamAll = await teamApplication.findTeamAll();
+    const teamAll = teamApplication.findTeamAll();
     res.set({
       'content-type': 'application/json',
     });
@@ -27,12 +27,12 @@ exports.view = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(e.message);
   }
-};
+}
 
 // チーム更新
-exports.update = async function (req: express.Request, res: express.Response) {
+export function update(req: express.Request, res: express.Response) {
   try {
-    await teamApplication.update(new TeamCreateCommand(req));
+    teamApplication.update(new TeamCreateCommand(req));
     res.set({
       'content-type': 'text/plain',
     });
@@ -40,4 +40,4 @@ exports.update = async function (req: express.Request, res: express.Response) {
   } catch (e) {
     return res.status(400).send(e.message);
   }
-};
+}
