@@ -1,24 +1,10 @@
-import { Request, Response } from 'express';
-import { ParamsDictionary } from 'express-serve-static-core';
+import { Request, Response, NextFunction } from 'express';
 import { PrismaClient } from '.prisma/client';
 import UserApplication from 'app/application/user/UserApplication';
 import UserCreateCommand from 'app/application/user/UserCreateCommand';
 import UserRepository from 'infra/repository/UserRepository';
 import PairRepository from 'infra/repository/PairRepository';
-
-export interface PostRequest extends Request {
-  params: {
-    id: string;
-  };
-  body: {
-    id: string;
-    user_name: string;
-    email: string;
-    pair_id: string;
-    team_id: string;
-    status: number;
-  };
-}
+import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
@@ -45,62 +31,80 @@ export function view(req: Request, res: Response) {
 }
 
 // ユーザー新規作成
-export function create(req: Request<ParamsDictionary>, res: Response) {
-  try {
-    userApplication.create(new UserCreateCommand(req));
-    res.set({
-      'content-type': 'text/plain',
-    });
-    return res
-      .status(201)
-      .send(
-        `Create User: UserName ${req.body.user_name}, Email ${req.body.email}`
-      );
-  } catch (e) {
-    if (e instanceof ReferenceError) {
-      console.error(e.message);
-      return res.status(400).send(e.message);
-    } else {
-      console.error('Unexpected Error Happend !!');
-      return res.status(400).send('Unexpected Error Happend !!');
+export function create(
+  req: RequestType.User,
+  res: Response,
+  next: NextFunction
+) {
+  (async () => {
+    try {
+      await userApplication.create(new UserCreateCommand(req));
+      res.set({
+        'content-type': 'text/plain',
+      });
+      return res
+        .status(201)
+        .send(
+          `Create User: UserName ${req.body.user_name}, Email ${req.body.email}`
+        );
+    } catch (e) {
+      if (e instanceof ReferenceError) {
+        console.error(e.message);
+        return res.status(400).send(e.message);
+      } else {
+        console.error('Unexpected Error Happend !!');
+        return res.status(400).send('Unexpected Error Happend !!');
+      }
     }
-  }
+  })().catch(next);
 }
 
 // ユーザー更新
-export function update(req: Request<ParamsDictionary>, res: Response) {
-  try {
-    userApplication.update(new UserCreateCommand(req));
-    res.set({
-      'content-type': 'text/plain',
-    });
-    return res.status(201).send('Update success');
-  } catch (e) {
-    if (e instanceof ReferenceError) {
-      console.error(e.message);
-      return res.status(400).send(e.message);
-    } else {
-      console.error('Unexpected Error Happend !!');
-      return res.status(400).send('Unexpected Error Happend !!');
+export function update(
+  req: RequestType.User,
+  res: Response,
+  next: NextFunction
+) {
+  (async () => {
+    try {
+      await userApplication.update(new UserCreateCommand(req));
+      res.set({
+        'content-type': 'text/plain',
+      });
+      return res.status(201).send('Update success');
+    } catch (e) {
+      if (e instanceof ReferenceError) {
+        console.error(e.message);
+        return res.status(400).send(e.message);
+      } else {
+        console.error('Unexpected Error Happend !!');
+        return res.status(400).send('Unexpected Error Happend !!');
+      }
     }
-  }
+  })().catch(next);
 }
 
 // ユーザー削除
-export function remove(req: Request<ParamsDictionary>, res: Response) {
-  try {
-    const userDelete = userApplication.delete(req.params.id);
-    res.set({
-      'content-type': 'text/plain',
-    });
-    return res.status(201).send('Delete success');
-  } catch (e) {
-    if (e instanceof ReferenceError) {
-      console.error(e.message);
-      return res.status(400).send(e.message);
-    } else {
-      console.error('Unexpected Error Happend !!');
-      return res.status(400).send('Unexpected Error Happend !!');
+export function remove(
+  req: RequestType.User,
+  res: Response,
+  next: NextFunction
+) {
+  (async () => {
+    try {
+      await userApplication.delete(req.params.id);
+      res.set({
+        'content-type': 'text/plain',
+      });
+      return res.status(201).send('Delete success');
+    } catch (e) {
+      if (e instanceof ReferenceError) {
+        console.error(e.message);
+        return res.status(400).send(e.message);
+      } else {
+        console.error('Unexpected Error Happend !!');
+        return res.status(400).send('Unexpected Error Happend !!');
+      }
     }
-  }
+  })().catch(next);
 }

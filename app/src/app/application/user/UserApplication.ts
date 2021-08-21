@@ -44,8 +44,9 @@ export default class UserApplication {
         `Email is already exist. You can not register ${command.email}`
       );
     }
-    const user = await this.userFactory.create(command);
+    const user = this.userFactory.create(command);
     await this.userRepository.save(user);
+    return;
   }
 
   public async update(command: UserCreateCommand) {
@@ -79,7 +80,7 @@ export default class UserApplication {
     }
 
     // Factoryで更新する集約を再構築
-    let userRebuild = await this.userFactory.update(command, user);
+    let userRebuild = this.userFactory.update(command, user);
     // 在籍以外の状態であれば自動でペア・チーム無所属
     if (userRebuild.getStatus() !== UserStatus.STATUS_BELONG) {
       userRebuild = await this.userDomainService.setPairAndTeam(userRebuild);

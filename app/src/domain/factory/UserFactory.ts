@@ -8,7 +8,7 @@ import TeamId from 'domain/model/team/TeamId';
 import UserCreateCommand from 'app/application/user/UserCreateCommand';
 
 export default class UserFactory {
-  public async create(command: UserCreateCommand): Promise<User> {
+  public create(command: UserCreateCommand): User {
     const props = {
       id: new UserId(),
       pair_id: new PairId(command.pair_id),
@@ -20,7 +20,7 @@ export default class UserFactory {
     return new User(props);
   }
 
-  public async update(command: UserCreateCommand, user: User): Promise<User> {
+  public update(command: UserCreateCommand, user: User): User {
     const { id, pair_id, team_id, status, user_name, email } =
       user.getAllProperties();
     const props = {
