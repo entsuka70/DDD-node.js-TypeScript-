@@ -28,8 +28,10 @@ jobs:
       - name: Run ESLint
         run: yarn lint
         working-directory: ./app
-      - name: Run Unit & Integration Test
+      - name: Run Migrate
         run: yarn migrate:postgres
+        working-directory: ./app
+      - name: Run Unit & Integration Test
         run: yarn test
         working-directory: ./app
         env:
