@@ -5,19 +5,14 @@ import UserFactory from 'domain/factory/UserFactory';
 import UserId from 'domain/model/user/UserId';
 import PairId from 'domain/model/pair/PairId';
 import TeamId from 'domain/model/team/TeamId';
+import PairName from 'domain/model/pair/PairName';
 import UserDomainService from 'domain/domainservice/UserDomainService';
 import UserCreateCommand from 'app/application/user/UserCreateCommand';
 import { getMockReq } from '@jest-mock/express';
-import { PrismaClient } from '.prisma/client';
+import { PrismaClient } from '@prisma/client';
 
 describe('app/application/user UserApplication', () => {
-  const prisma = new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL_TEST,
-      },
-    },
-  });
+  const prisma = new PrismaClient();
   const factory = new UserFactory();
   const userRepository = new UserRepository(prisma);
   const pairRepository = new PairRepository(prisma);
@@ -25,6 +20,23 @@ describe('app/application/user UserApplication', () => {
   const userApplication = new UserApplication(userRepository, pairRepository);
 
   beforeEach(async () => {
+    await prisma.team.create({
+      data: {
+        id: TeamId.DEFAULT_TEAM_ID,
+        team_name: 1,
+        belong: false,
+      },
+    });
+
+    await prisma.pair.create({
+      data: {
+        id: PairId.DEFAULT_PAIR_ID,
+        team_id: TeamId.DEFAULT_TEAM_ID,
+        pair_name: new PairName('a').get(),
+        belong: false,
+      },
+    });
+
     await prisma.user.createMany({
       data: [
         {
@@ -49,8 +61,14 @@ describe('app/application/user UserApplication', () => {
 
   afterEach(async () => {
     const deleteUserTable = prisma.user.deleteMany();
+    const deletePairTable = prisma.pair.deleteMany();
+    const deleteTeamTable = prisma.team.deleteMany();
 
-    await prisma.$transaction([deleteUserTable]);
+    await prisma.$transaction([
+      deleteUserTable,
+      deletePairTable,
+      deleteTeamTable,
+    ]);
     await prisma.$disconnect();
   });
 
