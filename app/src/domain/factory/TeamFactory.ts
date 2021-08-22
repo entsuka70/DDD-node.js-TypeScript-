@@ -26,7 +26,7 @@ export default class TeamFactory {
   }
 
   public async update(command: TeamCreateCommand, team: Team): Promise<Team> {
-    const { id, team_name, pair_ids, user_ids } = team.getAllProperties();
+    const { team_name, pair_ids, user_ids } = team.getAllProperties();
 
     // ペアIDの記載があれば紐付くユーザーを取得
     const users_ids: string[] = [];

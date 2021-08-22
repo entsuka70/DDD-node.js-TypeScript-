@@ -12,6 +12,21 @@ import UserStatus from 'domain/model/user/UserStatus';
 import IssueNo from 'domain/model/issue/IssueNo';
 import IssueGroup from 'domain/model/issue/IssueGroup';
 
+type SearchRule = {
+  user_id?: string;
+  issue_id?: string;
+  progress?: number;
+  issue?: {
+    issue_no?: number;
+    issue_name?: string;
+    issue_group?: number;
+  };
+  user?: {
+    user_name?: string;
+    status?: number;
+  };
+};
+
 // QueryServiceの利用により複数感集約をまたいでの参照・DTO返却までを行う
 export default class UserIssueQueryService
   implements UserIssueQueryServiceInterface
@@ -128,9 +143,10 @@ export default class UserIssueQueryService
   }
 
   // クエリwhereによる検索条件をまとめる
-  public setQueryRule(command: UserIssueGetCommand) {
-    // 動的にオブジェクトが形成されるためここだけany
-    const searchRule: any = { issue: {}, user: {} };
+  public setQueryRule(command: UserIssueGetCommand): SearchRule {
+    const searchRule: SearchRule = {};
+    searchRule.issue = {};
+    searchRule.user = {};
 
     command.user_id ? (searchRule.user_id = command.user_id) : searchRule;
     command.issue_id ? (searchRule.issue_id = command.issue_id) : searchRule;
@@ -149,7 +165,9 @@ export default class UserIssueQueryService
     command.user_name
       ? (searchRule.user.user_name = command.user_name)
       : searchRule;
-    command.status ? (searchRule.user.staus = command.status) : searchRule;
+    command.status
+      ? (searchRule.user.status = Number(command.status))
+      : searchRule;
     if (0 === Object.keys(searchRule.issue).length) {
       delete searchRule.issue;
     }

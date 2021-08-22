@@ -19,14 +19,11 @@ export default class UserDomainService {
     const isExistUser = users.filter((user) => {
       switch (type) {
         case 'email':
-          user.getEmail() === target;
-          break;
+          return user.getEmail() === target;
         case 'pair_id':
-          user.getPairId() === target;
-          break;
+          return user.getPairId() === target;
         case 'team_id':
-          user.getTeamId() === target;
-          break;
+          return user.getTeamId() === target;
         default:
       }
     });
@@ -37,7 +34,7 @@ export default class UserDomainService {
   }
 
   // 在籍以外の状態であれば自動でペア・チーム無所属
-  public async setPairAndTeam(user: User): Promise<User> {
+  public setPairAndTeam(user: User): User {
     user.changePairId(new PairId(PairId.DEFAULT_PAIR_ID));
     user.changeTeamId(new TeamId(TeamId.DEFAULT_TEAM_ID));
     return user;

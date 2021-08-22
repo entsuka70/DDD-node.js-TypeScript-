@@ -27,40 +27,28 @@ export default class IssueApplication {
   }
 
   public async findAll() {
-    try {
-      const issues = await this.issueRepository.findAll();
-      const issueDto = issues.map((issue) => new IssueDto(issue));
-      return issueDto;
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    const issues = await this.issueRepository.findAll();
+    const issueDto = issues.map((issue) => new IssueDto(issue));
+    return issueDto;
   }
 
   public async create(command: IssueCreateCommand) {
-    try {
-      // 課題を作成したら各ユーザーに課題を紐付ける
-      const newIssue = this.issueFactory.create(command);
-      await this.issueRepository.create(newIssue);
-      const users = await this.userRepository.findAll();
-      const userIssuesRebuild = this.userIssueFactory.createMany(
-        newIssue.getId(),
-        users
-      );
-      await this.userIssueRepository.createMany(userIssuesRebuild);
-      return;
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    // 課題を作成したら各ユーザーに課題を紐付ける
+    const newIssue = this.issueFactory.create(command);
+    await this.issueRepository.create(newIssue);
+    const users = await this.userRepository.findAll();
+    const userIssuesRebuild = this.userIssueFactory.createMany(
+      newIssue.getId(),
+      users
+    );
+    await this.userIssueRepository.createMany(userIssuesRebuild);
+    return;
   }
 
   public async delete(command: IssueDeleteCommand) {
-    try {
-      // カスケード削除対象になるので先に外部キー参照しているUserIssueから削除
-      // (Prisma公式記載SQLでテーブル変更が手間)
-      await this.userIssueRepository.deletManyIssue(command.id);
-      await this.issueRepository.delete(command.id);
-    } catch (e) {
-      throw new Error(e.message);
-    }
+    // カスケード削除対象になるので先に外部キー参照しているUserIssueから削除
+    // (Prisma公式記載SQLでテーブル変更が手間)
+    await this.userIssueRepository.deletManyIssue(command.id);
+    await this.issueRepository.delete(command.id);
   }
 }

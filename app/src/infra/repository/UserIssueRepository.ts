@@ -72,7 +72,7 @@ export default class UserIssueRepository
   }
 
   public async update(userIssue: UserIssue): Promise<void> {
-    const { id, user_id, issue_id, progress } = userIssue.getAllProperties();
+    const { id, progress } = userIssue.getAllProperties();
     await this.prisma.userIssue.update({
       where: {
         id: id,

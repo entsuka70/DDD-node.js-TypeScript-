@@ -4,6 +4,7 @@ import UserDomainService from 'domain/domainservice/UserDomainService';
 import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import PairDomainService from 'domain/domainservice/PairDomainService';
 import UserCreateCommand from './UserCreateCommand';
+import UserUpdateCommand from './UserUpdateCommand';
 import UserDto from './UserDto';
 import UserStatus from 'domain/model/user/UserStatus';
 
@@ -49,7 +50,7 @@ export default class UserApplication {
     return;
   }
 
-  public async update(command: UserCreateCommand) {
+  public async update(command: UserUpdateCommand) {
     const user = await this.userRepository.find(command.id);
     // メールアドレス重複チェック
     if (
@@ -83,7 +84,7 @@ export default class UserApplication {
     let userRebuild = this.userFactory.update(command, user);
     // 在籍以外の状態であれば自動でペア・チーム無所属
     if (userRebuild.getStatus() !== UserStatus.STATUS_BELONG) {
-      userRebuild = await this.userDomainService.setPairAndTeam(userRebuild);
+      userRebuild = this.userDomainService.setPairAndTeam(userRebuild);
       console.log('Automaticaly set pairId and teamId');
     }
     // ペアの自動編成

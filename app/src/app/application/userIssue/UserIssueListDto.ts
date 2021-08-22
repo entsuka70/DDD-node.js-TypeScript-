@@ -1,6 +1,3 @@
-import UserIssue from 'domain/model/userissue/UserIssue';
-import User from 'domain/model/user/User';
-import Issue from 'domain/model/issue/Issue';
 import UserId from 'domain/model/user/UserId';
 import IssueId from 'domain/model/issue/IssueId';
 import IssueName from 'domain/model/issue/IssueName';

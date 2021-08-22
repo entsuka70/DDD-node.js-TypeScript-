@@ -1,9 +1,9 @@
-import express from 'express';
+import { RequestType } from '../../../../@types';
 
 export default class IssueDeleteCommand {
   public id: string;
 
-  constructor(req: express.Request) {
+  constructor(req: RequestType.DeleteIssue) {
     this.id = req.params.id;
   }
 }

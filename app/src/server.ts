@@ -6,18 +6,18 @@ import team from './routes/team';
 import issue from './routes/issue';
 import userIssue from './routes/userIssue';
 const app = express();
-app.use('/', user);
-app.use('/', pair);
-app.use('/', team);
-app.use('/', issue);
-app.use('/', userIssue);
-
 // express4.xx以降で以下を同梱
 // https://expressjs.com/ja/api.html
 // This is a built-in middleware function in Express. It parses incoming requests with JSON payloads and is based on body-parser.
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
 app.use(express.json());
+
+app.use('/', user);
+app.use('/', pair);
+app.use('/', team);
+app.use('/', issue);
+app.use('/', userIssue);
 
 /* 5000番ポートで待ち受け */
 app.listen(5000, () => {

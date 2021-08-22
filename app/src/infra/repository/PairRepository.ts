@@ -41,6 +41,9 @@ export default class PairRepository implements PairRepositoryInterface {
         user: true,
       },
     });
+    if (all_pairs == null) {
+      throw new ReferenceError(`Not Found Any Pair`);
+    }
     const pairs = all_pairs.map((pair) => {
       const props: PairProps = {
         id: new PairId(pair.id),

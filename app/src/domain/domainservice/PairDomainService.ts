@@ -1,6 +1,3 @@
-import User from 'domain/model/user/User';
-import Pair from 'domain/model/pair/Pair';
-import Team from 'domain/model/team/Team';
 import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
 import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 import PairCreateCommand from 'app/application/pair/PairCreateCommand';
@@ -30,11 +27,9 @@ export default class PairDomainService {
       const isExistPair = pairs.filter((pair) => {
         switch (type) {
           case 'pair_name':
-            pair.getPairName() === target.pair_name;
-            break;
+            return pair.getPairName() === target.pair_name;
           case 'team_id':
-            pair.getTeamId() === target.team_id;
-            break;
+            return pair.getTeamId() === target.team_id;
           default:
         }
       });

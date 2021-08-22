@@ -11,7 +11,7 @@ export default class UserIssueFactory {
     command: UserIssueUpdateCommand,
     userIssue: UserIssue
   ): UserIssue {
-    const { id, user_id, issue_id, progress } = userIssue.getAllProperties();
+    const { user_id, issue_id, progress } = userIssue.getAllProperties();
     const props: UserIssueProps = {
       id: new UserIssueId(command.id),
       user_id: command.user_id

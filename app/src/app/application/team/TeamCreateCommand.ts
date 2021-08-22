@@ -1,4 +1,4 @@
-import express from 'express';
+import { RequestType } from '../../../../@types';
 
 export default class TeamCreateCommand {
   public id: string;
@@ -6,7 +6,7 @@ export default class TeamCreateCommand {
   public pair_ids: string[];
   public user_ids: string[];
 
-  constructor(req: express.Request) {
+  constructor(req: RequestType.Team) {
     this.id = req.params.id;
     this.team_name = req.body.team_name;
     this.pair_ids = req.body.pair_ids;

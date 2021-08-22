@@ -27,7 +27,7 @@ export default class Pair {
 
     // ユーザー数5名以上のペアは形成不可
     if (user_ids.length > Pair.MAX_PAIR_USER) {
-      throw new Error(`Can not set many users. ${user_ids}`);
+      throw new Error(`Can not set many users. ${user_ids.join()}`);
     }
 
     this.id = id;

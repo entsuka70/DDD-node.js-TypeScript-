@@ -1,4 +1,4 @@
-import express from 'express';
+import { RequestType } from '../../../../@types';
 
 export default class UserIssueUpdateCommand {
   public id: string;
@@ -6,7 +6,7 @@ export default class UserIssueUpdateCommand {
   public issue_id: string;
   public progress: number;
 
-  constructor(req: express.Request) {
+  constructor(req: RequestType.UpdateUserIssue) {
     this.id = req.params.id;
     this.user_id = req.params.user_id;
     this.issue_id = req.params.issue_id;

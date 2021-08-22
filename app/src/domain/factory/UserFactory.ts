@@ -6,6 +6,7 @@ import UserStatus from 'domain/model/user/UserStatus';
 import PairId from 'domain/model/pair/PairId';
 import TeamId from 'domain/model/team/TeamId';
 import UserCreateCommand from 'app/application/user/UserCreateCommand';
+import UserUpdateCommand from 'app/application/user/UserUpdateCommand';
 
 export default class UserFactory {
   public create(command: UserCreateCommand): User {
@@ -20,8 +21,8 @@ export default class UserFactory {
     return new User(props);
   }
 
-  public update(command: UserCreateCommand, user: User): User {
-    const { id, pair_id, team_id, status, user_name, email } =
+  public update(command: UserUpdateCommand, user: User): User {
+    const { pair_id, team_id, status, user_name, email } =
       user.getAllProperties();
     const props = {
       id: new UserId(command.id),

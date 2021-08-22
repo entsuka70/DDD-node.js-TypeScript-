@@ -6,6 +6,7 @@ import IssueCreateCommand from 'app/application/issue/IssueCreateCommand';
 import IssueDeleteCommand from 'app/application/issue/IssueDeleteCommand';
 import UserIssueRepository from 'infra/repository/UserIssueRepository';
 import UserRepository from 'infra/repository/UserRepository';
+import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();
 const issueRepository = new IssueRepository(prisma);
@@ -19,37 +20,58 @@ const issueApplication = new IssueApplication(
 
 // 課題一覧取得
 export function view(req: express.Request, res: express.Response) {
-  try {
-    const issues = issueApplication.findAll();
+  (async () => {
+    const issues = await issueApplication.findAll();
     res.set({
       'content-type': 'application/json',
     });
     return res.status(200).json(issues);
-  } catch (e) {
-    return res.status(400).send(`Error: Issue View (${e.message})`);
-  }
+  })().catch((e) => {
+    if (e instanceof ReferenceError) {
+      console.error(e.message);
+      return res.status(400).send(e.message);
+    } else {
+      console.error('Unexpected Error Happend !!');
+      console.error(e);
+      return res.status(400).send('Unexpected Error Happend !!');
+    }
+  });
 }
 
-export function create(req: express.Request, res: express.Response) {
-  try {
-    issueApplication.create(new IssueCreateCommand(req));
+export function create(req: RequestType.CreateIssue, res: express.Response) {
+  (async () => {
+    await issueApplication.create(new IssueCreateCommand(req));
     res.set({
       'content-type': 'application/json',
     });
     return res.status(200).send('Create Issue.');
-  } catch (e) {
-    return res.status(400).send(`Error: Issue Create (${e.message})`);
-  }
+  })().catch((e) => {
+    if (e instanceof ReferenceError) {
+      console.error(e.message);
+      return res.status(400).send(e.message);
+    } else {
+      console.error('Unexpected Error Happend !!');
+      console.error(e);
+      return res.status(400).send('Unexpected Error Happend !!');
+    }
+  });
 }
 
-export function remove(req: express.Request, res: express.Response) {
-  try {
-    issueApplication.delete(new IssueDeleteCommand(req));
+export function remove(req: RequestType.DeleteIssue, res: express.Response) {
+  (async () => {
+    await issueApplication.delete(new IssueDeleteCommand(req));
     res.set({
       'content-type': 'application/json',
     });
     return res.status(200).send('Delete Issue.');
-  } catch (e) {
-    return res.status(400).send(`Error: Issue Delete (${e.message})`);
-  }
+  })().catch((e) => {
+    if (e instanceof ReferenceError) {
+      console.error(e.message);
+      return res.status(400).send(e.message);
+    } else {
+      console.error('Unexpected Error Happend !!');
+      console.error(e);
+      return res.status(400).send('Unexpected Error Happend !!');
+    }
+  });
 }

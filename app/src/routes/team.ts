@@ -4,6 +4,6 @@ import { view, update } from 'presentation/controller/TeamController';
 const router = express.Router();
 
 router.get('/team', view);
-router.get('/team/:id', update);
+router.post('/team/:id', update);
 
 export default router;

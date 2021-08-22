@@ -6,6 +6,8 @@ import UserId from 'domain/model/user/UserId';
 import PairId from 'domain/model/pair/PairId';
 import TeamId from 'domain/model/team/TeamId';
 import UserDomainService from 'domain/domainservice/UserDomainService';
+import UserCreateCommand from 'app/application/user/UserCreateCommand';
+import { getMockReq } from '@jest-mock/express';
 import { PrismaClient } from '.prisma/client';
 
 describe('app/application/user UserApplication', () => {
@@ -69,28 +71,31 @@ describe('app/application/user UserApplication', () => {
 
     it('UserApplication.create()でユーザー新規作成できる', async () => {
       const dummyPost = {
-        user_name: 'dummyUser',
-        email: 'dummy@mail.com',
+        body: {
+          user_name: 'dummyUser',
+          email: 'dummy@mail.com',
+        },
       };
-      jest.mock('app/application/user/UserCreateCommand', () => {
-        return jest.fn(() => dummyPost);
-      });
-      const dummyData = require('app/application/user/UserCreateCommand');
-      const userAggregation = await factory.create(dummyData());
-      await userRepository.save(await userAggregation);
+      jest.mock('app/application/user/UserCreateCommand');
+      const req = getMockReq(dummyPost);
+      const UserCreateCommandMock = UserCreateCommand as jest.MockedClass<
+        typeof UserCreateCommand
+      >;
+      const userAggregation = factory.create(new UserCreateCommandMock(req));
+      await userRepository.save(userAggregation);
       const user = await prisma.user.findMany();
       expect(user).toHaveLength(3);
     });
   });
 
   describe('異常系テスト', () => {
-    it('UserApplication.create()でユーザーのメールアドレスが重複してエラー', async () => {
+    it('UserApplication.create()でユーザーのメールアドレスが重複してエラー', () => {
       const dummyPost = {
         user_name: 'dummyUser',
         email: 'hoge@mail.com', // メールアドレス重複
       };
-      expect(() =>
-        userDomainService.isExist(dummyPost.email, 'email')
+      expect(
+        async () => await userDomainService.isExist(dummyPost.email, 'email')
       ).toBeTruthy();
     });
   });

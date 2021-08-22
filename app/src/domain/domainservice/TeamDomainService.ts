@@ -1,4 +1,3 @@
-import Team from 'domain/model/team/Team';
 import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
 
 export default class TeamDomainService {
@@ -20,8 +19,7 @@ export default class TeamDomainService {
     const isExistUser = teams.filter((team) => {
       switch (type) {
         case 'team_name':
-          team.getTeamName() === target;
-          break;
+          return team.getTeamName() === target;
         default:
       }
     });

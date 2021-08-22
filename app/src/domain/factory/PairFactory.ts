@@ -6,16 +6,8 @@ import PairCreateCommand from 'app/application/pair/PairCreateCommand';
 import UserId from 'domain/model/user/UserId';
 
 export default class PairFactory {
-  public async create(data: {
-    pair_name: string;
-    belong: boolean;
-    team_id: string;
-  }): Promise<object> {
-    return data;
-  }
-
-  public async update(command: PairCreateCommand, pair: Pair): Promise<Pair> {
-    const { id, team_id, pair_name, user_ids } = pair.getAllProperties();
+  public update(command: PairCreateCommand, pair: Pair): Pair {
+    const { team_id, pair_name, user_ids } = pair.getAllProperties();
     const props = {
       id: new PairId(command.id),
       team_id: command.team_id

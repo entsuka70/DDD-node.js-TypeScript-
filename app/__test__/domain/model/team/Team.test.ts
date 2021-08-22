@@ -1,7 +1,6 @@
 import Team, { TeamProps } from 'domain/model/team/Team';
 import TeamId from 'domain/model/team/TeamId';
 import TeamName from 'domain/model/team/TeamName';
-import PairName from 'domain/model/pair/PairName';
 import UserId from 'domain/model/user/UserId';
 import PairId from 'domain/model/pair/PairId';
 
