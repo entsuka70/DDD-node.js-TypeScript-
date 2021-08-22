@@ -1,16 +1,9 @@
-module.exports = function (app: any) {
-    console.log('-----  Read routes/pair -----')
-    const PairController = require('presentation/controller/PairController');
+import express from 'express';
+import { view, update } from '../presentation/controller/PairController';
 
-    app.route('/pair')
-        .get(PairController.view);
-    // 仕様変更により不要
-    // TODO:利用には修正必要
-    // .post(PairController.create);
+const router = express.Router();
 
-    app.route('/pair/:id')
-        .post(PairController.update);
-    // 仕様変更により不要
-    // TODO:利用には修正必要
-    // .delete(PairController.delete);
-}
+router.get('/pair', view);
+router.post('/pair/:id', update);
+
+export default router;

@@ -1,18 +1,24 @@
 import { RequestType } from '../../../../@types';
 
-export default class UserCreateCommand {
-  public pair_id?: string;
-  public team_id?: string;
-  public status?: number;
+export default class UserUpdateCommand {
+  public id: string;
+  public pair_id: string;
+  public team_id: string;
+  public status: number;
   public user_name: string;
   public email: string;
 
-  constructor(req: RequestType.CreateUser) {
+  constructor(req: RequestType.UpdateUser) {
+    this.id = req.params.id;
     this.pair_id = req.body.pair_id;
     this.team_id = req.body.team_id;
     this.status = req.body.status;
     this.user_name = req.body.user_name;
     this.email = req.body.email;
+  }
+
+  public getId() {
+    return this.id;
   }
 
   public getPairId() {

@@ -1,7 +1,11 @@
-const path = require('path');
-const express = require('express');
+import express from 'express';
+import expressListEndpoints from 'express-list-endpoints';
+import user from './routes/user';
+import pair from './routes/pair';
+import team from './routes/team';
+import issue from './routes/issue';
+import userIssue from './routes/userIssue';
 const app = express();
-
 // express4.xx以降で以下を同梱
 // https://expressjs.com/ja/api.html
 // This is a built-in middleware function in Express. It parses incoming requests with JSON payloads and is based on body-parser.
@@ -9,19 +13,14 @@ const app = express();
 // app.use(bodyParser.json());
 app.use(express.json());
 
-/* 5000番ポートで待ち受け */
-const server = app.listen(5000, function () {
-    console.log(`Node.js is listening to PORT: ${server.address().port}`);
-});
-// ルーティング
+app.use('/', user);
+app.use('/', pair);
+app.use('/', team);
+app.use('/', issue);
+app.use('/', userIssue);
 
-const userRoutes = require('routes/user');
-const pairRoutes = require('routes/pair');
-const teamRoutes = require('routes/team');
-const issueRoutes = require('routes/issue');
-const userIssueRoutes = require('routes/userIssue');
-userRoutes(app);
-pairRoutes(app);
-teamRoutes(app);
-issueRoutes(app);
-userIssueRoutes(app);
+/* 5000番ポートで待ち受け */
+app.listen(5000, () => {
+  console.log(`Node.js is listening to PORT: 5000`);
+  console.log(expressListEndpoints(app));
+});

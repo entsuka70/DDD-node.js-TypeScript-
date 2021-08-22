@@ -1,14 +1,14 @@
 export default class IssueName {
-    private issueName: string;
+  private issueName: string;
 
-    constructor(issueName: string) {
-        if (!issueName) {
-            throw new Error('Do not match IssueName FORMAT')
-        }
-        this.issueName = issueName
+  constructor(issueName: string) {
+    if (!issueName) {
+      throw new Error('Do not match IssueName FORMAT');
     }
+    this.issueName = issueName;
+  }
 
-    public get(): string {
-        return this.issueName
-    }
+  public get(): string {
+    return this.issueName;
+  }
 }
