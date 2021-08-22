@@ -6,11 +6,11 @@ import team from './routes/team';
 import issue from './routes/issue';
 import userIssue from './routes/userIssue';
 const app = express();
-app.use('/user', user);
-app.use('/pair', pair);
-app.use('/team', team);
-app.use('/issue', issue);
-app.use('/userissue', userIssue);
+app.use('/', user);
+app.use('/', pair);
+app.use('/', team);
+app.use('/', issue);
+app.use('/', userIssue);
 
 // express4.xx以降で以下を同梱
 // https://expressjs.com/ja/api.html
@@ -20,7 +20,7 @@ app.use('/userissue', userIssue);
 app.use(express.json());
 
 /* 5000番ポートで待ち受け */
-const server = app.listen(5000, function () {
-  console.log(`Node.js is listening to PORT: ${String(server.address())}`);
-  console.log(expressListEndpoints);
+app.listen(5000, () => {
+  console.log(`Node.js is listening to PORT: 5000`);
+  console.log(expressListEndpoints(app));
 });
