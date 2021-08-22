@@ -12,22 +12,24 @@ const pairRepository = new PairRepository(prisma);
 const userApplication = new UserApplication(userRepository, pairRepository);
 
 // ユーザー一覧取得
-export function view(req: Request, res: Response) {
-  try {
-    const userAll = userApplication.findAll();
-    res.set({
-      'content-type': 'application/json',
-    });
-    return res.status(200).json(userAll);
-  } catch (e) {
-    if (e instanceof ReferenceError) {
-      console.error(e.message);
-      return res.status(400).send(e.message);
-    } else {
-      console.error('Unexpected Error Happend !!');
-      return res.status(400).send('Unexpected Error Happend !!');
+export function view(req: Request, res: Response, next: NextFunction) {
+  (async () => {
+    try {
+      const userAll = await userApplication.findAll();
+      res.set({
+        'content-type': 'application/json',
+      });
+      return res.status(200).json(userAll);
+    } catch (e) {
+      if (e instanceof ReferenceError) {
+        console.error(e.message);
+        return res.status(400).send(e.message);
+      } else {
+        console.error('Unexpected Error Happend !!');
+        return res.status(400).send('Unexpected Error Happend !!');
+      }
     }
-  }
+  })().catch(next);
 }
 
 // ユーザー新規作成
