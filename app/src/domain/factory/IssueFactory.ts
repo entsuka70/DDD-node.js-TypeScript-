@@ -1,9 +1,9 @@
-import Issue from 'src/domain/model/issue/Issue';
-import IssueCreateCommand from 'src/app/application/issue/IssueCreateCommand';
-import IssueId from 'src/domain/model/issue/IssueId';
-import IssueNo from 'src/domain/model/issue/IssueNo';
-import IssueName from 'src/domain/model/issue/IssueName';
-import IssueGroup from 'src/domain/model/issue/IssueGroup';
+import Issue from 'domain/model/issue/Issue';
+import IssueCreateCommand from 'app/application/issue/IssueCreateCommand';
+import IssueId from 'domain/model/issue/IssueId';
+import IssueNo from 'domain/model/issue/IssueNo';
+import IssueName from 'domain/model/issue/IssueName';
+import IssueGroup from 'domain/model/issue/IssueGroup';
 
 export default class IssueFactory {
   public create(command: IssueCreateCommand): Issue {

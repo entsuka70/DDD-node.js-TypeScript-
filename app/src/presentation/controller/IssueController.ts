@@ -1,11 +1,11 @@
 import express from 'express';
 import { PrismaClient } from '.prisma/client';
-import IssueApplication from 'src/app/application/issue/IssueApplication';
-import IssueRepository from 'src/infra/repository/IssueRepository';
-import IssueCreateCommand from 'src/app/application/issue/IssueCreateCommand';
-import IssueDeleteCommand from 'src/app/application/issue/IssueDeleteCommand';
-import UserIssueRepository from 'src/infra/repository/UserIssueRepository';
-import UserRepository from 'src/infra/repository/UserRepository';
+import IssueApplication from 'app/application/issue/IssueApplication';
+import IssueRepository from 'infra/repository/IssueRepository';
+import IssueCreateCommand from 'app/application/issue/IssueCreateCommand';
+import IssueDeleteCommand from 'app/application/issue/IssueDeleteCommand';
+import UserIssueRepository from 'infra/repository/UserIssueRepository';
+import UserRepository from 'infra/repository/UserRepository';
 import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();

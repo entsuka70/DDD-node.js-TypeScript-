@@ -4,13 +4,13 @@ import {
   create,
   update,
   remove,
-} from 'src/presentation/controller/UserController';
+} from '../presentation/controller/UserController';
 
-const user = express.Router();
+const router = express.Router();
 
-user.get('/user', view);
-user.post('/user', create);
-user.post('/user/:id', update);
-user.delete('/user/:id', remove);
+router.get('/user', view);
+router.post('/user', create);
+router.post('/user/:id', update);
+router.delete('/user/:id', remove);
 
-export default user;
+export default router;

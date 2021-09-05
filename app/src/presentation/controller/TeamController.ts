@@ -1,10 +1,10 @@
 import express from 'express';
 import { PrismaClient } from '.prisma/client';
-import TeamApplication from 'src/app/application/team/TeamApplication';
-import TeamRepository from 'src/infra/repository/TeamRepository';
-import PairRepository from 'src/infra/repository/PairRepository';
-import UserRepository from 'src/infra/repository/UserRepository';
-import TeamCreateCommand from 'src/app/application/team/TeamCreateCommand';
+import TeamApplication from 'app/application/team/TeamApplication';
+import TeamRepository from 'infra/repository/TeamRepository';
+import PairRepository from 'infra/repository/PairRepository';
+import UserRepository from 'infra/repository/UserRepository';
+import TeamCreateCommand from 'app/application/team/TeamCreateCommand';
 import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();

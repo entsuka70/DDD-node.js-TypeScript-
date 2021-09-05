@@ -1,8 +1,8 @@
-import Team, { TeamProps } from 'src/domain/model/team/Team';
-import TeamId from 'src/domain/model/team/TeamId';
-import TeamName from 'src/domain/model/team/TeamName';
-import UserId from 'src/domain/model/user/UserId';
-import PairId from 'src/domain/model/pair/PairId';
+import Team, { TeamProps } from 'domain/model/team/Team';
+import TeamId from 'domain/model/team/TeamId';
+import TeamName from 'domain/model/team/TeamName';
+import UserId from 'domain/model/user/UserId';
+import PairId from 'domain/model/pair/PairId';
 
 describe('domain/model/team Team', () => {
   describe('正常系テスト', () => {

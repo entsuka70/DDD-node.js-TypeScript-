@@ -1,7 +1,7 @@
-import UserIssueUpdateCommand from 'src/app/application/userIssue/UserIssueUpdateCommand';
-import UserIssue from 'src/domain/model/userissue/UserIssue';
-import UserIssueProgress from 'src/domain/model/userissue/UserIssueProgress';
-import UserIssueRepositoryInterface from 'src/domain/model/userissue/UserIssueRepositoryInterface';
+import UserIssueUpdateCommand from 'app/application/userIssue/UserIssueUpdateCommand';
+import UserIssue from 'domain/model/userissue/UserIssue';
+import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
+import UserIssueRepositoryInterface from 'domain/model/userissue/UserIssueRepositoryInterface';
 
 export default class UserIssueDomainService {
   private readonly userIssueRepository: UserIssueRepositoryInterface;

@@ -1,12 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import User, { UserProps } from 'src/domain/model/user/User';
-import UserId from 'src/domain/model/user/UserId';
-import UserName from 'src/domain/model/user/UserName';
-import UserEmail from 'src/domain/model/user/UserEmail';
-import UserStatus from 'src/domain/model/user/UserStatus';
-import PairId from 'src/domain/model/pair/PairId';
-import TeamId from 'src/domain/model/team/TeamId';
-import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
+import User, { UserProps } from 'domain/model/user/User';
+import UserId from 'domain/model/user/UserId';
+import UserName from 'domain/model/user/UserName';
+import UserEmail from 'domain/model/user/UserEmail';
+import UserStatus from 'domain/model/user/UserStatus';
+import PairId from 'domain/model/pair/PairId';
+import TeamId from 'domain/model/team/TeamId';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 
 export default class UserRepository implements UserRepositoryInterface {
   private prisma: PrismaClient;

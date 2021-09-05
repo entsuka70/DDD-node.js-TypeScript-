@@ -1,4 +1,4 @@
-import UserId from 'src/domain/model/user/UserId';
+import UserId from 'domain/model/user/UserId';
 
 type Props = {
   user_id: UserId;

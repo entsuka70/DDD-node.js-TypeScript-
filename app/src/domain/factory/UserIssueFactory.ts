@@ -1,12 +1,10 @@
-import UserIssue, {
-  UserIssueProps,
-} from 'src/domain/model/userissue/UserIssue';
-import UserIssueUpdateCommand from 'src/app/application/userIssue/UserIssueUpdateCommand';
-import UserIssueId from 'src/domain/model/userissue/UserIssueId';
-import User from 'src/domain/model/user/User';
-import UserId from 'src/domain/model/user/UserId';
-import IssueId from 'src/domain/model/issue/IssueId';
-import UserIssueProgress from 'src/domain/model/userissue/UserIssueProgress';
+import UserIssue, { UserIssueProps } from 'domain/model/userissue/UserIssue';
+import UserIssueUpdateCommand from 'app/application/userIssue/UserIssueUpdateCommand';
+import UserIssueId from 'domain/model/userissue/UserIssueId';
+import User from 'domain/model/user/User';
+import UserId from 'domain/model/user/UserId';
+import IssueId from 'domain/model/issue/IssueId';
+import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
 
 export default class UserIssueFactory {
   public update(

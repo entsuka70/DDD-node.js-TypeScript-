@@ -1,13 +1,13 @@
-import UserApplication from 'src/app/application/user/UserApplication';
-import UserRepository from 'src/infra/repository/UserRepository';
-import PairRepository from 'src/infra/repository/PairRepository';
-import UserFactory from 'src/domain/factory/UserFactory';
-import UserId from 'src/domain/model/user/UserId';
-import PairId from 'src/domain/model/pair/PairId';
-import TeamId from 'src/domain/model/team/TeamId';
-import PairName from 'src/domain/model/pair/PairName';
-import UserDomainService from 'src/domain/domainservice/UserDomainService';
-import UserCreateCommand from 'src/app/application/user/UserCreateCommand';
+import UserApplication from 'app/application/user/UserApplication';
+import UserRepository from 'infra/repository/UserRepository';
+import PairRepository from 'infra/repository/PairRepository';
+import UserFactory from 'domain/factory/UserFactory';
+import UserId from 'domain/model/user/UserId';
+import PairId from 'domain/model/pair/PairId';
+import TeamId from 'domain/model/team/TeamId';
+import PairName from 'domain/model/pair/PairName';
+import UserDomainService from 'domain/domainservice/UserDomainService';
+import UserCreateCommand from 'app/application/user/UserCreateCommand';
 import { getMockReq } from '@jest-mock/express';
 import { PrismaClient } from '@prisma/client';
 

@@ -4,7 +4,7 @@ import {
   user,
   update,
   remove,
-} from 'src/presentation/controller/UserIssueController';
+} from '../presentation/controller/UserIssueController';
 
 const router = express.Router();
 router.get('/userissue', view);

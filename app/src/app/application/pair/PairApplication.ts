@@ -1,11 +1,11 @@
-import PairRepositoryInterface from 'src/domain/model/pair/PairRepositoryInterface';
-import PairFactory from 'src/domain/factory/PairFactory';
-import PairDomainService from 'src/domain/domainservice/PairDomainService';
-import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
+import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
+import PairFactory from 'domain/factory/PairFactory';
+import PairDomainService from 'domain/domainservice/PairDomainService';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 import PairDto from './PairDto';
 import PairCreateCommand from './PairCreateCommand';
-import Pair from 'src/domain/model/pair/Pair';
-import UserId from 'src/domain/model/user/UserId';
+import Pair from 'domain/model/pair/Pair';
+import UserId from 'domain/model/user/UserId';
 
 export default class PairApplication {
   private readonly pairRepository: PairRepositoryInterface;

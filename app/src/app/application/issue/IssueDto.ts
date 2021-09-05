@@ -1,4 +1,4 @@
-import Issue from 'src/domain/model/issue/Issue';
+import Issue from 'domain/model/issue/Issue';
 
 export default class IssueDto {
   public readonly id: string;

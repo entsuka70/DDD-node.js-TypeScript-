@@ -1,4 +1,4 @@
-import PairName from 'src/domain/model/pair/PairName';
+import PairName from 'domain/model/pair/PairName';
 
 describe('domain/model/pair PairName', () => {
   describe('正常系テスト', () => {

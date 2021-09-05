@@ -1,6 +1,6 @@
 import UserIssueId from './UserIssueId';
-import UserId from 'src/domain/model/user/UserId';
-import IssueId from 'src/domain/model/issue/IssueId';
+import UserId from 'domain/model/user/UserId';
+import IssueId from 'domain/model/issue/IssueId';
 import UserIssueProgress from './UserIssueProgress';
 
 type Props = {

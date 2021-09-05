@@ -1,14 +1,14 @@
-import Team, { TeamProps } from 'src/domain/model/team/Team';
-import TeamId from 'src/domain/model/team/TeamId';
-import TeamName from 'src/domain/model/team/TeamName';
-import PairId from 'src/domain/model/pair/PairId';
-import UserId from 'src/domain/model/user/UserId';
-import User from 'src/domain/model/user/User';
-import Pair from 'src/domain/model/pair/Pair';
-import TeamCreateCommand from 'src/app/application/team/TeamCreateCommand';
-import TeamRepositoryInterface from 'src/domain/model/team/TeamRepositoryInterface';
-import PairRepositoryInterface from 'src/domain/model/pair/PairRepositoryInterface';
-import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
+import Team, { TeamProps } from 'domain/model/team/Team';
+import TeamId from 'domain/model/team/TeamId';
+import TeamName from 'domain/model/team/TeamName';
+import PairId from 'domain/model/pair/PairId';
+import UserId from 'domain/model/user/UserId';
+import User from 'domain/model/user/User';
+import Pair from 'domain/model/pair/Pair';
+import TeamCreateCommand from 'app/application/team/TeamCreateCommand';
+import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
+import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
 
 export default class TeamFactory {
   private readonly teamRepository: TeamRepositoryInterface;

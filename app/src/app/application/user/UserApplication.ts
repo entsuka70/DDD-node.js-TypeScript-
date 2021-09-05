@@ -1,12 +1,12 @@
-import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
-import UserFactory from 'src/domain/factory/UserFactory';
-import UserDomainService from 'src/domain/domainservice/UserDomainService';
-import PairRepositoryInterface from 'src/domain/model/pair/PairRepositoryInterface';
-import PairDomainService from 'src/domain/domainservice/PairDomainService';
+import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
+import UserFactory from 'domain/factory/UserFactory';
+import UserDomainService from 'domain/domainservice/UserDomainService';
+import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
+import PairDomainService from 'domain/domainservice/PairDomainService';
 import UserCreateCommand from './UserCreateCommand';
 import UserUpdateCommand from './UserUpdateCommand';
 import UserDto from './UserDto';
-import UserStatus from 'src/domain/model/user/UserStatus';
+import UserStatus from 'domain/model/user/UserStatus';
 
 export default class UserApplication {
   private readonly userRepository: UserRepositoryInterface;

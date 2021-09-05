@@ -1,4 +1,4 @@
-import UserEmail from 'src/domain/model/user/UserEmail';
+import UserEmail from 'domain/model/user/UserEmail';
 
 describe('domain/model/user UserEmail', () => {
   describe('正常系テスト', () => {

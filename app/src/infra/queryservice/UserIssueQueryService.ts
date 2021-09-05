@@ -1,16 +1,16 @@
 import { PrismaClient } from '@prisma/client';
-import UserId from 'src/domain/model/user/UserId';
-import IssueId from 'src/domain/model/issue/IssueId';
-import UserIssueProgress from 'src/domain/model/userissue/UserIssueProgress';
-import UserIssueQueryServiceInterface from 'src/app/application/userIssue/UserIssueQueryServiceInterface';
-import UserIssueListDto from 'src/app/application/userIssue/UserIssueListDto';
-import UserListDto from 'src/app/application/userIssue/UserListDto';
-import UserIssueGetCommand from 'src/app/application/userIssue/UserIssueGetCommand';
-import IssueName from 'src/domain/model/issue/IssueName';
-import UserName from 'src/domain/model/user/UserName';
-import UserStatus from 'src/domain/model/user/UserStatus';
-import IssueNo from 'src/domain/model/issue/IssueNo';
-import IssueGroup from 'src/domain/model/issue/IssueGroup';
+import UserId from 'domain/model/user/UserId';
+import IssueId from 'domain/model/issue/IssueId';
+import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
+import UserIssueQueryServiceInterface from 'app/application/userIssue/UserIssueQueryServiceInterface';
+import UserIssueListDto from 'app/application/userIssue/UserIssueListDto';
+import UserListDto from 'app/application/userIssue/UserListDto';
+import UserIssueGetCommand from 'app/application/userIssue/UserIssueGetCommand';
+import IssueName from 'domain/model/issue/IssueName';
+import UserName from 'domain/model/user/UserName';
+import UserStatus from 'domain/model/user/UserStatus';
+import IssueNo from 'domain/model/issue/IssueNo';
+import IssueGroup from 'domain/model/issue/IssueGroup';
 
 type SearchRule = {
   user_id?: string;
