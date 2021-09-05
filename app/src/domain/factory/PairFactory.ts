@@ -1,9 +1,9 @@
-import Pair from 'domain/model/pair/Pair';
-import PairId from 'domain/model/pair/PairId';
-import TeamId from 'domain/model/team/TeamId';
-import PairName from 'domain/model/pair/PairName';
-import PairCreateCommand from 'app/application/pair/PairCreateCommand';
-import UserId from 'domain/model/user/UserId';
+import Pair from 'src/domain/model/pair/Pair';
+import PairId from 'src/domain/model/pair/PairId';
+import TeamId from 'src/domain/model/team/TeamId';
+import PairName from 'src/domain/model/pair/PairName';
+import PairCreateCommand from 'src/app/application/pair/PairCreateCommand';
+import UserId from 'src/domain/model/user/UserId';
 
 export default class PairFactory {
   public update(command: PairCreateCommand, pair: Pair): Pair {

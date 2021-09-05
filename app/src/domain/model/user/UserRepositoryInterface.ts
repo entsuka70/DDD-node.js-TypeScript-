@@ -1,4 +1,4 @@
-import User from 'domain/model/user/User';
+import User from 'src/domain/model/user/User';
 
 export default interface UserRepositoryInterface {
   find(id: string): Promise<User>;

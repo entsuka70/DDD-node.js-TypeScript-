@@ -1,10 +1,10 @@
-import IssueRepositoryInterface from 'domain/model/issue/IssueRepositoryInterface';
-import IssueFactory from 'domain/factory/IssueFactory';
+import IssueRepositoryInterface from 'src/domain/model/issue/IssueRepositoryInterface';
+import IssueFactory from 'src/domain/factory/IssueFactory';
 import IssueDto from './IssueDto';
 import IssueCreateCommand from './IssueCreateCommand';
-import UserIssueRepositoryInterface from 'domain/model/userissue/UserIssueRepositoryInterface';
-import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
-import UserIssueFactory from 'domain/factory/UserIssueFactory';
+import UserIssueRepositoryInterface from 'src/domain/model/userissue/UserIssueRepositoryInterface';
+import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
+import UserIssueFactory from 'src/domain/factory/UserIssueFactory';
 import IssueDeleteCommand from './IssueDeleteCommand';
 
 export default class IssueApplication {

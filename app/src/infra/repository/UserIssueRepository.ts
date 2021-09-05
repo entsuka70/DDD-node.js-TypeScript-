@@ -1,10 +1,12 @@
 import { PrismaClient } from '@prisma/client';
-import UserIssue, { UserIssueProps } from 'domain/model/userissue/UserIssue';
-import UserIssueId from 'domain/model/userissue/UserIssueId';
-import UserId from 'domain/model/user/UserId';
-import IssueId from 'domain/model/issue/IssueId';
-import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
-import UserIssueRepositoryInterface from 'domain/model/userissue/UserIssueRepositoryInterface';
+import UserIssue, {
+  UserIssueProps,
+} from 'src/domain/model/userissue/UserIssue';
+import UserIssueId from 'src/domain/model/userissue/UserIssueId';
+import UserId from 'src/domain/model/user/UserId';
+import IssueId from 'src/domain/model/issue/IssueId';
+import UserIssueProgress from 'src/domain/model/userissue/UserIssueProgress';
+import UserIssueRepositoryInterface from 'src/domain/model/userissue/UserIssueRepositoryInterface';
 
 export default class UserIssueRepository
   implements UserIssueRepositoryInterface

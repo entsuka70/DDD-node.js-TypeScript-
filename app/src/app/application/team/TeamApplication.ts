@@ -1,11 +1,11 @@
-import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
-import TeamDomainService from 'domain/domainservice/TeamDomainService';
-import TeamFactory from 'domain/factory/TeamFactory';
+import TeamRepositoryInterface from 'src/domain/model/team/TeamRepositoryInterface';
+import TeamDomainService from 'src/domain/domainservice/TeamDomainService';
+import TeamFactory from 'src/domain/factory/TeamFactory';
 import TeamCreateCommand from './TeamCreateCommand';
 import TeamDto from './TeamDto';
-import Team from 'domain/model/team/Team';
-import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
-import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
+import Team from 'src/domain/model/team/Team';
+import PairRepositoryInterface from 'src/domain/model/pair/PairRepositoryInterface';
+import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
 
 export default class TeamApplication {
   private readonly teamRepository: TeamRepositoryInterface;

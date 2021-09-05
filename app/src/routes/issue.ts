@@ -1,5 +1,9 @@
 import express from 'express';
-import { view, create, remove } from 'presentation/controller/IssueController';
+import {
+  view,
+  create,
+  remove,
+} from 'src/presentation/controller/IssueController';
 
 const router = express.Router();
 

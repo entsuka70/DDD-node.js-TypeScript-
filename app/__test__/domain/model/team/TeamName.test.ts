@@ -1,4 +1,4 @@
-import TeamName from 'domain/model/team/TeamName';
+import TeamName from 'src/domain/model/team/TeamName';
 
 describe('domain/model/team TeamName', () => {
   describe('正常系テスト', () => {

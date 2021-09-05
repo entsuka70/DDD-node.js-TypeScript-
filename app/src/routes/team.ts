@@ -1,5 +1,5 @@
 import express from 'express';
-import { view, update } from 'presentation/controller/TeamController';
+import { view, update } from 'src/presentation/controller/TeamController';
 
 const router = express.Router();
 

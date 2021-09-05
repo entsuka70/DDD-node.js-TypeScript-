@@ -1,11 +1,11 @@
-import UserId from 'domain/model/user/UserId';
-import IssueId from 'domain/model/issue/IssueId';
-import IssueName from 'domain/model/issue/IssueName';
-import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
-import IssueNo from 'domain/model/issue/IssueNo';
-import IssueGroup from 'domain/model/issue/IssueGroup';
-import UserName from 'domain/model/user/UserName';
-import UserStatus from 'domain/model/user/UserStatus';
+import UserId from 'src/domain/model/user/UserId';
+import IssueId from 'src/domain/model/issue/IssueId';
+import IssueName from 'src/domain/model/issue/IssueName';
+import UserIssueProgress from 'src/domain/model/userissue/UserIssueProgress';
+import IssueNo from 'src/domain/model/issue/IssueNo';
+import IssueGroup from 'src/domain/model/issue/IssueGroup';
+import UserName from 'src/domain/model/user/UserName';
+import UserStatus from 'src/domain/model/user/UserStatus';
 
 type Props = {
   user_id: UserId;

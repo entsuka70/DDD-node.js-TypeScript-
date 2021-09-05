@@ -1,6 +1,6 @@
-import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
-import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
-import PairCreateCommand from 'app/application/pair/PairCreateCommand';
+import PairRepositoryInterface from 'src/domain/model/pair/PairRepositoryInterface';
+import UserRepositoryInterface from 'src/domain/model/user/UserRepositoryInterface';
+import PairCreateCommand from 'src/app/application/pair/PairCreateCommand';
 
 export default class PairDomainService {
   private readonly pairRepository: PairRepositoryInterface;

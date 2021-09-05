@@ -1,5 +1,5 @@
 import express from 'express';
-import { view, update } from '../presentation/controller/PairController';
+import { view, update } from 'src/presentation/controller/PairController';
 
 const router = express.Router();
 

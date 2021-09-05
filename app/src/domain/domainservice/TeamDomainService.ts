@@ -1,4 +1,4 @@
-import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
+import TeamRepositoryInterface from 'src/domain/model/team/TeamRepositoryInterface';
 
 export default class TeamDomainService {
   private readonly teamRepository: TeamRepositoryInterface;

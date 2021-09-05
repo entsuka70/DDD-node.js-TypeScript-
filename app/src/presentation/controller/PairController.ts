@@ -1,9 +1,9 @@
 import express from 'express';
 import { PrismaClient } from '.prisma/client';
-import PairApplication from 'app/application/pair/PairApplication';
-import PairRepository from 'infra/repository/PairRepository';
-import UserRepository from 'infra/repository/UserRepository';
-import PairCreateCommand from 'app/application/pair/PairCreateCommand';
+import PairApplication from 'src/app/application/pair/PairApplication';
+import PairRepository from 'src/infra/repository/PairRepository';
+import UserRepository from 'src/infra/repository/UserRepository';
+import PairCreateCommand from 'src/app/application/pair/PairCreateCommand';
 import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();

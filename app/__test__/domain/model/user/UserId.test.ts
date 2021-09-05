@@ -1,4 +1,4 @@
-import UserId from 'domain/model/user/UserId';
+import UserId from 'src/domain/model/user/UserId';
 
 describe('domain/model/user UserId', () => {
   describe('正常系テスト', () => {

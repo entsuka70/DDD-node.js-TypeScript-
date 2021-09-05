@@ -8,7 +8,10 @@
         "test-watch": "jest --watch",
         "lint": "eslint . --ext ts --fix",
         "lint-fix": "eslint --fix && prettier --write './index.ts'",
-        "migrate:postgres": "dotenv -e .env.test -- npx prisma migrate dev --name postgres-init"
+        "migrate:postgres": "dotenv -e .env.test -- npx prisma migrate dev --name postgres-init",
+        "build": "tsc",
+        "dev": "dotenv -e .env.development -- ts-node -r tsconfig-paths/register src/server.ts",
+        "devv": "dotenv -e .env.development -- node dist/src/server.js"
     },
     "author": "",
     "license": "ISC",

@@ -1,10 +1,10 @@
-import User, { UserProps } from 'domain/model/user/User';
-import UserId from 'domain/model/user/UserId';
-import PairId from 'domain/model/pair/PairId';
-import TeamId from 'domain/model/team/TeamId';
-import UserStatus from 'domain/model/user/UserStatus';
-import UserName from 'domain/model/user/UserName';
-import UserEmail from 'domain/model/user/UserEmail';
+import User, { UserProps } from 'src/domain/model/user/User';
+import UserId from 'src/domain/model/user/UserId';
+import PairId from 'src/domain/model/pair/PairId';
+import TeamId from 'src/domain/model/team/TeamId';
+import UserStatus from 'src/domain/model/user/UserStatus';
+import UserName from 'src/domain/model/user/UserName';
+import UserEmail from 'src/domain/model/user/UserEmail';
 
 describe('domain/model/user User', () => {
   describe('正常系テスト', () => {

@@ -1,11 +1,11 @@
 import { PrismaClient } from '@prisma/client';
 
-import TeamRepositoryInterface from 'domain/model/team/TeamRepositoryInterface';
-import Team, { TeamProps } from 'domain/model/team/Team';
-import TeamId from 'domain/model/team/TeamId';
-import TeamName from 'domain/model/team/TeamName';
-import PairId from 'domain/model/pair/PairId';
-import UserId from 'domain/model/user/UserId';
+import TeamRepositoryInterface from 'src/domain/model/team/TeamRepositoryInterface';
+import Team, { TeamProps } from 'src/domain/model/team/Team';
+import TeamId from 'src/domain/model/team/TeamId';
+import TeamName from 'src/domain/model/team/TeamName';
+import PairId from 'src/domain/model/pair/PairId';
+import UserId from 'src/domain/model/user/UserId';
 
 export default class TeamRepository implements TeamRepositoryInterface {
   private prisma: PrismaClient;
