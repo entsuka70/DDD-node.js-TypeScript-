@@ -17,7 +17,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
         ports:
-          - ${{secrets.PORTS}}
+          - 5402:5432
 
     steps:
       - name: Check out repository code
