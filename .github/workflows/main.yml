@@ -9,8 +9,8 @@ jobs:
       postgres:
         image: postgres:12
         env:
-          POSTGRES_USER: root
-          POSTGRES_PASSWORD: prisma2020
+          POSTGRES_USER: ${{secrets.POSTGRES_USER}}
+          POSTGRES_PASSWORD: ${{secrets.POSTGRES_PASSWORD}}
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -35,5 +35,5 @@ jobs:
         run: yarn test
         working-directory: ./app
         env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: 5402
+          POSTGRES_HOST: ${{secrets.POSTGRES_HOST}}
+          POSTGRES_PORT: ${{secrets.POSTGRES_PORT}}
