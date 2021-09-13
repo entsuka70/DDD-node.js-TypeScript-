@@ -1,10 +1,10 @@
 import express from 'express';
-import { PrismaClient } from '.prisma/client';
-import UserIssueApplication from 'app/application/userIssue/UserIssueApplication';
-import UserIssueGetCommand from 'app/application/userIssue/UserIssueGetCommand';
-import UserIssueUpdateCommand from 'app/application/userIssue/UserIssueUpdateCommand';
-import UserIssueRepository from 'infra/repository/UserIssueRepository';
-import UserIssueQueryService from 'infra/queryservice/UserIssueQueryService';
+import { PrismaClient } from 'prisma/prisma-client';
+import UserIssueApplication from '../../app/application/userIssue/UserIssueApplication';
+import UserIssueGetCommand from '../../app/application/userIssue/UserIssueGetCommand';
+import UserIssueUpdateCommand from '../../app/application/userIssue/UserIssueUpdateCommand';
+import UserIssueRepository from '../../infra/repository/UserIssueRepository';
+import UserIssueQueryService from '../../infra/queryservice/UserIssueQueryService';
 import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();

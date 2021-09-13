@@ -1,11 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-
-import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
-import Pair, { PairProps } from 'domain/model/pair/Pair';
-import PairId from 'domain/model/pair/PairId';
-import TeamId from 'domain/model/team/TeamId';
-import UserId from 'domain/model/user/UserId';
-import PairName from 'domain/model/pair/PairName';
+import { PrismaClient } from 'prisma/prisma-client';
+import PairRepositoryInterface from '../../domain/model/pair/PairRepositoryInterface';
+import Pair, { PairProps } from '../../domain/model/pair/Pair';
+import PairId from '../../domain/model/pair/PairId';
+import TeamId from '../../domain/model/team/TeamId';
+import UserId from '../../domain/model/user/UserId';
+import PairName from '../../domain/model/pair/PairName';
 
 export default class PairRepository implements PairRepositoryInterface {
   private prisma: PrismaClient;

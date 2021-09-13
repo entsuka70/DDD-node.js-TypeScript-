@@ -1,8 +1,8 @@
-import Pair, { PairProps } from 'domain/model/pair/Pair';
-import PairId from 'domain/model/pair/PairId';
-import TeamId from 'domain/model/team/TeamId';
-import PairName from 'domain/model/pair/PairName';
-import UserId from 'domain/model/user/UserId';
+import Pair, { PairProps } from '../../../../src/domain/model/pair/Pair';
+import PairId from '../../../../src/domain/model/pair/PairId';
+import TeamId from '../../../../src/domain/model/team/TeamId';
+import PairName from '../../../../src/domain/model/pair/PairName';
+import UserId from '../../../../src/domain/model/user/UserId';
 
 describe('domain/model/pair Pair', () => {
   describe('正常系テスト', () => {

@@ -1,4 +1,4 @@
-import Pair from 'domain/model/pair/Pair';
+import Pair from '../../../domain/model/pair/Pair';
 
 export default class PairDto {
   public readonly id: string;

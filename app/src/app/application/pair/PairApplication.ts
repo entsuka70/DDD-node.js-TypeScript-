@@ -1,11 +1,11 @@
-import PairRepositoryInterface from 'domain/model/pair/PairRepositoryInterface';
-import PairFactory from 'domain/factory/PairFactory';
-import PairDomainService from 'domain/domainservice/PairDomainService';
-import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
+import PairRepositoryInterface from '../../../domain/model/pair/PairRepositoryInterface';
+import PairFactory from '../../../domain/factory/PairFactory';
+import PairDomainService from '../../../domain/domainservice/PairDomainService';
+import UserRepositoryInterface from '../../../domain/model/user/UserRepositoryInterface';
 import PairDto from './PairDto';
 import PairCreateCommand from './PairCreateCommand';
-import Pair from 'domain/model/pair/Pair';
-import UserId from 'domain/model/user/UserId';
+import Pair from '../../../domain/model/pair/Pair';
+import UserId from '../../../domain/model/user/UserId';
 
 export default class PairApplication {
   private readonly pairRepository: PairRepositoryInterface;
@@ -70,10 +70,10 @@ export default class PairApplication {
 
       // ランダムに抽出したペアにユーザーをセット
       shouldJoinPairs[0].changeUserIds(
-        pairRebuild.getUserIdsInstance().filter((ins, index) => index <= 1)
+        pairRebuild.getUserIdsInstance().filter((ins, index: number) => index <= 1)
       );
       shouldJoinPairs[1].changeUserIds(
-        pairRebuild.getUserIdsInstance().filter((ins, index) => index > 1)
+        pairRebuild.getUserIdsInstance().filter((ins, index: number) => index > 1)
       );
       await Promise.all(
         shouldJoinPairs.map(
@@ -99,8 +99,8 @@ export default class PairApplication {
       const pairRebuildforException = this.pairFactory.update(command, pair); // 例外検出用にpairRebuildと同じオブジェクトを形成
       const excludeUserIds = pair
         .getUserIds()
-        .filter((id) => id != pairRebuildforException.getUserIds()[0]); // 移動しなかった残留のペア内ユーザーidを取得
-      pair.changeUserIds(excludeUserIds.map((id) => new UserId(id))); // 残留ユーザーを含むペアへセッター
+        .filter((id: string) => id != pairRebuildforException.getUserIds()[0]); // 移動しなかった残留のペア内ユーザーidを取得
+      pair.changeUserIds(excludeUserIds.map((id: string) => new UserId(id))); // 残留ユーザーを含むペアへセッター
       // 残留ユーザーが1名の時、不整合が発生するので再度最小構成ユーザー数のペアを探し出し移動する処理を実行
       if (pair.getUserIds().length == Pair.MIN_PAIR_USER) {
         const pairMinUserForLeft = await this.pairRepository.findMinUser(pair);

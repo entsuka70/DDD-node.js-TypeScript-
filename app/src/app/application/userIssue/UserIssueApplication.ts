@@ -1,10 +1,10 @@
-import UserIssueRepositoryInterface from 'domain/model/userissue/UserIssueRepositoryInterface';
-import UserIssueFactory from 'domain/factory/UserIssueFactory';
+import UserIssueRepositoryInterface from '../../../domain/model/userissue/UserIssueRepositoryInterface';
+import UserIssueFactory from '../../../domain/factory/UserIssueFactory';
 import UserIssueGetCommand from './UserIssueGetCommand';
 import UserIssueUpdateCommand from './UserIssueUpdateCommand';
 import UserIssueQueryServiceInterface from './UserIssueQueryServiceInterface';
-import UserIssueProgress from 'domain/model/userissue/UserIssueProgress';
-import UserIssueDomainService from 'domain/domainservice/UserIssueDomainService';
+import UserIssueProgress from '../../../domain/model/userissue/UserIssueProgress';
+import UserIssueDomainService from '../../../domain/domainservice/UserIssueDomainService';
 
 export default class UserIssueApplication {
   private readonly userIssueRepository: UserIssueRepositoryInterface;

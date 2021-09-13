@@ -1,4 +1,4 @@
-import Pair from 'domain/model/pair/Pair';
+import Pair from './Pair';
 
 export default interface PairRepositoryInterface {
   find(id: string): Promise<Pair>;

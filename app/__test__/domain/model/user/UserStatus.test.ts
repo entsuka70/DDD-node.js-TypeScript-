@@ -1,4 +1,4 @@
-import UserStatus from 'domain/model/user/UserStatus';
+import UserStatus from '../../../../src/domain/model/user/UserStatus';
 
 describe('domain/model/user UserStatus', () => {
   describe('正常系テスト', () => {

@@ -1,4 +1,4 @@
-import Team from 'domain/model/team/Team';
+import Team from '../../../domain/model/team/Team';
 
 export default class TeamDto {
   public readonly id: string;

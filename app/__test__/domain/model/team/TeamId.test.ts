@@ -1,5 +1,5 @@
-import TeamId from 'domain/model/team/TeamId';
-import UserId from 'domain/model/user/UserId';
+import TeamId from '../../../../src/domain/model/team/TeamId';
+import UserId from '../../../../src/domain/model/user/UserId';
 
 describe('domain/model/team TeamId', () => {
   describe('正常系テスト', () => {

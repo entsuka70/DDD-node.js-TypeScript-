@@ -1,5 +1,5 @@
-import PairId from 'domain/model/pair/PairId';
-import TeamId from 'domain/model/team/TeamId';
+import PairId from './PairId';
+import TeamId from '../team/TeamId';
 import UserId from '../user/UserId';
 import PairName from './PairName';
 

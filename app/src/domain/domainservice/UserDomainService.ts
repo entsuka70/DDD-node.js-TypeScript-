@@ -1,7 +1,7 @@
-import User from 'domain/model/user/User';
-import PairId from 'domain/model/pair/PairId';
-import TeamId from 'domain/model/team/TeamId';
-import UserRepositoryInterface from 'domain/model/user/UserRepositoryInterface';
+import User from '../../domain/model/user/User';
+import PairId from '../../domain/model/pair/PairId';
+import TeamId from '../../domain/model/team/TeamId';
+import UserRepositoryInterface from '../../domain/model/user/UserRepositoryInterface';
 
 export default class UserDomainService {
   private readonly userRepository: UserRepositoryInterface;

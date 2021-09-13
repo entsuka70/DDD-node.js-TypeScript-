@@ -1,4 +1,4 @@
-import UserIssue from 'domain/model/userissue/UserIssue';
+import UserIssue from '../../../domain/model/userissue/UserIssue';
 
 export default class UserIssueDto {
   public readonly id: string;

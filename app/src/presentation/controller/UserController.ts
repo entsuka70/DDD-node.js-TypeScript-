@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '.prisma/client';
-import UserApplication from 'app/application/user/UserApplication';
-import UserCreateCommand from 'app/application/user/UserCreateCommand';
-import UserUpdateCommand from 'app/application/user/UserUpdateCommand';
-import UserRepository from 'infra/repository/UserRepository';
-import PairRepository from 'infra/repository/PairRepository';
+import { PrismaClient } from 'prisma/prisma-client';
+import UserApplication from '../../app/application/user/UserApplication';
+import UserCreateCommand from '../../app/application/user/UserCreateCommand';
+import UserUpdateCommand from '../../app/application/user/UserUpdateCommand';
+import UserRepository from '../../infra/repository/UserRepository';
+import PairRepository from '../../infra/repository/PairRepository';
 import { RequestType } from '../../../@types';
 
 const prisma = new PrismaClient();

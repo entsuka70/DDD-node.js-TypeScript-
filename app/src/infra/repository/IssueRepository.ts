@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import Issue, { IssueProps } from 'domain/model/issue/Issue';
-import IssueId from 'domain/model/issue/IssueId';
-import IssueNo from 'domain/model/issue/IssueNo';
-import IssueName from 'domain/model/issue/IssueName';
-import IssueGroup from 'domain/model/issue/IssueGroup';
-import IssueRepositoryInterface from 'domain/model/issue/IssueRepositoryInterface';
+import { PrismaClient } from 'prisma/prisma-client';
+import Issue, { IssueProps } from '../../domain/model/issue/Issue';
+import IssueId from '../../domain/model/issue/IssueId';
+import IssueNo from '../../domain/model/issue/IssueNo';
+import IssueName from '../../domain/model/issue/IssueName';
+import IssueGroup from '../../domain/model/issue/IssueGroup';
+import IssueRepositoryInterface from '../../domain/model/issue/IssueRepositoryInterface';
 
 export default class IssueRepository implements IssueRepositoryInterface {
   private prisma: PrismaClient;
