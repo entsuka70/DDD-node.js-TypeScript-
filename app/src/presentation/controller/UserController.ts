@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import UserApplication from '../../app/application/user/UserApplication';
 import UserCreateCommand from '../../app/application/user/UserCreateCommand';
 import UserUpdateCommand from '../../app/application/user/UserUpdateCommand';

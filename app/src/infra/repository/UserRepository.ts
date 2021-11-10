@@ -1,4 +1,4 @@
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import User, { UserProps } from '../../domain/model/user/User';
 import UserId from '../../domain/model/user/UserId';
 import UserName from '../../domain/model/user/UserName';

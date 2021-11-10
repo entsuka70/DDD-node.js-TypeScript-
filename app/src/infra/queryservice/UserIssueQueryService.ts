@@ -1,4 +1,4 @@
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import UserId from '../../domain/model/user/UserId';
 import IssueId from '../../domain/model/issue/IssueId';
 import UserIssueProgress from '../../domain/model/userissue/UserIssueProgress';

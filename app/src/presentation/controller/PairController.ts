@@ -1,5 +1,5 @@
 import express from 'express';
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import PairApplication from '../../app/application/pair/PairApplication';
 import PairRepository from '../../infra/repository/PairRepository';
 import UserRepository from '../../infra/repository/UserRepository';

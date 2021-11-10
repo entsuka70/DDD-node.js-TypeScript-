@@ -1,4 +1,4 @@
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import PairRepositoryInterface from '../../domain/model/pair/PairRepositoryInterface';
 import Pair, { PairProps } from '../../domain/model/pair/Pair';
 import PairId from '../../domain/model/pair/PairId';

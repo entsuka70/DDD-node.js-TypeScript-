@@ -1,5 +1,5 @@
 import express from 'express';
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import UserIssueApplication from '../../app/application/userIssue/UserIssueApplication';
 import UserIssueGetCommand from '../../app/application/userIssue/UserIssueGetCommand';
 import UserIssueUpdateCommand from '../../app/application/userIssue/UserIssueUpdateCommand';

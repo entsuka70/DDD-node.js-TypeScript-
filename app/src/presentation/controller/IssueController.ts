@@ -1,5 +1,5 @@
 import express from 'express';
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import IssueApplication from '../../app/application/issue/IssueApplication';
 import IssueRepository from '../../infra/repository/IssueRepository';
 import IssueCreateCommand from '../../app/application/issue/IssueCreateCommand';

@@ -1,4 +1,4 @@
-import { PrismaClient } from 'prisma/prisma-client';
+import { PrismaClient } from '.prisma/client';
 import TeamRepositoryInterface from '../../domain/model/team/TeamRepositoryInterface';
 import Team, { TeamProps } from '../../domain/model/team/Team';
 import TeamId from '../../domain/model/team/TeamId';
