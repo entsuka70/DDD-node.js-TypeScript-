@@ -1,6 +1,5 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
@@ -17,6 +16,7 @@ const Home: NextPage = () => {
           <button className={styles.createAccountButton}>Create Account</button>
           <button className={styles.loginButton}>Login</button>
         </div>
+        <div id="loader">Loading...</div>
       </main>
     </div>
   )

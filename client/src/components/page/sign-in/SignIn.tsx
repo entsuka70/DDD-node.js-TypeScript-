@@ -1,22 +1,20 @@
-import type { NextPage } from 'next'
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+import firebase from 'firebase/compat/app';
+import { uiConfig } from 'components/libs/firebase/firebase-ui-config'
+// import { firebaseConfig } from '../../libs/firebase/firebase-config';
 
-const SignInPage: NextPage = () => {
+// firebase.initializeApp(firebaseConfig)
+
+// const config = uiConfig
+const SignIn = () => {
+  console.log('SignIn')
   return (
     <div>
-      <h1>ログイン</h1>
-      <div>
-        <label htmlFor="email">
-          メールアドレス
-          <input id="email" type="text" />
-        </label>
-        <label htmlFor="password">
-          パスワード
-          <input id="password" type="password" />
-        </label>
-      </div>
-      <button>ログイン</button>
+      <h1>My App</h1>
+      <p>Please sign-in:</p>
+      <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} />
     </div>
-  )
+  );
 }
 
-export default SignInPage
+export default SignIn
