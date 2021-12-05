@@ -1,5 +1,5 @@
 {
-  "eslint.workingDirectories": ["./"],
+  "eslint.workingDirectories": ["./app", "./client"],
   // デフォルトのフォーマッタを prettier に設定して、ファイル保存時、ESLint による自動フォーマット
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
