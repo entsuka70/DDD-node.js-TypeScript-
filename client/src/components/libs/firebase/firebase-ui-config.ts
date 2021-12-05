@@ -1,21 +1,25 @@
-import firebase from "firebase/compat/app"
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
 
 export const uiConfig = {
   callbacks: {
-    signInSuccessWithAuthResult: function() {
+    signInSuccessWithAuthResult: function () {
       console.log('success auth')
       return true
     },
-    uiShown: function() {
-      document.getElementById('loader')!.style.display = 'none';
-    }
+    uiShown: function () {
+      const element = document.getElementById('loader')
+      if (element) {
+        element.style.display = 'none'
+      }
+    },
   },
   signInFlow: 'popup',
   signInSuccessUrl: '/',
   signInOptions: [
     {
       provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      requireDisplayName: false
-    }
+      requireDisplayName: false,
+    },
   ],
 }
