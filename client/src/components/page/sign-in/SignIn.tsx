@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { AuthContext } from 'context/AuthContext'
+import { AuthContext } from 'contexts/AuthContext'
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth'
 import { firebaseApp } from 'components/libs/firebase/firebase-initialize'
 import { uiConfig } from 'components/libs/firebase/firebase-ui-config'
