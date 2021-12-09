@@ -23,9 +23,10 @@ const SignIn = () => {
       <div>
         <h1>My App</h1>
         <p>
-          Welcome {firebaseApp.auth().currentUser?.displayName}! You are now
+          Welcome {firebaseApp.auth().currentUser?.email}! You are now
           signed-in!
         </p>
+        <p>client id : {clientId}</p>
         <button onClick={() => firebaseApp.auth().signOut()}>Sign-out</button>
       </div>
     )
