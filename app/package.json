@@ -40,7 +40,9 @@
     "dependencies": {
         "@babel/preset-typescript": "^7.13.0",
         "@prisma/client": "^2.23.0",
+        "@types/cors": "^2.8.12",
         "body-parser": "^1.19.0",
+        "cors": "^2.8.5",
         "express": "^4.17.1",
         "nodemon": "^2.0.12"
     }
