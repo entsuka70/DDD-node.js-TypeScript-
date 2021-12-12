@@ -1,4 +1,5 @@
 import client from 'api/clients'
+import { AxiosRequestConfig } from 'axios'
 
 const BASE_PATH = '/user'
 
@@ -11,8 +12,14 @@ type UserListsResponse = {
   status: number
 }[]
 
-const getUserLists = async (): Promise<UserListsResponse> => {
-  const { data } = await client.get(`${BASE_PATH}`)
+const getUserLists = async (token: string): Promise<UserListsResponse> => {
+  const config: AxiosRequestConfig = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+
+  const { data } = await client.get(`${BASE_PATH}`, config)
 
   if (data.length > 0) {
     return data
