@@ -1,10 +1,18 @@
+import { getUserLists } from 'api/requests/user'
+import { AuthContext } from 'contexts/AuthContext'
+import { useContext } from 'react'
+
 const Home = (): JSX.Element => {
+  const { token } = useContext(AuthContext)
+
   return (
     <div>
       <h1>リクエストホーム</h1>
       <div>
         <h2>ユーザーリスト</h2>
-        <button>ユーザーリスト取得</button>
+        <button onClick={() => getUserLists(token as string)}>
+          ユーザーリスト取得
+        </button>
         <div>
           <ul>
             <li>ユーザーホゲ</li>
