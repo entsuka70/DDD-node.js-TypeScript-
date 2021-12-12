@@ -6,3 +6,5 @@ yarn.lock
 .DS_Store
 # TEST
 /coverage
+# Firebase
+praha-firebase-authentication-firebase-adminsdk.json
