@@ -6,24 +6,35 @@ import UserUpdateCommand from '../../app/application/user/UserUpdateCommand';
 import UserRepository from '../../infra/repository/UserRepository';
 import PairRepository from '../../infra/repository/PairRepository';
 import { RequestType } from '../../../@types';
+import FirebaseAdmin from '../firebase/FirebaseAdmin';
+import AuthorizationError from '../../utils/error/AuthorizationError';
 
 const prisma = new PrismaClient();
 const userRepository = new UserRepository(prisma);
 const pairRepository = new PairRepository(prisma);
 const userApplication = new UserApplication(userRepository, pairRepository);
+const firebaseAdmin = new FirebaseAdmin();
+firebaseAdmin.initialize();
 
 // ユーザー一覧取得
 export function view(req: Request, res: Response) {
   (async () => {
-    const userAll = await userApplication.findAll();
-    res.set({
-      'content-type': 'application/json',
-    });
-    return res.status(200).json(userAll);
+    const authorizationToken = firebaseAdmin.getAuthorizationToken(req);
+    const uid = await firebaseAdmin.getUIdIfVerifyToken(authorizationToken);
+    if (uid) {
+      const userAll = await userApplication.findAll();
+      res.set({
+        'content-type': 'application/json',
+      });
+      return res.status(200).json(userAll);
+    }
   })().catch((e) => {
     if (e instanceof ReferenceError) {
       console.error(e.message);
       return res.status(400).send(e.message);
+    } else if (e instanceof AuthorizationError) {
+      console.error(e.message);
+      return res.status(e.statusCode).send(e.message);
     } else {
       console.error('Unexpected Error Happend !!');
       console.error(e);
