@@ -9,11 +9,10 @@
     "lint": "eslint . --ext ts --fix",
     "lint-fix": "eslint --fix && prettier --write './index.ts'",
     "migrate:postgres": "dotenv -e .env.test -- npx prisma migrate dev --name postgres-init",
-    "build": "tsc",
-    "build2": "build",
+    "build-dev": "webpack --mode=development",
+    "build-prod": "webpack --mode=production",
     "dev": "nodemon",
-    "devv": "tsc && dotenv -e .env.development -- node dist/src/server.js",
-    "start": "dotenv -e .env.development -- node dist/src/server.js"
+    "start": "dotenv -e .env.development -- node dist/bundle.js"
   },
   "author": "",
   "license": "ISC",
