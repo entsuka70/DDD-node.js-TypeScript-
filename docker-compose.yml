@@ -1,5 +1,12 @@
-version: '3.7'
+version: "3.7"
 services:
+  web-server:
+    container_name: web-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
   prisma-db:
     container_name: prisma-db
     image: postgres:12
