@@ -1,13 +1,27 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   target: 'node',
   entry: './src/server.ts',
   devtool: 'inline-source-map',
-  externals: {
-    _http_common: 'commonjs2 _http_common',
-  },
+  externals: [nodeExternals()],
+  plugins: [
+    new CopyPlugin({
+      patterns: [
+        {
+          from: './prisma/schema.prisma',
+          to: './prisma/schema.prisma',
+        },
+        {
+          from: './node_modules',
+          to: './node_modules',
+        },
+      ],
+    }),
+  ],
   module: {
     rules: [
       {
