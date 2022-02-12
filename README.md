@@ -1,7 +1,7 @@
 ## 概要
 - 設計を学ぶことを目的にDDDを採用してAPIサーバーを構築
 - フロントは基本的には作らない
-  - お試しでNext.jsを採用し、Firebase Authenticationを実装中
+  - 一部Next.jsを採用し、Firebase Authenticationを実装
 
 ## 採用構成
 ### 設計
