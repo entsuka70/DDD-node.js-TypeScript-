@@ -29,7 +29,7 @@ jobs:
         run: yarn lint
         working-directory: ./app
       - name: Run Migrate
-        run: yarn migrate:postgres
+        run: yarn migrate:test
         working-directory: ./app
       - name: Run Unit & Integration Test
         run: yarn test
